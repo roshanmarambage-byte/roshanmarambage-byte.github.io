@@ -11,19 +11,6 @@
         body { background-color:var(--light); color:var(--text-dark); line-height:1.6; }
         .cover-wrapper { width:100%; background-color:#450a0a; display:flex; justify-content:center; border-bottom:4px solid var(--accent); }
         .cover-img { width:100%; max-width:1600px; height:auto; display:block; object-fit:cover; }
-        
-        /* Eye-catching Breaking News Ticker */
-        .news-ticker-bar { background-color:#fef3c7; border-bottom:2px solid var(--accent); display:flex; align-items:center; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-        .ticker-label { background-color:#dc2626; color:white; font-weight:700; font-size:0.88rem; padding:0.65rem 1.1rem; white-space:nowrap; display:flex; align-items:center; gap:0.45rem; z-index:2; box-shadow:2px 0 8px rgba(0,0,0,0.15); }
-        .pulse-dot { width:9px; height:9px; background-color:#fde047; border-radius:50%; animation:pulse 1.2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.8); } }
-        .ticker-track { flex:1; overflow:hidden; white-space:nowrap; padding:0.55rem 0; }
-        .ticker-content { display:inline-block; padding-left:100%; animation:scroll-left 28s linear infinite; }
-        .ticker-track:hover .ticker-content { animation-play-state:paused; }
-        .ticker-content a { color:#7f1d1d; font-weight:700; text-decoration:none; font-size:0.95rem; }
-        .ticker-content a:hover { text-decoration:underline; }
-        @keyframes scroll-left { 0% { transform:translateX(0); } 100% { transform:translateX(-100%); } }
-
         .sub-header { background:linear-gradient(135deg,var(--primary) 0%,var(--dark) 100%); color:white; text-align:center; padding:1.75rem 1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
         .badge { display:inline-block; background-color:rgba(245,158,11,0.2); color:#fcd34d; border:1px solid var(--accent); padding:0.3rem 1rem; border-radius:50px; font-size:0.9rem; font-weight:600; margin-bottom:0.75rem; }
         .sub-header p { max-width:740px; margin:0 auto 1.25rem; color:#e2e8f0; font-size:1rem; }
@@ -41,7 +28,8 @@
         .card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
         .card.gold-border { border-top-color:var(--accent); }
         .card h3 { font-size:1.15rem; color:var(--dark); margin-bottom:0.65rem; line-height:1.4; }
-        .card p { color:var(--text-muted); font-size:0.9rem; margin-bottom:1.4rem; }
+        .card p { color:var(--text-muted); font-size:0.9rem; margin-bottom:1.2rem; }
+        .card-news-highlight { background:#fef3c7; border-left:3px solid #dc2626; padding:0.6rem 0.75rem; border-radius:6px; font-size:0.83rem; font-weight:600; color:#7f1d1d; margin-bottom:1.2rem; }
         .btn { display:inline-block; text-align:center; background-color:var(--secondary); color:white; text-decoration:none; padding:0.6rem 1.1rem; border-radius:8px; font-weight:600; font-size:0.9rem; transition:background 0.2s; }
         .btn:hover { background-color:var(--primary); }
         .btn-gold { background-color:var(--accent); color:var(--dark); }
@@ -60,19 +48,6 @@
     <div class="cover-wrapper">
         <img src="cover.jpg.jpg" alt="ගණිත ගෙදර - රොෂාන් මාරඹගේ" class="cover-img">
     </div>
-
-    <!-- හදිසි දැනුවත් කිරීම් තීරුව (Breaking News Line) -->
-    <div class="news-ticker-bar">
-        <div class="ticker-label"><span class="pulse-dot"></span> මේ සතියේ විශේෂ නිවේදන</div>
-        <div class="ticker-track">
-            <div class="ticker-content">
-                <a href="notices.html">
-                    🔔 2027 නව වසර සඳහා 6 ශ්‍රේණියට බඳවාගන්නා දරුවන් නියත වශයෙන් ම හැදෑරිය යුතු GeoGebra පාඨමාලාවක් &nbsp;&nbsp;|&nbsp;&nbsp; (වැඩි විස්තර සඳහා මෙතැන Click කරන්න)
-                </a>
-            </div>
-        </div>
-    </div>
-
     <div class="sub-header">
         <div class="badge">3 සිට 11 ශ්‍රේණිය දක්වා | සිංහල සහ ඉංග්‍රීසි මාධ්‍ය</div>
         <p>පාසල් සිසුන්ගේ ගණිත දැනුම ඉහළ නැංවීම සඳහා සකස් කළ අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි, පෙළපොත්, ආදර්ශ ප්‍රශ්න පත්‍ර සහ වීඩියෝ පාඩම් එකම තැනකින්.</p>
@@ -109,9 +84,9 @@
             <div class="card gold-border">
                 <div>
                     <h3>📢 විශේෂ දැණුවත් කිරීම් සහ අමතර පාඨමාලා</h3>
-                    <p>නොනිදන ගණිත පන්තිය, සෙනසුරාදා Discussion Table, වැඩමුළු සහ අමතර පාඨමාලා විස්තර.</p>
+                    <div id="card-weekly-news" class="card-news-highlight"></div>
                 </div>
-                <a href="notices.html" class="btn btn-gold">විස්තර බලන්න</a>
+                <a href="notices.html" class="btn btn-gold">සියලු විස්තර බලන්න</a>
             </div>
         </div>
 
@@ -136,5 +111,8 @@
     <footer>
         <p>&copy; 2026 <strong>ගණිත ගෙදර (Ganitha Gedara)</strong> - රොෂාන් මාරඹගේ. සියලුම හිමිකම් ඇවිරිණි.</p>
     </footer>
+
+    <!-- පොදු Newsline ගොනුව සම්බන්ධ කිරීම -->
+    <script src="news.js"></script>
 </body>
 </html>
