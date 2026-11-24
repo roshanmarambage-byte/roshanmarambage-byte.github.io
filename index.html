@@ -7,8 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a;      /* Deep Royal Navy */
-            --secondary: #1e3a8a;    /* Royal Blue */
+            --primary: #7f1d1d;      /* Deep Crimson Red */
+            --secondary: #991b1b;    /* Rich Red */
+            --dark: #0f172a;         /* Dark Navy */
             --accent: #f59e0b;       /* Gold */
             --accent-hover: #d97706;
             --light: #f8fafc;
@@ -26,43 +27,72 @@
             color: var(--text-dark);
             line-height: 1.6;
         }
-        /* Header Section */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+
+        /* Cover Banner Section */
+        .cover-wrapper {
+            width: 100%;
+            background-color: #450a0a;
+            display: flex;
+            justify-content: center;
+            border-bottom: 4px solid var(--accent);
+        }
+        .cover-img {
+            width: 100%;
+            max-width: 1600px;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Sub-Header Bar */
+        .sub-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: white;
             text-align: center;
-            padding: 3.5rem 1.5rem;
-            border-bottom: 5px solid var(--accent);
+            padding: 1.75rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .badge {
             display: inline-block;
             background-color: rgba(245, 158, 11, 0.2);
             color: #fcd34d;
             border: 1px solid var(--accent);
-            padding: 0.35rem 1rem;
+            padding: 0.3rem 1rem;
             border-radius: 50px;
             font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
-        }
-        header h2 {
-            font-size: 1.25rem;
-            font-weight: 400;
+        .sub-header p {
+            max-width: 720px;
+            margin: 0 auto 1.25rem;
             color: #e2e8f0;
-            margin-bottom: 1rem;
-        }
-        header p {
-            max-width: 650px;
-            margin: 0 auto;
-            color: #cbd5e1;
             font-size: 1rem;
         }
+
+        /* Social Links */
+        .social-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.85rem;
+        }
+        .social-btn {
+            padding: 0.55rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .social-btn:hover { 
+            opacity: 0.92;
+            transform: translateY(-2px);
+        }
+        .yt { background-color: #dc2626; }
+        .fb { background-color: #2563eb; }
+        .wa { background-color: #16a34a; }
 
         /* Main Container */
         .container {
@@ -73,7 +103,7 @@
         .section-title {
             text-align: center;
             font-size: 1.75rem;
-            color: var(--primary);
+            color: var(--dark);
             margin-bottom: 2rem;
             position: relative;
         }
@@ -92,7 +122,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 3.5rem;
+            margin-bottom: 3rem;
         }
         .card {
             background: white;
@@ -114,7 +144,7 @@
         }
         .card h3 {
             font-size: 1.25rem;
-            color: var(--primary);
+            color: var(--dark);
             margin-bottom: 0.75rem;
         }
         .card p {
@@ -139,7 +169,7 @@
         }
         .btn-gold {
             background-color: var(--accent);
-            color: var(--primary);
+            color: var(--dark);
         }
         .btn-gold:hover {
             background-color: var(--accent-hover);
@@ -152,11 +182,11 @@
             border-radius: 12px;
             padding: 2rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             border-left: 5px solid var(--accent);
         }
         .info-box h3 {
-            color: var(--primary);
+            color: var(--dark);
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
@@ -174,31 +204,9 @@
             color: var(--text-dark);
         }
 
-        /* Social Links */
-        .social-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        .social-btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-        }
-        .social-btn:hover { opacity: 0.9; }
-        .yt { background-color: #dc2626; }
-        .fb { background-color: #2563eb; }
-        .wa { background-color: #16a34a; }
-
         /* Footer */
         footer {
-            background-color: var(--primary);
+            background-color: var(--dark);
             color: #94a3b8;
             text-align: center;
             padding: 2rem 1rem;
@@ -207,18 +215,18 @@
         footer strong {
             color: white;
         }
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.9rem; }
-            header h2 { font-size: 1.1rem; }
-        }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Cover Photo Section -->
+    <div class="cover-wrapper">
+        <img src="cover.jpg" alt="ගණිත ගෙදර - රොෂාන් මාරඹගේ" class="cover-img">
+    </div>
+
+    <!-- Description & Social Links Section -->
+    <div class="sub-header">
         <div class="badge">3 සිට 11 ශ්‍රේණිය දක්වා | සිංහල සහ ඉංග්‍රීසි මාධ්‍ය</div>
-        <h1>ගණිත ගෙදර (Ganitha Gedara)</h1>
-        <h2>රොෂාන් මාරඹගේ (B.Sc.) - ගණිත විමර්ශක</h2>
         <p>පාසල් සිසුන්ගේ ගණිත දැනුම ඉහළ නැංවීම සඳහා සකස් කළ අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි (Interactive Quizzes), ආදර්ශ ප්‍රශ්න පත්‍ර සහ පුනරීක්ෂණ වැඩපොත් එකම තැනකින්.</p>
         
         <div class="social-bar">
@@ -226,7 +234,7 @@
             <a href="https://www.facebook.com/roshan.marambage.2025/" target="_blank" class="social-btn fb">f Facebook පිටුව</a>
             <a href="https://whatsapp.com/channel/0029VbE5jpN3GJOpRldP6Q2U" target="_blank" class="social-btn wa">💬 WhatsApp Channel</a>
         </div>
-    </header>
+    </div>
 
     <div class="container">
         
