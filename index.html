@@ -21,6 +21,15 @@
         .fb { background-color:#2563eb; }
         .wa { background-color:#16a34a; }
         .container { max-width:1120px; margin:0 auto; padding:2.5rem 1.5rem; }
+
+        /* Countdown Timer Styles */
+        .countdown-wrapper { background:linear-gradient(135deg,var(--dark) 0%,#1e293b 100%); border:2px solid var(--accent); border-radius:14px; padding:1.5rem; margin-bottom:2.75rem; text-align:center; box-shadow:0 8px 25px rgba(15,23,42,0.15); }
+        .countdown-title { color:#fcd34d; font-size:1.15rem; font-weight:700; margin-bottom:1.1rem; letter-spacing:0.3px; }
+        .countdown-boxes { display:flex; justify-content:center; gap:0.85rem; flex-wrap:wrap; }
+        .time-box { background:linear-gradient(180deg,var(--secondary) 0%,var(--primary) 100%); border:1px solid var(--accent); border-radius:10px; padding:0.75rem 1rem; min-width:82px; box-shadow:0 4px 10px rgba(0,0,0,0.25); }
+        .time-number { display:block; font-size:1.85rem; font-weight:700; color:var(--accent); line-height:1.15; font-family:'Poppins',sans-serif; }
+        .time-label { font-size:0.85rem; color:#f8fafc; font-weight:600; }
+
         .section-title { text-align:center; font-size:1.75rem; color:var(--dark); margin-bottom:2rem; position:relative; }
         .section-title::after { content:''; display:block; width:60px; height:4px; background:var(--accent); margin:0.5rem auto 0; border-radius:2px; }
         .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.35rem; margin-bottom:3rem; }
@@ -57,7 +66,31 @@
             <a href="https://whatsapp.com/channel/0029VbE5jpN3GJOpRldP6Q2U" target="_blank" class="social-btn wa">💬 WhatsApp Channel</a>
         </div>
     </div>
+
     <div class="container">
+        <!-- O/L Exam Countdown Timer -->
+        <div class="countdown-wrapper">
+            <div class="countdown-title">⏳ අ.පො.ස. (සා.පෙළ) විභාගයට තව ඉතිරිව ඇත්තේ...</div>
+            <div class="countdown-boxes" id="countdown-timer">
+                <div class="time-box">
+                    <span class="time-number" id="days">00</span>
+                    <span class="time-label">දින</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-number" id="hours">00</span>
+                    <span class="time-label">පැය</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-number" id="minutes">00</span>
+                    <span class="time-label">මිනිත්තු</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-number" id="seconds">00</span>
+                    <span class="time-label">තත්පර</span>
+                </div>
+            </div>
+        </div>
+
         <h2 class="section-title">අධ්‍යයන සම්පත් (Study Resources)</h2>
         <div class="grid">
             <div class="card gold-border">
@@ -83,7 +116,7 @@
             </div>
             <div class="card gold-border">
                 <div>
-                    <h3>📢 විශේෂ දැණුවත් කිරීම් සහ අමතර පාඨමාලා</h3>
+                    <h3>📢 විශේෂ දැනුවත් කිරීම් සහ අමතර පාඨමාලා</h3>
                     <div id="card-weekly-news" class="card-news-highlight"></div>
                 </div>
                 <a href="notices.html" class="btn btn-gold">සියලු විස්තර බලන්න</a>
@@ -91,7 +124,7 @@
         </div>
 
         <div class="info-box">
-            <h3>📍 පන්ති පැවැත්වෙන ස්ථාන (මාතර) - 2027 කාලසටහන් ම‍ෙතනින් ලබාගන්න</h3>
+            <h3>📍 පන්ති පැවැත්වෙන ස්ථාන (මාතර) - 2027 කාලසටහන් මෙතනින් ලබාගන්න</h3>
             <ul class="locations-list">
                 <li>
                     <span>🏠 ගණිත ගෙදර - වල්ගම, මාතර</span>
@@ -111,6 +144,34 @@
     <footer>
         <p>&copy; 2026 <strong>ගණිත ගෙදර (Ganitha Gedara)</strong> - රොෂාන් මාරඹගේ. සියලුම හිමිකම් ඇවිරිණි.</p>
     </footer>
+
+    <!-- O/L Exam Countdown Script -->
+    <script>
+        // විභාගය පැවැත්වෙන දිනය සහ වේලාව පහත පරිදි වෙනස් කරගත හැක
+        const examDate = new Date("March 15, 2027 08:30:00").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = examDate - now;
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.getElementById("countdown-timer").innerHTML = 
+                    "<div style='color:#fcd34d; font-size:1.2rem; font-weight:700;'>සියලුම සිසු දරුවන්ට විභාගයට සුභ පැතුම්!</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+    </script>
 
     <!-- පොදු Newsline ගොනුව සම්බන්ධ කිරීම -->
     <script src="news.js"></script>
