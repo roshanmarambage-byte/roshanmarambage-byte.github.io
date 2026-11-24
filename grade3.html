@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3 ශ්‍රේණිය - ගණිත ප්‍රශ්න පත්‍ර | ගණිත ගෙදර</title>
+    <title>3 ශ්‍රේණිය - ගණිත සම්පත් | ගණිත ගෙදර</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
@@ -12,29 +12,55 @@
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2rem 1rem; border-bottom:4px solid var(--accent); }
         .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; }
         .nav-links a { color:#fcd34d; text-decoration:none; font-size:0.9rem; border:1px solid var(--accent); padding:0.35rem 0.9rem; border-radius:6px; }
-        .container { max-width:850px; margin:2rem auto; padding:0 1.25rem; }
-        .paper-item { background:white; border-radius:10px; padding:1.25rem 1.5rem; margin-bottom:1rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; box-shadow:0 3px 10px rgba(0,0,0,0.05); border-left:4px solid var(--secondary); }
-        .paper-title { font-weight:700; font-size:1.05rem; color:var(--dark); }
-        .paper-meta { font-size:0.85rem; color:#64748b; }
-        .dl-btn { background:var(--secondary); color:white; text-decoration:none; padding:0.55rem 1.1rem; border-radius:6px; font-weight:600; font-size:0.9rem; }
-        .dl-btn:hover { background:var(--primary); }
+        .container { max-width:880px; margin:2rem auto; padding:0 1.25rem; }
+        .section-heading { font-size:1.25rem; color:var(--dark); margin:2rem 0 1rem; padding-bottom:0.4rem; border-bottom:2px solid #cbd5e1; display:flex; align-items:center; gap:0.5rem; }
+        .resource-item { background:white; border-radius:10px; padding:1.2rem 1.5rem; margin-bottom:0.9rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; box-shadow:0 3px 10px rgba(0,0,0,0.05); }
+        .pdf-border { border-left:5px solid #991b1b; }
+        .form-border { border-left:5px solid #6d28d9; }
+        .quiz-border { border-left:5px solid #d97706; }
+        .res-title { font-weight:700; font-size:1.05rem; color:var(--dark); }
+        .res-meta { font-size:0.85rem; color:#64748b; margin-top:0.2rem; }
+        .btn { text-decoration:none; padding:0.55rem 1.15rem; border-radius:6px; font-weight:600; font-size:0.9rem; color:white; transition:opacity 0.2s; }
+        .btn:hover { opacity:0.9; }
+        .btn-pdf { background:#991b1b; }
+        .btn-form { background:#6d28d9; }
+        .btn-quiz { background:#d97706; }
     </style>
 </head>
 <body>
     <header>
-        <h1>3 ශ්‍රේණිය - ගණිත ප්‍රශ්න පත්‍ර සහ වැඩපොත්</h1>
+        <h1>3 ශ්‍රේණිය - ගණිත අධ්‍යයන සම්පත්</h1>
         <div class="nav-links">
             <a href="papers.html">← ශ්‍රේණි ලැයිස්තුවට</a>
             <a href="index.html">මුල් පිටුවට</a>
         </div>
     </header>
     <div class="container">
-        <div class="paper-item">
+        <h2 class="section-heading">📄 PDF වැඩපොත් සහ ප්‍රශ්න පත්‍ර</h2>
+        <div class="resource-item pdf-border">
             <div>
-                <div class="paper-title">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
-                <div class="paper-meta">3 ශ්‍රේණිය | පිළිතුරු පත්‍රය සහිතයි</div>
+                <div class="res-title">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
+                <div class="res-meta">3 ශ්‍රේණිය | Google Drive PDF</div>
             </div>
-            <a href="grade3-term1.pdf" download class="dl-btn">📥 PDF බාගත කරන්න</a>
+            <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="btn btn-pdf">📥 PDF විවෘත කරන්න</a>
+        </div>
+
+        <h2 class="section-heading">📝 Google Forms (මාර්ගගත ඇගයීම්)</h2>
+        <div class="resource-item form-border">
+            <div>
+                <div class="res-title">මූලික ගණිත කර්ම ඇගයීම - 01</div>
+                <div class="res-meta">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
+            </div>
+            <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-form">✍️ Form එකට පිවිසෙන්න</a>
+        </div>
+
+        <h2 class="section-heading">🎮 Interactive Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</h2>
+        <div class="resource-item quiz-border">
+            <div>
+                <div class="res-title">සංඛ්‍යා රටා සහ එකතු කිරීම - Interactive Quiz</div>
+                <div class="res-meta">HTML Interactive Activity</div>
+            </div>
+            <a href="INTERACTIVE_LINK_HERE" target="_blank" class="btn btn-quiz">🚀 Quiz එක ආරම්භ කරන්න</a>
         </div>
     </div>
 </body>
