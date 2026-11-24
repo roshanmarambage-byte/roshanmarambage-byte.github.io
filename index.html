@@ -13,30 +13,32 @@
         .cover-img { width:100%; max-width:1600px; height:auto; display:block; object-fit:cover; }
         .sub-header { background:linear-gradient(135deg,var(--primary) 0%,var(--dark) 100%); color:white; text-align:center; padding:1.75rem 1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
         .badge { display:inline-block; background-color:rgba(245,158,11,0.2); color:#fcd34d; border:1px solid var(--accent); padding:0.3rem 1rem; border-radius:50px; font-size:0.9rem; font-weight:600; margin-bottom:0.75rem; }
-        .sub-header p { max-width:720px; margin:0 auto 1.25rem; color:#e2e8f0; font-size:1rem; }
+        .sub-header p { max-width:740px; margin:0 auto 1.25rem; color:#e2e8f0; font-size:1rem; }
         .social-bar { display:flex; flex-wrap:wrap; justify-content:center; gap:0.85rem; }
         .social-btn { padding:0.55rem 1.2rem; border-radius:8px; text-decoration:none; color:white; font-weight:600; font-size:0.9rem; transition:transform 0.2s,opacity 0.2s; }
         .social-btn:hover { opacity:0.92; transform:translateY(-2px); }
         .yt { background-color:#dc2626; }
         .fb { background-color:#2563eb; }
         .wa { background-color:#16a34a; }
-        .container { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem; }
+        .container { max-width:1120px; margin:0 auto; padding:2.5rem 1.5rem; }
         .section-title { text-align:center; font-size:1.75rem; color:var(--dark); margin-bottom:2rem; position:relative; }
         .section-title::after { content:''; display:block; width:60px; height:4px; background:var(--accent); margin:0.5rem auto 0; border-radius:2px; }
-        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-bottom:3rem; }
-        .card { background:white; border-radius:12px; padding:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); border-top:4px solid var(--secondary); transition:transform 0.2s ease,box-shadow 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.35rem; margin-bottom:3rem; }
+        .card { background:white; border-radius:12px; padding:1.6rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); border-top:4px solid var(--secondary); transition:transform 0.2s ease,box-shadow 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; }
         .card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
         .card.gold-border { border-top-color:var(--accent); }
-        .card h3 { font-size:1.25rem; color:var(--dark); margin-bottom:0.75rem; }
-        .card p { color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem; }
-        .btn { display:inline-block; text-align:center; background-color:var(--secondary); color:white; text-decoration:none; padding:0.65rem 1.25rem; border-radius:8px; font-weight:600; font-size:0.95rem; transition:background 0.2s; }
+        .card h3 { font-size:1.15rem; color:var(--dark); margin-bottom:0.65rem; line-height:1.4; }
+        .card p { color:var(--text-muted); font-size:0.9rem; margin-bottom:1.4rem; }
+        .btn { display:inline-block; text-align:center; background-color:var(--secondary); color:white; text-decoration:none; padding:0.6rem 1.1rem; border-radius:8px; font-weight:600; font-size:0.9rem; transition:background 0.2s; }
         .btn:hover { background-color:var(--primary); }
         .btn-gold { background-color:var(--accent); color:var(--dark); }
         .btn-gold:hover { background-color:var(--accent-hover); color:white; }
         .info-box { background:white; border-radius:12px; padding:2rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); margin-bottom:2rem; border-left:5px solid var(--accent); }
-        .info-box h3 { color:var(--dark); margin-bottom:1rem; font-size:1.3rem; }
-        .locations-list { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; }
-        .locations-list li { background:#f1f5f9; padding:0.85rem 1rem; border-radius:8px; font-weight:600; color:var(--text-dark); }
+        .info-box h3 { color:var(--dark); margin-bottom:1.25rem; font-size:1.3rem; }
+        .locations-list { list-style:none; display:flex; flex-direction:column; gap:0.85rem; }
+        .locations-list li { background:#f1f5f9; padding:0.9rem 1.2rem; border-radius:8px; font-weight:600; color:var(--text-dark); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; }
+        .tt-btn { background-color:var(--dark); color:#fcd34d; text-decoration:none; padding:0.45rem 1rem; border-radius:6px; font-size:0.85rem; font-weight:600; border:1px solid var(--accent); transition:background 0.2s,color 0.2s; }
+        .tt-btn:hover { background-color:var(--accent); color:var(--dark); }
         footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:2rem 1rem; font-size:0.9rem; }
         footer strong { color:white; }
     </style>
@@ -47,7 +49,7 @@
     </div>
     <div class="sub-header">
         <div class="badge">3 සිට 11 ශ්‍රේණිය දක්වා | සිංහල සහ ඉංග්‍රීසි මාධ්‍ය</div>
-        <p>පාසල් සිසුන්ගේ ගණිත දැනුම ඉහළ නැංවීම සඳහා සකස් කළ අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි (Interactive Quizzes), ආදර්ශ ප්‍රශ්න පත්‍ර සහ පුනරීක්ෂණ වැඩපොත් එකම තැනකින්.</p>
+        <p>පාසල් සිසුන්ගේ ගණිත දැනුම ඉහළ නැංවීම සඳහා සකස් කළ අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි, පෙළපොත්, ආදර්ශ ප්‍රශ්න පත්‍ර සහ වීඩියෝ පාඩම් එකම තැනකින්.</p>
         <div class="social-bar">
             <a href="https://www.youtube.com/@kalabaraganithaya2249" target="_blank" class="social-btn yt">▶ YouTube නාලිකාව</a>
             <a href="https://www.facebook.com/roshan.marambage.2025/" target="_blank" class="social-btn fb">f Facebook පිටුව</a>
@@ -57,34 +59,55 @@
     <div class="container">
         <h2 class="section-title">අධ්‍යයන සම්පත් (Study Resources)</h2>
         <div class="grid">
+            <!-- Button 1 -->
             <div class="card gold-border">
                 <div>
-                    <h3>📝 Interactive Online Quizzes</h3>
-                    <p>පිළිතුරු එසැණින් පරීක්ෂා කරගත හැකි, 6–11 ශ්‍රේණි සඳහා විශේෂයෙන් සැකසූ මාර්ගගත ගණිත ප්‍රශ්නාවලි.</p>
+                    <h3>📝 Interactive Online Quizzes And Google Forms</h3>
+                    <p>පිළිතුරු සහ ලකුණු එසැණින් පරීක්ෂා කරගත හැකි, 3–11 ශ්‍රේණි සඳහා සැකසූ මාර්ගගත ප්‍රශ්නාවලි.</p>
                 </div>
                 <a href="quizzes.html" class="btn btn-gold">ප්‍රශ්නාවලි වෙත පිවිසෙන්න</a>
             </div>
+            <!-- Button 2 -->
             <div class="card">
                 <div>
-                    <h3>📚 PDF වැඩපොත් සහ ප්‍රශ්න පත්‍ර</h3>
-                    <p>වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍ර, පිළිතුරු පත්‍ර (Marking Schemes) සහ මූලික ගණිත අභ්‍යාස පොත්.</p>
+                    <h3>📚 ගණිතය PDF Textbooks, වැඩපොත්, වාර විභාග ප්‍රශ්න පත්‍ර හා නිබන්ධන</h3>
+                    <p>3–11 ශ්‍රේණි සඳහා පෙළපොත්, වාර විභාග ප්‍රශ්න පත්‍ර, Marking Schemes සහ වැඩපොත්.</p>
                 </div>
-                <a href="papers.html" class="btn">ප්‍රශ්න පත්‍ර බාගත කරන්න</a>
+                <a href="papers.html" class="btn">බාගත කරගන්න</a>
             </div>
+            <!-- Button 3 -->
             <div class="card">
                 <div>
-                    <h3>🌙 නොනිදන ගණිත පන්තිය & Discussion</h3>
-                    <p>10 සහ 11 ශ්‍රේණි සිසුන් සඳහා රාත්‍රී මාර්ගගත පුනරීක්ෂණ සැසි සහ සෙනසුරාදා O/L Discussion Table.</p>
+                    <h3>▶️ වීඩියෝ පාඩම් (Video Lessons)</h3>
+                    <p>විෂය ඒකක පැහැදිලි කිරීම් සහ ප්‍රශ්න පත්‍ර සාකච්ඡා ඇතුළත් ගණිත වීඩියෝ පාඩම් මාලාව.</p>
                 </div>
-                <a href="https://whatsapp.com/channel/0029VbE5jpN3GJOpRldP6Q2U" target="_blank" class="btn">වැඩි විස්තර සඳහා එක්වන්න</a>
+                <a href="videos.html" class="btn">වීඩියෝ පාඩම් නරඹන්න</a>
+            </div>
+            <!-- Button 4 -->
+            <div class="card gold-border">
+                <div>
+                    <h3>📢 විශේෂ දැණුවත් කිරීම් සහ අමතර පාඨමාලා</h3>
+                    <p>නොනිදන ගණිත පන්තිය, සෙනසුරාදා Discussion Table, වැඩමුළු සහ අමතර පාඨමාලා විස්තර.</p>
+                </div>
+                <a href="notices.html" class="btn btn-gold">විස්තර බලන්න</a>
             </div>
         </div>
+
         <div class="info-box">
-            <h3>📍 පන්ති පැවැත්වෙන ස්ථාන (මාතර)</h3>
+            <h3>📍 පන්ති පැවැත්වෙන ස්ථාන (මාතර) - 2027 කාලසටහන්</h3>
             <ul class="locations-list">
-                <li>🏠 ගණිත ගෙදර - වල්ගම, මාතර</li>
-                <li>🏫 රෝයල් ඇකඩමි - රාහුල හන්දිය, මාතර</li>
-                <li>🎓 APEX ආයතනය - මාතර</li>
+                <li>
+                    <span>🏠 ගණිත ගෙදර - වල්ගම, මාතර</span>
+                    <a href="timetable-ganithagedara.html" class="tt-btn">📅 2027 Timetable</a>
+                </li>
+                <li>
+                    <span>🏫 රෝයල් ඇකඩමි - රාහුල හන්දිය, මාතර</span>
+                    <a href="timetable-royal.html" class="tt-btn">📅 2027 Timetable</a>
+                </li>
+                <li>
+                    <span>🎓 APEX ආයතනය - මාතර</span>
+                    <a href="timetable-apex.html" class="tt-btn">📅 2027 Timetable</a>
+                </li>
             </ul>
         </div>
     </div>
