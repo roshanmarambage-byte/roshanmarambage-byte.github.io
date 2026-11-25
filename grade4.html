@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4 ශ්‍රේණිය - ගණිතය PDF සම්පත් | ගණිත ගෙදර</title>
+    <title>4 ශ්‍රේණිය - පෙළපොත්, වැඩපොත් හා ප්‍රශ්න පත්‍ර | ගණිතගෙදර</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
-        body { background:var(--light); color:#1e293b; }
+        body { background:var(--light); color:#1e293b; line-height:1.6; }
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2.2rem 1rem; border-bottom:4px solid var(--accent); }
         header h1 { font-size:1.65rem; }
         .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
@@ -17,72 +17,100 @@
         .container { max-width:900px; margin:2rem auto; padding:0 1.25rem; }
         .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); }
         .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; }
-        .pdf-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; border-left:4px solid var(--secondary); transition:transform 0.15s; }
-        .pdf-row:last-child { margin-bottom:0; }
-        .pdf-row:hover { transform:translateX(4px); background:#f1f5f9; }
-        .b-blue { border-left-color:#2563eb; }
-        .b-green { border-left-color:#16a34a; }
-        .b-red { border-left-color:#991b1b; }
-        .b-gold { border-left-color:#d97706; }
-        .pdf-name { font-weight:700; font-size:1rem; color:var(--dark); }
-        .pdf-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .dl-btn { background:var(--secondary); color:white; text-decoration:none; padding:0.5rem 1.1rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:0.2s; }
-        .dl-btn:hover { background:var(--primary); }
+        .paper-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; transition:transform 0.15s; }
+        .paper-row:last-child { margin-bottom:0; }
+        .paper-row:hover { transform:translateX(4px); background:#f1f5f9; }
+        .b-blue { border-left:4px solid #2563eb; }
+        .b-green { border-left:4px solid #16a34a; }
+        .b-red { border-left:4px solid #dc2626; }
+        .b-gold { border-left:4px solid #d97706; }
+        .paper-name { font-weight:700; font-size:1rem; color:var(--dark); }
+        .paper-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
+        .btn { color:white; text-decoration:none; padding:0.55rem 1.15rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:background 0.2s; display:inline-flex; align-items:center; gap:0.4rem; }
+        .btn-red { background:#991b1b; }
+        .btn-red:hover { background:#7f1d1d; }
+        footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:1.75rem 1rem; font-size:0.9rem; margin-top:2rem; }
+        footer strong { color:white; }
     </style>
 </head>
 <body>
     <header>
-        <h1>📚 4 ශ්‍රේණිය - ගණිතය PDF සම්පත්</h1>
+        <h1>📚 4 ශ්‍රේණිය - පෙළපොත්, වැඩපොත් හා ප්‍රශ්න පත්‍ර | ගණිතගෙදර</h1>
         <div class="nav-links">
             <a href="papers.html">← ශ්‍රේණි ලැයිස්තුවට</a>
             <a href="index.html">🏠 මුල් පිටුවට</a>
         </div>
     </header>
+
     <div class="container">
+        <!-- පෙළපොත් (Textbooks) -->
         <div class="cat-box">
             <div class="cat-title">📘 පෙළපොත් (Textbooks)</div>
-            <div class="pdf-row b-blue">
+            <div class="paper-row b-blue">
                 <div>
-                    <div class="pdf-name">4 ශ්‍රේණිය ගණිතය පෙළපොත (සිංහල මාධ්‍ය)</div>
-                    <div class="pdf-info">PDF ගොනුව | Google Drive</div>
+                    <div class="paper-name">4 ශ්‍රේණිය ගණිතය පෙළපොත (සිංහල මාධ්‍ය)</div>
+                    <div class="paper-info">PDF ගොනුව | Google Drive</div>
                 </div>
-                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+                <a href="https://drive.google.com/file/d/133HZYcBARceVGBiujniAKAmnLHI2GHh9/view?usp=drive_link" target="_blank" class="btn btn-red">📥 PDF බාගත කරන්න</a>
             </div>
         </div>
 
+        <!-- වැඩපොත් (Workbooks) -->
         <div class="cat-box">
             <div class="cat-title">📙 වැඩපොත් (Workbooks)</div>
-            <div class="pdf-row b-green">
+            <div class="paper-row b-green">
                 <div>
-                    <div class="pdf-name">4 ශ්‍රේණිය ගණිතය අභ්‍යාස වැඩපොත - 01</div>
-                    <div class="pdf-info">PDF ගොනුව | ගණිත ගෙදර ප්‍රකාශන</div>
+                    <div class="paper-name">4 ශ්‍රේණිය ගණිතය අභ්‍යාස වැඩපොත - 01</div>
+                    <div class="paper-info">PDF ගොනුව | ගණිතගෙදර ප්‍රකාශන</div>
                 </div>
-                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="btn btn-red">📥 PDF බාගත කරන්න</a>
             </div>
         </div>
 
+        <!-- වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers) -->
         <div class="cat-box">
             <div class="cat-title">📝 වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers)</div>
-            <div class="pdf-row b-red">
+            <div class="paper-row b-red">
                 <div>
-                    <div class="pdf-name">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
-                    <div class="pdf-info">පිළිතුරු පත්‍රය (Marking Scheme) සහිතයි</div>
+                    <div class="paper-name">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
+                    <div class="paper-info">පිළිතුරු පත්‍රය (Marking Scheme) සහිතයි</div>
                 </div>
-                <a href="https://drive.google.com/file/d/133HZYcBARceVGBiujniAKAmnLHI2GHh9/view?usp=drive_link" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="btn btn-red">📥 PDF බාගත කරන්න</a>
+            </div>
+            <div class="paper-row b-red">
+                <div>
+                    <div class="paper-name">දෙවන වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 02</div>
+                    <div class="paper-info">පිළිතුරු පත්‍රය (Marking Scheme) සහිතයි</div>
+                </div>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="btn btn-red">📥 PDF බාගත කරන්න</a>
+            </div>
+            <div class="paper-row b-red">
+                <div>
+                    <div class="paper-name">තෙවන වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 03</div>
+                    <div class="paper-info">පිළිතුරු පත්‍රය (Marking Scheme) සහිතයි</div>
+                </div>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="btn btn-red">📥 PDF බාගත කරන්න</a>
             </div>
         </div>
 
+        <!-- විශේෂ නිබන්ධන (Special Tutorials) -->
         <div class="cat-box">
             <div class="cat-title">📑 විශේෂ නිබන්ධන (Special Tutorials)</div>
-            <div class="pdf-row b-gold">
+            <div class="paper-row b-gold">
                 <div>
-                    <div class="pdf-name">භාග සහ මිනුම් පුහුණු නිබන්ධනය</div>
-                    <div class="pdf-info">විශේෂ පුනරීක්ෂණ PDF</div>
+                    <div class="paper-name">මූලික ගණිත කර්ම සහ වගන්ති ගැටලු පුහුණුව</div>
+                    <div class="paper-info">PDF ගොනුව | ගණිතගෙදර විශේෂ නිබන්ධනය</div>
                 </div>
-                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="btn btn-red">📥 PDF බාගත කරන්න</a>
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>ගණිතගෙදර (Ganitha Gedara)</strong> - රොෂාන් මාරඹගේ. සියලුම හිමිකම් ඇවිරිණි.</p>
+    </footer>
+
+    <!-- පොදු Newsline ගොනුව සම්බන්ධ කිරීම -->
     <script src="news.js"></script>
 </body>
 </html>
