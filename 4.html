@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4 ශ්‍රේණිය ගණිතය - අන්තර්ක්‍රියාකාරී ක්‍රියාකාරකම් | ගණිතගෙදර</title>
+  <title>4 ශ්‍රේණිය ගණිතය - අන්තර්ක්‍රියාකාරී ක්‍රියාකාරකම්</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,12 +108,6 @@
           <span>🏠</span>
           <span class="hidden sm:inline">පාඩම් මාලාව</span>
         </button>
-
-        <!-- Back to Grade 4 Page -->
-        <a href="quiz-grade4.html" class="bubbly-btn bg-slate-800 hover:bg-slate-900 text-amber-300 font-bold px-3.5 py-2 rounded-2xl text-sm sm:text-base flex items-center gap-1.5">
-          <span>🔙</span>
-          <span class="hidden sm:inline">4 ශ්‍රේණිය පිටුවට</span>
-        </a>
       </div>
     </div>
   </header>
@@ -282,7 +276,7 @@
   </main>
 
   <footer class="text-center py-6 text-slate-500 text-sm font-semibold">
-    4 ශ්‍රේණිය ගණිතය විෂය නිර්දේශය ඇසුරින් <strong>ගණිතගෙදර</strong> වෙනුවෙන් නිර්මාණය කරන ලදී 🎈
+    4 ශ්‍රේණිය ගණිතය විෂය නිර්දේශය ඇසුරින් කුඩා දරුවන් වෙනුවෙන් නිර්මාණය කරන ලදී 🎈
   </footer>
 
   <script>
@@ -461,9 +455,11 @@
         const ny = 82.5 + 49 * Math.sin(a) + 5;
         svg += `<text x="${nx}" y="${ny}" text-anchor="middle" font-size="14" font-weight="800" fill="#1e293b" font-family="Fredoka, sans-serif">${i}</text>`;
       }
+      // Minute hand
       svg += `<g transform="rotate(${minAngle} 82.5 82.5)">
         <line x1="82.5" y1="82.5" x2="82.5" y2="27" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
       </g>`;
+      // Hour hand
       svg += `<g transform="rotate(${hrAngle} 82.5 82.5)">
         <line x1="82.5" y1="82.5" x2="82.5" y2="46" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
       </g>`;
@@ -554,6 +550,7 @@
       let svg = `<div class="bg-white p-3 rounded-2xl border-2 border-indigo-200 shadow-sm w-full max-w-md">
         <div class="font-extrabold text-indigo-900 text-sm mb-2 text-center">${title}</div>
         <svg viewBox="0 0 320 175" class="w-full h-auto">`;
+      // Grid lines
       for (let g = 0; g <= maxVal; g += 2) {
         const y = 140 - (g / maxVal) * 115;
         svg += `<line x1="35" y1="${y}" x2="305" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>
