@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ගණිතගෙදර - 10 ශ්‍රේණිය ගණිතය | 6. වර්ගඵලය</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Sinhala', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 45%, #fefce8 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .font-num {
+      font-family: 'Fredoka', 'Noto Sans Sinhala', sans-serif;
+    }
+    .card-lift {
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    }
+    .card-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+    }
+    .btn-press {
+      transition: all 0.14s ease;
+    }
+    .btn-press:active {
+      transform: translateY(2px);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .animate-shake {
+      animation: shake 0.38s ease-in-out;
+    }
+    .confetti-piece {
+      position: fixed;
+      width: 11px;
+      height: 11px;
+      top: -20px;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(105vh) rotate(720deg); }
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-sky-500 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <button onclick="goHome()" class="flex items-center gap-3 text-left group focus:outline-none">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-sky-600 via-blue-600 to-indigo-700 flex items-center justify-center text-white text-2xl shadow-md group-hover:scale-105 transition">
+          🏡
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-sky-100 text-sky-800">10 ශ්‍රේණිය ගණිතය</span>
+            <span class="hidden sm:inline-block text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800">π = 22/7</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">ගණිතගෙදර</h1>
+        </div>
+      </button>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Formula Reference Toggle -->
+        <button onclick="toggleFormulaModal()" class="btn-press bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border-2 border-indigo-200 font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm flex items-center gap-1.5">
+          <span>📐</span>
+          <span>සූත්‍ර සිහිපත් කිරීම</span>
+        </button>
+
+        <!-- Total Score Badge -->
+        <div class="flex items-center gap-1.5 bg-amber-100 border-2 border-amber-300 px-3 py-1.5 rounded-xl shadow-inner">
+          <span class="text-base sm:text-lg">⭐</span>
+          <span id="totalStarsDisplay" class="font-num font-bold text-amber-900 text-sm sm:text-base">0 / 100</span>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button id="soundToggleBtn" onclick="toggleSound()" title="ශබ්දය" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 flex items-center justify-center text-lg transition">
+          🔊
+        </button>
+
+        <!-- Back to Dashboard Button -->
+        <button id="headerHomeBtn" onclick="goHome()" class="hidden btn-press bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm flex items-center gap-1">
+          <span>🏠</span>
+          <span class="hidden sm:inline">Quizzes මාලාව</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Formula Reference Drawer / Modal -->
+  <div id="formulaModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border-4 border-sky-400 animate-pop max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b-2 border-slate-100 pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">📐</span>
+          <h3 class="text-xl font-extrabold text-slate-900">ගණිතගෙදර - වර්ගඵලය සූත්‍ර සාරාංශය</h3>
+        </div>
+        <button onclick="toggleFormulaModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-extrabold text-lg">✕</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-semibold">
+        <div class="bg-sky-50 border border-sky-200 p-3 rounded-2xl">
+          <div class="font-extrabold text-sky-900 mb-0.5">1. කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය</div>
+          <div class="font-num text-base text-sky-700">A = πr² × (θ / 360)</div>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl">
+          <div class="font-extrabold text-emerald-900 mb-0.5">2. වෘත්තයක වර්ගඵලය</div>
+          <div class="font-num text-base text-emerald-700">A = πr²  (π = 22/7)</div>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 p-3 rounded-2xl">
+          <div class="font-extrabold text-amber-900 mb-0.5">3. ඍජුකෝණාස්‍රය හා සමචතුරස්‍රය</div>
+          <div class="font-num text-sm text-amber-800">ඍජු: a × b  |  සමචතු: a²</div>
+        </div>
+        <div class="bg-purple-50 border border-purple-200 p-3 rounded-2xl">
+          <div class="font-extrabold text-purple-900 mb-0.5">4. සමාන්තරාස්‍රය හා ත්‍රිකෝණය</div>
+          <div class="font-num text-sm text-purple-800">සමාන්: a × h  |  ත්‍රි: ½ × a × h</div>
+        </div>
+        <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl sm:col-span-2">
+          <div class="font-extrabold text-rose-900 mb-0.5">5. ත්‍රපීසියමක වර්ගඵලය</div>
+          <div class="font-num text-base text-rose-800">A = ½ × (සමාන්තර පාද දෙකේ එකතුව) × ලම්බ උස = ½(a + b) × h</div>
+        </div>
+      </div>
+      <div class="mt-4 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm text-slate-700 font-semibold">
+        💡 <strong>මතක තබා ගන්න:</strong> අඳුරු කළ කොටසක වර්ගඵලය සෙවීමේදී, මුළු රූපයේ වර්ගඵලයෙන් කපා ඉවත් කළ කොටස්වල වර්ගඵලය අඩු කරන්න.
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+
+    <!-- VIEW 1: HOME DASHBOARD -->
+    <section id="homeView" class="animate-pop">
+      <!-- Welcome Hero Banner -->
+      <div class="bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3.5 py-1 rounded-full text-xs sm:text-sm font-bold mb-3">
+            <span>🏡 ගණිතගෙදර</span>
+            <span>•</span>
+            <span>10 ශ්‍රේණිය - 6 වන පාඩම: වර්ගඵලය (π = 22/7)</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-snug">ආයුබෝවන්! 👋 - ගණිතගෙදර</h2>
+          <p class="text-sky-100 text-sm sm:text-lg font-medium leading-relaxed">
+            කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය සහ කේන්ද්‍රික ඛණ්ඩ ඇතුළත් සංයුක්ත තල රූපවල වර්ගඵලය පිළිබඳ ඔබේ පළමු අත්දැකීම සාර්ථක කර ගැනීමට <strong>ක්‍රමක්‍රමයෙන් අපහසු වන Quizzes 5ක්</strong> (ප්‍රශ්න 20 බැගින් මුළු ප්‍රශ්න 100ක්) මෙහි සකස් කර ඇත.
+          </p>
+        </div>
+        <div class="hidden lg:flex items-center justify-center absolute right-8 top-1/2 -translate-y-1/2 text-8xl opacity-90">
+          🥧
+        </div>
+      </div>
+
+      <!-- 5 Progressive Quizzes Grid -->
+      <div id="quizzesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: SHORT-ANSWER QUIZ ARENA -->
+    <section id="quizView" class="hidden max-w-3xl mx-auto">
+      <!-- Quiz Header & Progress -->
+      <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-md border-2 border-sky-200 mb-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-3">
+            <span id="quizIcon" class="text-3xl">📐</span>
+            <div>
+              <span id="quizLevelBadge" class="text-xs font-extrabold text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-full">ගණිතගෙදර • මට්ටම 1</span>
+              <h2 id="quizTitle" class="text-lg sm:text-xl font-extrabold text-slate-900 mt-0.5">Quiz Title</h2>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 bg-emerald-50 border-2 border-emerald-300 px-3.5 py-1.5 rounded-2xl">
+            <span class="text-xs sm:text-sm font-bold text-emerald-800">ලකුණු:</span>
+            <span id="quizScoreDisplay" class="font-num font-extrabold text-lg text-emerald-700">0 / 20</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200">
+          <div id="quizProgressBar" class="bg-gradient-to-r from-sky-500 to-indigo-600 h-full rounded-full transition-all duration-300" style="width: 5%"></div>
+        </div>
+
+        <!-- 20 Question Pills -->
+        <div id="questionDots" class="flex flex-wrap gap-1.5 mt-3 justify-center"></div>
+      </div>
+
+      <!-- Question Card -->
+      <div id="questionCard" class="bg-white rounded-3xl p-5 sm:p-8 shadow-xl border-2 border-sky-300 animate-pop">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <span id="questionCounterBadge" class="bg-sky-100 text-sky-900 font-extrabold px-3.5 py-1 rounded-full text-sm">
+            ප්‍රශ්නය 1 / 20
+          </span>
+          <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+            🏡 ගණිතගෙදර • π = 22/7 ලෙස ගන්න
+          </span>
+        </div>
+
+        <!-- Question Text -->
+        <h3 id="questionPrompt" class="text-lg sm:text-xl font-extrabold text-slate-900 mb-5 leading-relaxed">
+          ප්‍රශ්නය...
+        </h3>
+
+        <!-- Crisp Geometric SVG Diagram Box -->
+        <div id="questionVisual" class="bg-gradient-to-b from-slate-50 to-sky-50/70 border-2 border-slate-200 rounded-2xl p-4 sm:p-6 mb-6 flex flex-col items-center justify-center min-h-[195px] overflow-x-auto">
+        </div>
+
+        <!-- Short-Answer Numeric Input Area -->
+        <div id="answerInputSection" class="bg-sky-50/80 border-2 border-sky-200 rounded-2xl p-4 sm:p-5">
+          <label for="shortAnswerInput" class="block text-sm font-extrabold text-slate-700 mb-2">
+            ඔබේ පිළිතුර (සංඛ්‍යාත්මක අගය පමණක්) ඇතුළත් කරන්න:
+          </label>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div class="flex items-center flex-1 bg-white border-2 border-sky-400 focus-within:border-indigo-600 focus-within:ring-4 focus-within:ring-sky-200 rounded-2xl overflow-hidden shadow-sm">
+              <input
+                type="number"
+                step="any"
+                id="shortAnswerInput"
+                placeholder="අගය ලියන්න..."
+                onkeydown="if(event.key === 'Enter') submitShortAnswer()"
+                class="w-full px-4 py-3.5 font-num text-xl sm:text-2xl font-bold text-slate-900 focus:outline-none"
+              />
+              <span id="unitBadge" class="px-4 py-3.5 bg-slate-100 border-l-2 border-slate-200 font-num font-extrabold text-slate-700 text-base sm:text-lg shrink-0">
+                cm²
+              </span>
+            </div>
+            <button
+              id="checkAnswerBtn"
+              onclick="submitShortAnswer()"
+              class="btn-press bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-6 py-3.5 rounded-2xl text-base sm:text-lg shadow-md flex items-center justify-center gap-2 shrink-0"
+            >
+              <span>පරීක්ෂා කරන්න</span>
+              <span>✓</span>
+            </button>
+          </div>
+          <p id="inputWarning" class="hidden text-rose-600 text-xs font-bold mt-2">⚠️ කරුණාකර නිවැරදි සංඛ්‍යාත්මක අගයක් ඇතුළත් කරන්න.</p>
+        </div>
+
+        <!-- Step-by-step Feedback & Worked Solution -->
+        <div id="feedbackBanner" class="hidden mt-6 p-5 rounded-2xl border-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-black/10">
+            <div class="flex items-center gap-3">
+              <span id="feedbackEmoji" class="text-3xl sm:text-4xl">🎉</span>
+              <div>
+                <h4 id="feedbackTitle" class="font-extrabold text-lg">නිවැරදියි! ඉතා විශිෂ්ටයි!</h4>
+                <p id="feedbackAnswerText" class="text-sm sm:text-base font-extrabold"></p>
+              </div>
+            </div>
+            <button id="nextQuestionBtn" onclick="nextQuestion()" class="btn-press bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-5 py-2.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2 shrink-0">
+              <span>ඊළඟ ප්‍රශ්නය</span>
+              <span>➡️</span>
+            </button>
+          </div>
+          <div class="mt-3">
+            <div class="text-xs font-extrabold uppercase tracking-wider opacity-75 mb-1">💡 විසඳුම පියවරෙන් පියවර (ගණිතගෙදර):</div>
+            <p id="feedbackSolution" class="text-sm sm:text-base font-semibold leading-relaxed whitespace-pre-line"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: QUIZ COMPLETION SUMMARY -->
+    <section id="resultView" class="hidden max-w-2xl mx-auto animate-pop">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-sky-300 text-center">
+        <div id="resultStarsVisual" class="text-5xl sm:text-6xl mb-3">⭐⭐⭐</div>
+        <span class="inline-block bg-sky-100 text-sky-800 font-extrabold px-4 py-1 rounded-full text-sm mb-2">
+          🏡 ගණිතගෙදර • Quiz සම්පූර්ණයි!
+        </span>
+        <h2 id="resultQuizTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">
+          Quiz 1
+        </h2>
+        <p id="resultMessage" class="text-base sm:text-lg font-bold text-emerald-700 mb-6">
+          සුබ පැතුම් පුංචි දුවේ පුතේ!
+        </p>
+
+        <div class="grid grid-cols-3 gap-3 sm:gap-4 bg-slate-50 p-4 sm:p-5 rounded-2xl border-2 border-slate-200 mb-8">
+          <div class="bg-white p-3.5 rounded-xl shadow-sm">
+            <div class="text-xs font-bold text-slate-500 mb-1">ලකුණු</div>
+            <div id="finalScoreText" class="font-num text-2xl sm:text-3xl font-extrabold text-sky-600">20 / 20</div>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl shadow-sm">
+            <div class="text-xs font-bold text-slate-500 mb-1">නිරවද්‍යතාව</div>
+            <div id="finalAccuracyText" class="font-num text-2xl sm:text-3xl font-extrabold text-emerald-600">100%</div>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl shadow-sm">
+            <div class="text-xs font-bold text-slate-500 mb-1">තරු</div>
+            <div id="finalStarsText" class="font-num text-2xl sm:text-3xl font-extrabold text-amber-500">⭐ 20</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button onclick="restartCurrentQuiz()" class="btn-press w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-extrabold px-5 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>🔄</span>
+            <span>නැවත කරන්න</span>
+          </button>
+          <button id="nextQuizBtn" onclick="startNextQuiz()" class="btn-press w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>ඊළඟ Quiz එකට</span>
+            <span>🚀</span>
+          </button>
+          <button onclick="goHome()" class="btn-press w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-5 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>🏡</span>
+            <span>ගණිතගෙදර මුල් පිටුව</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center py-6 text-slate-600 text-sm font-bold">
+    🏡 ගණිතගෙදර - 10 ශ්‍රේණිය ගණිතය (6. වර්ගඵලය) • අධ්‍යාපනික අන්තර්ක්‍රියාකාරී වැඩසටහන
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. WEB AUDIO API FEEDBACK SOUNDS
+    // =========================================================================
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundToggleBtn').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.065);
+            gain.gain.setValueAtTime(0.15, now + i * 0.065);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.065 + 0.22);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.065);
+            osc.stop(now + i * 0.065 + 0.22);
+          });
+        } else if (type === 'wrong') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(210, now);
+          osc.frequency.linearRampToValueAtTime(155, now + 0.26);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'fanfare') {
+          const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+          const times = [0, 0.12, 0.24, 0.36, 0.52, 0.66];
+          notes.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + times[i]);
+            gain.gain.setValueAtTime(0.2, now + times[i]);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + times[i] + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + times[i]);
+            osc.stop(now + times[i] + 0.36);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 2. PRECISION SVG GEOMETRY ENGINE FOR GRADE 10 AREA (CHAPTER 6)
+    // =========================================================================
+    function polarToCartesian(cx, cy, r, angleInDegrees) {
+      const rad = (angleInDegrees - 90) * Math.PI / 180.0;
+      return {
+        x: cx + (r * Math.cos(rad)),
+        y: cy + (r * Math.sin(rad))
+      };
+    }
+
+    function svgSector({ angle = 90, rLabel = '14 cm', angleLabel = '90°', areaLabel = '', fill = '#7dd3fc', showFullCircle = false }) {
+      const cx = 135, cy = 115, r = 74;
+      const startDeg = 90 - angle;
+      const endDeg = 90;
+      const p1 = polarToCartesian(cx, cy, r, startDeg);
+      const p2 = polarToCartesian(cx, cy, r, endDeg);
+      const largeArc = angle > 180 ? 1 : 0;
+
+      const ar = 22;
+      const ap1 = polarToCartesian(cx, cy, ar, startDeg);
+      const ap2 = polarToCartesian(cx, cy, ar, endDeg);
+      const angleTextPos = polarToCartesian(cx, cy, ar + 15, 90 - angle / 2);
+      const areaTextPos = polarToCartesian(cx, cy, r * 0.58, 90 - angle / 2);
+
+      let svg = `<svg width="280" height="225" viewBox="0 0 280 225" class="max-w-full">`;
+      if (showFullCircle) {
+        svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,4"/>`;
+      }
+      if (angle === 360) {
+        svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="#0369a1" stroke-width="2.5"/>
+                <line x1="${cx}" y1="${cy}" x2="${cx + r}" y2="${cy}" stroke="#0369a1" stroke-width="2"/>`;
+      } else {
+        svg += `<path d="M ${cx} ${cy} L ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y} Z" fill="${fill}" stroke="#0369a1" stroke-width="2.5" stroke-linejoin="round"/>`;
+        if (angle === 90) {
+          svg += `<rect x="${cx}" y="${cy - 14}" width="14" height="14" fill="none" stroke="#dc2626" stroke-width="1.8"/>`;
+        } else {
+          svg += `<path d="M ${ap1.x} ${ap1.y} A ${ar} ${ar} 0 ${largeArc} 1 ${ap2.x} ${ap2.y}" fill="none" stroke="#dc2626" stroke-width="2"/>`;
+        }
+        if (angleLabel) {
+          svg += `<text x="${angleTextPos.x}" y="${angleTextPos.y + 4}" text-anchor="middle" font-size="12" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">${angleLabel}</text>`;
+        }
+      }
+      svg += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="#0f172a"/>
+              <text x="${cx - 12}" y="${cy + 4}" font-size="13" font-weight="800" fill="#0f172a">O</text>`;
+      if (rLabel) {
+        svg += `<text x="${cx + r / 2}" y="${cy + 18}" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${rLabel}</text>`;
+      }
+      if (areaLabel) {
+        svg += `<text x="${areaTextPos.x}" y="${areaTextPos.y + 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#0c4a6e" font-family="Fredoka, sans-serif">${areaLabel}</text>`;
+      }
+      return svg + `</svg>`;
+    }
+
+    function svgSquare(sideLabel) {
+      return `<svg width="210" height="175" viewBox="0 0 210 175">
+        <rect x="50" y="20" width="110" height="110" fill="#bbf7d0" stroke="#15803d" stroke-width="2.5"/>
+        <rect x="50" y="20" width="12" height="12" fill="none" stroke="#15803d" stroke-width="1.5"/>
+        <rect x="148" y="118" width="12" height="12" fill="none" stroke="#15803d" stroke-width="1.5"/>
+        <text x="105" y="152" text-anchor="middle" font-size="14" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${sideLabel}</text>
+      </svg>`;
+    }
+
+    function svgRect(wLabel, hLabel) {
+      return `<svg width="260" height="160" viewBox="0 0 260 160">
+        <rect x="45" y="25" width="160" height="95" fill="#bae6fd" stroke="#0369a1" stroke-width="2.5"/>
+        <rect x="45" y="25" width="12" height="12" fill="none" stroke="#0369a1" stroke-width="1.5"/>
+        <rect x="193" y="108" width="12" height="12" fill="none" stroke="#0369a1" stroke-width="1.5"/>
+        <text x="125" y="140" text-anchor="middle" font-size="14" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${wLabel}</text>
+        <text x="228" y="76" text-anchor="middle" font-size="14" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${hLabel}</text>
+      </svg>`;
+    }
+
+    function svgRightTriangle(baseLabel, heightLabel) {
+      return `<svg width="230" height="165" viewBox="0 0 230 165">
+        <polygon points="55,25 55,125 185,125" fill="#fef08a" stroke="#b45309" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="55" y="113" width="12" height="12" fill="none" stroke="#b45309" stroke-width="1.8"/>
+        <text x="28" y="80" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${heightLabel}</text>
+        <text x="120" y="145" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${baseLabel}</text>
+      </svg>`;
+    }
+
+    function svgParallelogram(baseLabel, heightLabel) {
+      return `<svg width="260" height="165" viewBox="0 0 260 165">
+        <polygon points="75,28 215,28 180,128 40,128" fill="#ddd6fe" stroke="#5b21b6" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="75" y1="28" x2="75" y2="128" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,4"/>
+        <rect x="75" y="116" width="12" height="12" fill="none" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="98" y="82" font-size="13" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">${heightLabel}</text>
+        <text x="115" y="148" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${baseLabel}</text>
+      </svg>`;
+    }
+
+    function svgGeneralTriangle(baseLabel, heightLabel) {
+      return `<svg width="260" height="165" viewBox="0 0 260 165">
+        <polygon points="105,25 40,128 220,128" fill="#fed7aa" stroke="#c2410c" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="105" y1="25" x2="105" y2="128" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,4"/>
+        <rect x="105" y="116" width="12" height="12" fill="none" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="128" y="82" font-size="13" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">${heightLabel}</text>
+        <text x="130" y="148" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${baseLabel}</text>
+      </svg>`;
+    }
+
+    function svgTrapezium(topLabel, botLabel, heightLabel) {
+      return `<svg width="250" height="165" viewBox="0 0 250 165">
+        <polygon points="55,30 145,30 195,125 55,125" fill="#fbcfe8" stroke="#be185d" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="55" y="30" width="12" height="12" fill="none" stroke="#be185d" stroke-width="1.5"/>
+        <rect x="55" y="113" width="12" height="12" fill="none" stroke="#be185d" stroke-width="1.5"/>
+        <text x="100" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${topLabel}</text>
+        <text x="125" y="145" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${botLabel}</text>
+        <text x="28" y="82" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${heightLabel}</text>
+      </svg>`;
+    }
+
+    function svgCompositeShapePlusSemicircle(wLabel, hLabel, mode = 'one') {
+      if (mode === 'one') {
+        return `<svg width="260" height="165" viewBox="0 0 260 165">
+          <rect x="45" y="30" width="110" height="100" fill="#bbf7d0" stroke="#15803d" stroke-width="2.2"/>
+          <path d="M 155 30 A 50 50 0 0 1 155 130 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <text x="100" y="22" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">${wLabel}</text>
+          <text x="22" y="84" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">${hLabel}</text>
+        </svg>`;
+      }
+      if (mode === 'twoAdjacent') {
+        return `<svg width="240" height="190" viewBox="0 0 240 190">
+          <rect x="55" y="25" width="95" height="95" fill="#bbf7d0" stroke="#15803d" stroke-width="2.2"/>
+          <path d="M 150 25 A 47.5 47.5 0 0 1 150 120 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 55 120 A 47.5 47.5 0 0 0 150 120 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <text x="102" y="18" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">${wLabel}</text>
+        </svg>`;
+      }
+      return `<svg width="280" height="165" viewBox="0 0 280 165">
+        <path d="M 75 35 A 45 45 0 0 0 75 125 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+        <rect x="75" y="35" width="130" height="90" fill="#bae6fd" stroke="#0369a1" stroke-width="2.2"/>
+        <path d="M 205 35 A 45 45 0 0 1 205 125 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+        <text x="140" y="25" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">${wLabel}</text>
+        <text x="140" y="85" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">${hLabel}</text>
+      </svg>`;
+    }
+
+    function svgRectWithTwoSectors() {
+      return `<svg width="290" height="175" viewBox="0 0 290 175">
+        <path d="M 85 135 L 42 52 A 95 95 0 0 1 85 40 Z" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <rect x="85" y="40" width="120" height="95" fill="#bae6fd" stroke="#0369a1" stroke-width="2.2"/>
+        <path d="M 205 40 A 95 95 0 0 1 248 123 L 205 135 Z" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <text x="145" y="30" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">10 cm</text>
+        <text x="112" y="92" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">7 cm</text>
+        <text x="64" y="95" font-size="11" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+        <text x="212" y="95" font-size="11" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+      </svg>`;
+    }
+
+    function svgShadedCutout(type) {
+      if (type === 'rectMinusQuarter') {
+        return `<svg width="265" height="150" viewBox="0 0 265 150">
+          <rect x="35" y="30" width="195" height="85" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 145 115 A 85 85 0 0 1 230 30 L 230 115 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+          <text x="132" y="22" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">20 cm</text>
+          <text x="16" y="76" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">7 cm</text>
+        </svg>`;
+      }
+      if (type === 'rectMinusTwoSemi') {
+        return `<svg width="275" height="150" viewBox="0 0 275 150">
+          <rect x="40" y="30" width="195" height="85" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 40 30 A 42.5 42.5 0 0 1 40 115 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 235 30 A 42.5 42.5 0 0 0 235 115 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+          <text x="137" y="135" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">25 cm</text>
+          <text x="256" y="76" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">7 cm</text>
+        </svg>`;
+      }
+      if (type === 'squareMinusQuarter') {
+        return `<svg width="210" height="175" viewBox="0 0 210 175">
+          <rect x="50" y="25" width="110" height="110" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 50 135 L 160 135 A 110 110 0 0 0 50 25 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+          <text x="105" y="155" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">14 cm</text>
+        </svg>`;
+      }
+      if (type === 'squareMinusFourQuarters') {
+        return `<svg width="210" height="175" viewBox="0 0 210 175">
+          <rect x="50" y="25" width="110" height="110" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 50 25 L 105 25 A 55 55 0 0 1 50 80 Z" fill="#ffffff" stroke="#0369a1" stroke-width="1.8"/>
+          <path d="M 160 25 L 160 80 A 55 55 0 0 1 105 25 Z" fill="#ffffff" stroke="#0369a1" stroke-width="1.8"/>
+          <path d="M 160 135 L 105 135 A 55 55 0 0 1 160 80 Z" fill="#ffffff" stroke="#0369a1" stroke-width="1.8"/>
+          <path d="M 50 135 L 50 80 A 55 55 0 0 1 105 135 Z" fill="#ffffff" stroke="#0369a1" stroke-width="1.8"/>
+          <text x="105" y="155" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">14 cm</text>
+        </svg>`;
+      }
+      if (type === 'circleMinusTwoSectors') {
+        return `<svg width="220" height="200" viewBox="0 0 220 200">
+          <circle cx="110" cy="100" r="82" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+          <path d="M 110 85 L 98 42 A 44 44 0 0 1 122 42 Z" fill="#ffffff" stroke="#0369a1" stroke-width="1.8"/>
+          <path d="M 110 112 L 152 124 A 44 44 0 0 1 68 124 Z" fill="#ffffff" stroke="#0369a1" stroke-width="1.8"/>
+          <text x="110" y="64" text-anchor="middle" font-size="10" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+          <text x="110" y="135" text-anchor="middle" font-size="11" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">150°</text>
+          <text x="132" y="72" font-size="10" font-weight="800">14 cm</text>
+          <text x="72" y="114" font-size="10" font-weight="800">14 cm</text>
+          <text x="172" y="45" font-size="11" font-weight="800" fill="#0369a1">R = 28 cm</text>
+        </svg>`;
+      }
+      // Annular sector
+      return `<svg width="230" height="190" viewBox="0 0 230 190">
+        <path d="M 115 165 L 45 45 A 138 138 0 0 1 185 45 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+        <path d="M 115 165 L 80 105 A 69 69 0 0 1 150 105 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+        <text x="115" y="138" text-anchor="middle" font-size="12" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">60°</text>
+        <text x="155" y="136" font-size="11" font-weight="800">7 cm</text>
+        <text x="188" y="80" font-size="11" font-weight="800">7 cm</text>
+      </svg>`;
+    }
+
+    function svgLayeredSectors() {
+      return `<svg width="240" height="190" viewBox="0 0 240 190">
+        <path d="M 120 165 L 40 95 A 106 106 0 0 1 200 95 Z" fill="#bae6fd" stroke="#0369a1" stroke-width="2"/>
+        <path d="M 120 165 L 55 52 A 130 130 0 0 1 185 52 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.2"/>
+        <text x="120" y="122" text-anchor="middle" font-size="11" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">60°</text>
+        <text x="86" y="132" text-anchor="middle" font-size="10" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+        <text x="154" y="132" text-anchor="middle" font-size="10" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+        <text x="55" y="148" font-size="11" font-weight="800">3.5 cm</text>
+        <text x="185" y="118" font-size="11" font-weight="800">7 cm</text>
+      </svg>`;
+    }
+
+    function svgLeafInSquare(sideLabel) {
+      return `<svg width="215" height="180" viewBox="0 0 215 180">
+        <rect x="48" y="20" width="115" height="115" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+        <path d="M 163 20 A 115 115 0 0 0 48 135 A 115 115 0 0 0 163 20 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.4"/>
+        <rect x="48" y="20" width="11" height="11" fill="none" stroke="#334155"/>
+        <rect x="152" y="124" width="11" height="11" fill="none" stroke="#334155"/>
+        <text x="105" y="158" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">${sideLabel}</text>
+      </svg>`;
+    }
+
+    function svgPlaqueSemicircle() {
+      return `<svg width="275" height="175" viewBox="0 0 275 175">
+        <path d="M 25 38 L 250 38 A 112.5 112.5 0 0 1 25 38 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="2.5"/>
+        <path d="M 137.5 38 L 52 87 A 98 98 0 0 1 39.5 38 Z" fill="#86efac" stroke="#15803d" stroke-width="1.8"/>
+        <path d="M 137.5 38 L 235.5 38 A 98 98 0 0 1 223 87 Z" fill="#86efac" stroke="#15803d" stroke-width="1.8"/>
+        <path d="M 137.5 38 L 178 127 A 98 98 0 0 1 97 127 Z" fill="#86efac" stroke="#15803d" stroke-width="1.8"/>
+        <text x="137.5" y="24" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a" font-family="Fredoka, sans-serif">2.1 m (210 cm)</text>
+        <text x="86" y="56" font-size="10" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+        <text x="174" y="56" font-size="10" font-weight="800" fill="#b91c1c" font-family="Fredoka, sans-serif">30°</text>
+      </svg>`;
+    }
+
+    // =========================================================================
+    // 3. ALL 5 PROGRESSIVE QUIZZES (20 VERIFIED SHORT-ANSWER QUESTIONS EACH = 100!)
+    // =========================================================================
+    const QUIZZES = [
+      // ---------------- QUIZ 1: පූර්ව දැනුම හා මූලික සංකල්ප ----------------
+      {
+        id: 1,
+        level: 'මට්ටම 1 • පූර්ව දැනුම හා මූලික සංකල්ප',
+        icon: '📐',
+        color: 'from-sky-500 to-blue-600',
+        title: 'Quiz 1: තල රූප වර්ගඵලය හා කේන්ද්‍රික ඛණ්ඩ හඳුනාගැනීම',
+        subtitle: 'ඍජුකෝණාස්‍ර, සමචතුරස්‍ර, සමාන්තරාස්‍ර, ත්‍රිකෝණ, ත්‍රපීසියම් හා වෘත්ත වර්ගඵල (ප්‍රශ්න 20)',
+        questions: [
+          {
+            prompt: 'පැත්තක දිග 6 cm වූ සමචතුරස්‍රයක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය A)',
+            visual: svgSquare('6 cm'),
+            answer: 36, unit: 'cm²',
+            solution: 'සමචතුරස්‍රයේ වර්ගඵලය = a² = 6 × 6 = 36 cm²'
+          },
+          {
+            prompt: 'දිග 9 cm හා පළල 4 cm වූ ඍජුකෝණාස්‍රයක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය B)',
+            visual: svgRect('9 cm', '4 cm'),
+            answer: 36, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රයේ වර්ගඵලය = දිග × පළල = 9 × 4 = 36 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 6 cm හා ලම්බ උස 4 cm වූ ඍජුකෝණික ත්‍රිකෝණයක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය C)',
+            visual: svgRightTriangle('6 cm', '4 cm'),
+            answer: 12, unit: 'cm²',
+            solution: 'ත්‍රිකෝණයේ වර්ගඵලය = ½ × ආධාරකය × ලම්බ උස\n= ½ × 6 × 4 = 12 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ වෘත්තයක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය D, π = 22/7)',
+            visual: svgSector({ angle: 360, rLabel: '7 cm' }),
+            answer: 154, unit: 'cm²',
+            solution: 'වෘත්තයේ වර්ගඵලය = πr²\n= (22/7) × 7 × 7 = 22 × 7 = 154 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 24 cm හා ලම්බ උස 7 cm වූ ත්‍රිකෝණයක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය E)',
+            visual: svgGeneralTriangle('24 cm', '7 cm'),
+            answer: 84, unit: 'cm²',
+            solution: 'ත්‍රිකෝණයේ වර්ගඵලය = ½ × 24 × 7 = 12 × 7 = 84 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 12 cm හා ලම්බ උස 8 cm වූ සමාන්තරාස්‍රයක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය F)',
+            visual: svgParallelogram('12 cm', '8 cm'),
+            answer: 96, unit: 'cm²',
+            solution: 'සමාන්තරාස්‍රයේ වර්ගඵලය = ආධාරකය × ලම්බ උස = 12 × 8 = 96 cm²'
+          },
+          {
+            prompt: 'සමාන්තර පාද 6 cm හා 10 cm ද ලම්බ උස 6 cm ද වූ ත්‍රපීසියමක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය G)',
+            visual: svgTrapezium('6 cm', '10 cm', '6 cm'),
+            answer: 48, unit: 'cm²',
+            solution: 'ත්‍රපීසියමේ වර්ගඵලය = ½ × (a + b) × h\n= ½ × (6 + 10) × 6 = ½ × 16 × 6 = 48 cm²'
+          },
+          {
+            prompt: 'සමාන්තර පාද 5 cm හා 8 cm ද ලම්බ උස 4 cm ද වූ ත්‍රපීසියමක වර්ගඵලය සොයන්න. (පුනරීක්ෂණ අභ්‍යාසය 2)',
+            visual: svgTrapezium('5 cm', '8 cm', '4 cm'),
+            answer: 26, unit: 'cm²',
+            solution: 'ත්‍රපීසියමේ වර්ගඵලය = ½ × (5 + 8) × 4 = ½ × 13 × 4 = 26 cm²'
+          },
+          {
+            prompt: 'වර්ගඵලය 33 cm² වූ ත්‍රපීසියමක් ත්‍රිකෝණ දෙකකට බෙදා ඇත. ආධාරකය 7 cm හා උස 6 cm වූ පහළ ත්‍රිකෝණය ඉවත් කළ විට අඳුරු කළ ත්‍රිකෝණයේ වර්ගඵලය කීය ද? (පුනරීක්ෂණ 3)',
+            visual: svgGeneralTriangle('7 cm', '6 cm'),
+            answer: 12, unit: 'cm²',
+            solution: 'පහළ ත්‍රිකෝණයේ වර්ගඵලය = ½ × 7 × 6 = 21 cm²\nඅඳුරු කළ ත්‍රිකෝණයේ වර්ගඵලය = 33 − 21 = 12 cm²'
+          },
+          {
+            prompt: 'වර්ගඵලය 120 cm² සහ ලම්බ උස 6 cm වූ ABCD සමාන්තරාස්‍රයේ CD පාදයේ දිග කීය ද? (පුනරීක්ෂණ 4 - i)',
+            visual: svgParallelogram('CD = ?', '6 cm'),
+            answer: 20, unit: 'cm',
+            solution: 'වර්ගඵලය = CD × 6 = 120\nCD = 120 ÷ 6 = 20 cm'
+          },
+          {
+            prompt: 'ඉහත සමාන්තරාස්‍රයේ පරිමිතිය 64 cm සහ CD = 20 cm නම්, BC පාදයේ දිග කීය ද? (පුනරීක්ෂණ 4 - ii)',
+            visual: svgParallelogram('20 cm', '6 cm'),
+            answer: 12, unit: 'cm',
+            solution: '2 × (20 + BC) = 64\n20 + BC = 32  ⇒  BC = 32 − 20 = 12 cm'
+          },
+          {
+            prompt: 'අරය 14 cm වූ වෘත්තයක වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 360, rLabel: '14 cm' }),
+            answer: 616, unit: 'cm²',
+            solution: 'වෘත්තයේ වර්ගඵලය = (22/7) × 14 × 14 = 22 × 2 × 14 = 616 cm²'
+          },
+          {
+            prompt: 'අරය 21 cm වූ වෘත්තයක වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 360, rLabel: '21 cm' }),
+            answer: 1386, unit: 'cm²',
+            solution: 'වෘත්තයේ වර්ගඵලය = (22/7) × 21 × 21 = 22 × 3 × 21 = 1386 cm²'
+          },
+          {
+            prompt: 'අරය 3.5 cm වූ වෘත්තයක වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 360, rLabel: '3.5 cm' }),
+            answer: 38.5, unit: 'cm²',
+            solution: 'වෘත්තයේ වර්ගඵලය = (22/7) × 3.5 × 3.5 = 22 × 0.5 × 3.5 = 38.5 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ අර්ධ වෘත්තයක (180°) වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 180, rLabel: '7 cm', angleLabel: '180°' }),
+            answer: 77, unit: 'cm²',
+            solution: 'අර්ධ වෘත්තයේ වර්ගඵලය = ½ × (22/7) × 7 × 7 = 154 ÷ 2 = 77 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ වෘත්ත කාලක (90°) වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 90, rLabel: '7 cm', angleLabel: '90°' }),
+            answer: 38.5, unit: 'cm²',
+            solution: 'වෘත්ත කාලේ වර්ගඵලය = ¼ × (22/7) × 7 × 7 = 154 ÷ 4 = 38.5 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm වූ අර්ධ වෘත්තයක (180°) වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 180, rLabel: '14 cm', angleLabel: '180°' }),
+            answer: 308, unit: 'cm²',
+            solution: 'අර්ධ වෘත්තයේ වර්ගඵලය = ½ × (22/7) × 14 × 14 = 616 ÷ 2 = 308 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm වූ වෘත්ත කාලක (90°) වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 90, rLabel: '14 cm', angleLabel: '90°' }),
+            answer: 154, unit: 'cm²',
+            solution: 'වෘත්ත කාලේ වර්ගඵලය = ¼ × (22/7) × 14 × 14 = 616 ÷ 4 = 154 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ වෘත්තයකින් 3/4 ක් (270°) වන කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 270, rLabel: '7 cm', angleLabel: '270°' }),
+            answer: 115.5, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 7 × 7 × (270/360) = 154 × (3/4) = 115.5 cm²'
+          },
+          {
+            prompt: 'අරය 21 cm සහ කේන්ද්‍ර කෝණය 120° (1/3) වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 120, rLabel: '21 cm', angleLabel: '120°' }),
+            answer: 462, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 21 × 21 × (120/360) = 1386 ÷ 3 = 462 cm²'
+          }
+        ]
+      },
+
+      // ---------------- QUIZ 2: කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය හා කේන්ද්‍ර කෝණය ----------------
+      {
+        id: 2,
+        level: 'මට්ටම 2 • අභ්‍යාසය 6.1 (I)',
+        icon: '🥧',
+        color: 'from-emerald-500 to-teal-600',
+        title: 'Quiz 2: කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය හා කේන්ද්‍ර කෝණය',
+        subtitle: 'A = πr² × (θ / 360) සූත්‍රය භාවිතය සහ වර්ගඵලය දී ඇති විට කේන්ද්‍ර කෝණය සෙවීම (ප්‍රශ්න 20)',
+        questions: [
+          {
+            prompt: 'අරය 14 cm සහ කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න. (නිදසුන 1)',
+            visual: svgSector({ angle: 45, rLabel: '14 cm', angleLabel: '45°' }),
+            answer: 77, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 14 × 14 × (45/360)\n= 616 × (1/8) = 77 cm²'
+          },
+          {
+            prompt: 'අරය 21 cm සහ කේන්ද්‍ර කෝණය 60° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න. (අභ්‍යාසය 6.1)',
+            visual: svgSector({ angle: 60, rLabel: '21 cm', angleLabel: '60°' }),
+            answer: 231, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 21 × 21 × (60/360)\n= 1386 × (1/6) = 231 cm²'
+          },
+          {
+            prompt: 'අරය 3 cm සහ කේන්ද්‍ර කෝණය 280° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න. (අභ්‍යාසය 6.1)',
+            visual: svgSector({ angle: 280, rLabel: '3 cm', angleLabel: '280°' }),
+            answer: 22, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 3 × 3 × (280/360)\n= (22/7) × 9 × (7/9) = 22 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm සහ කේන්ද්‍ර කෝණය 72° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 72, rLabel: '7 cm', angleLabel: '72°' }),
+            answer: 30.8, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 7 × 7 × (72/360)\n= 154 × (1/5) = 30.8 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm සහ කේන්ද්‍ර කෝණය 135° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 135, rLabel: '14 cm', angleLabel: '135°' }),
+            answer: 231, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 14 × 14 × (135/360)\n= 616 × (3/8) = 77 × 3 = 231 cm²'
+          },
+          {
+            prompt: 'අරය 21 cm සහ කේන්ද්‍ර කෝණය 240° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 240, rLabel: '21 cm', angleLabel: '240°' }),
+            answer: 924, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 21 × 21 × (240/360)\n= 1386 × (2/3) = 462 × 2 = 924 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm සහ කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 45, rLabel: '7 cm', angleLabel: '45°' }),
+            answer: 19.25, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 7 × 7 × (45/360)\n= 154 ÷ 8 = 19.25 cm²'
+          },
+          {
+            prompt: 'අරය 28 cm සහ කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 90, rLabel: '28 cm', angleLabel: '90°' }),
+            answer: 616, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 28 × 28 × (90/360)\n= 2464 ÷ 4 = 616 cm²'
+          },
+          {
+            prompt: 'අරය 28 cm සහ කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 45, rLabel: '28 cm', angleLabel: '45°' }),
+            answer: 308, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 28 × 28 × (45/360)\n= 2464 ÷ 8 = 308 cm²'
+          },
+          {
+            prompt: 'අරය 10.5 cm සහ කේන්ද්‍ර කෝණය 120° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 120, rLabel: '10.5 cm', angleLabel: '120°' }),
+            answer: 115.5, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 10.5 × 10.5 × (120/360)\n= 346.5 ÷ 3 = 115.5 cm²'
+          },
+          {
+            prompt: 'අරය 35 cm සහ කේන්ද්‍ර කෝණය 72° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 72, rLabel: '35 cm', angleLabel: '72°' }),
+            answer: 770, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 35 × 35 × (72/360)\n= 3850 ÷ 5 = 770 cm²'
+          },
+          {
+            prompt: 'අරය 42 cm සහ කේන්ද්‍ර කෝණය 30° වූ කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 30, rLabel: '42 cm', angleLabel: '30°' }),
+            answer: 462, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 42 × 42 × (30/360)\n= 5544 ÷ 12 = 462 cm²'
+          },
+          {
+            prompt: 'අරය 10.5 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 77 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න. (අභ්‍යාසය 6.1 - 2)',
+            visual: svgSector({ angle: 80, rLabel: '10.5 cm', angleLabel: 'θ = ?', areaLabel: '77 cm²' }),
+            answer: 80, unit: '°',
+            solution: '(22/7) × 10.5 × 10.5 × (θ/360) = 77\n346.5 × (θ/360) = 77  ⇒  θ = (77 × 360) / 346.5 = 80°'
+          },
+          {
+            prompt: 'අරය 21 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 462 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න. (අභ්‍යාසය 6.1 - 2)',
+            visual: svgSector({ angle: 120, rLabel: '21 cm', angleLabel: 'θ = ?', areaLabel: '462 cm²' }),
+            answer: 120, unit: '°',
+            solution: '(22/7) × 21 × 21 × (θ/360) = 462\n1386 × (θ/360) = 462  ⇒  θ = 360 / 3 = 120°'
+          },
+          {
+            prompt: 'අරය 14 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 154 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න.',
+            visual: svgSector({ angle: 90, rLabel: '14 cm', angleLabel: 'θ = ?', areaLabel: '154 cm²' }),
+            answer: 90, unit: '°',
+            solution: '616 × (θ/360) = 154  ⇒  θ = 360 / 4 = 90°'
+          },
+          {
+            prompt: 'අරය 14 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 308 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න.',
+            visual: svgSector({ angle: 180, rLabel: '14 cm', angleLabel: 'θ = ?', areaLabel: '308 cm²' }),
+            answer: 180, unit: '°',
+            solution: '616 × (θ/360) = 308  ⇒  θ = 360 / 2 = 180°'
+          },
+          {
+            prompt: 'අරය 7 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 77 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න.',
+            visual: svgSector({ angle: 180, rLabel: '7 cm', angleLabel: 'θ = ?', areaLabel: '77 cm²' }),
+            answer: 180, unit: '°',
+            solution: '154 × (θ/360) = 77  ⇒  θ = 180°'
+          },
+          {
+            prompt: 'අරය 21 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 231 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න.',
+            visual: svgSector({ angle: 60, rLabel: '21 cm', angleLabel: 'θ = ?', areaLabel: '231 cm²' }),
+            answer: 60, unit: '°',
+            solution: '1386 × (θ/360) = 231  ⇒  θ = 360 / 6 = 60°'
+          },
+          {
+            prompt: 'අරය 14 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 77 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න.',
+            visual: svgSector({ angle: 45, rLabel: '14 cm', angleLabel: 'θ = ?', areaLabel: '77 cm²' }),
+            answer: 45, unit: '°',
+            solution: '616 × (θ/360) = 77  ⇒  θ = 360 / 8 = 45°'
+          },
+          {
+            prompt: 'අරය 21 cm වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 115.5 cm² කි. එහි කේන්ද්‍ර කෝණය (θ) සොයන්න.',
+            visual: svgSector({ angle: 30, rLabel: '21 cm', angleLabel: 'θ = ?', areaLabel: '115.5 cm²' }),
+            answer: 30, unit: '°',
+            solution: '1386 × (θ/360) = 115.5  ⇒  θ = 360 / 12 = 30°'
+          }
+        ]
+      },
+
+      // ---------------- QUIZ 3: අරය සෙවීම සහ සංයුක්ත තල රූප - I ----------------
+      {
+        id: 3,
+        level: 'මට්ටම 3 • අභ්‍යාසය 6.1 (II) හා 6.2 (I)',
+        icon: '🧩',
+        color: 'from-amber-500 to-orange-600',
+        title: 'Quiz 3: අරය සෙවීම සහ සංයුක්ත තල රූප - I',
+        subtitle: 'වර්ගඵලය දී ඇති විට අරය (r) සෙවීම සහ සරල රූප + කේන්ද්‍රික ඛණ්ඩ එකතුව (ප්‍රශ්න 20)',
+        questions: [
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 40° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 154/9 cm² (17 1/9 cm²) නම්, එහි අරය (r) සොයන්න. (නිදසුන 2)',
+            visual: svgSector({ angle: 40, rLabel: 'r = ?', angleLabel: '40°', areaLabel: '154/9 cm²' }),
+            answer: 7, unit: 'cm',
+            solution: '(22/7) × r² × (40/360) = 154/9\n(22/7) × r² × (1/9) = 154/9  ⇒  r² = 49  ⇒  r = 7 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 280° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 792 cm² නම්, එහි අරය (r) සොයන්න. (අභ්‍යාසය 6.1 - 3)',
+            visual: svgSector({ angle: 280, rLabel: 'r = ?', angleLabel: '280°', areaLabel: '792 cm²' }),
+            answer: 18, unit: 'cm',
+            solution: '(22/7) × r² × (280/360) = 792\n(22/7) × r² × (7/9) = 792  ⇒  (22/9)r² = 792  ⇒  r² = 324  ⇒  r = 18 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 80° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 44/7 cm² (6 2/7 cm²) නම්, එහි අරය (r) සොයන්න. (අභ්‍යාසය 6.1 - 3)',
+            visual: svgSector({ angle: 80, rLabel: 'r = ?', angleLabel: '80°', areaLabel: '44/7 cm²' }),
+            answer: 3, unit: 'cm',
+            solution: '(22/7) × r² × (80/360) = 44/7\n(22/7) × r² × (2/9) = 44/7  ⇒  r² = 9  ⇒  r = 3 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 154 cm² නම්, එහි අරය (r) සොයන්න.',
+            visual: svgSector({ angle: 90, rLabel: 'r = ?', angleLabel: '90°', areaLabel: '154 cm²' }),
+            answer: 14, unit: 'cm',
+            solution: '(22/7) × r² × (1/4) = 154\nr² = 154 × 4 × (7/22) = 196  ⇒  r = 14 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 180° වූ අර්ධ වෘත්තයක වර්ගඵලය 77 cm² නම්, එහි අරය (r) සොයන්න.',
+            visual: svgSector({ angle: 180, rLabel: 'r = ?', angleLabel: '180°', areaLabel: '77 cm²' }),
+            answer: 7, unit: 'cm',
+            solution: '½ × (22/7) × r² = 77\nr² = 77 × 2 × (7/22) = 49  ⇒  r = 7 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 60° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 231 cm² නම්, එහි අරය (r) සොයන්න.',
+            visual: svgSector({ angle: 60, rLabel: 'r = ?', angleLabel: '60°', areaLabel: '231 cm²' }),
+            answer: 21, unit: 'cm',
+            solution: '(22/7) × r² × (1/6) = 231\nr² = 231 × 6 × (7/22) = 441  ⇒  r = 21 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 77 cm² නම්, එහි අරය (r) සොයන්න.',
+            visual: svgSector({ angle: 45, rLabel: 'r = ?', angleLabel: '45°', areaLabel: '77 cm²' }),
+            answer: 14, unit: 'cm',
+            solution: '(22/7) × r² × (1/8) = 77\nr² = 77 × 8 × (7/22) = 196  ⇒  r = 14 cm'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 120° වූ කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය 462 cm² නම්, එහි අරය (r) සොයන්න.',
+            visual: svgSector({ angle: 120, rLabel: 'r = ?', angleLabel: '120°', areaLabel: '462 cm²' }),
+            answer: 21, unit: 'cm',
+            solution: '(22/7) × r² × (1/3) = 462\nr² = 462 × 3 × (7/22) = 441  ⇒  r = 21 cm'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයකට අර්ධ වෘත්තයක් සම්බන්ධ කර ඇත. සංයුක්ත රූපයේ වර්ගඵලය සොයන්න. (නිදසුන 1)',
+            visual: svgCompositeShapePlusSemicircle('14 cm', '14 cm', 'one'),
+            answer: 273, unit: 'cm²',
+            solution: 'සමචතුරස්‍රයේ වර්ගඵලය = 14 × 14 = 196 cm²\nඅර්ධ වෘත්තයේ වර්ගඵලය (r = 7) = 77 cm²\nමුළු වර්ගඵලය = 196 + 77 = 273 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයකට සමාන අර්ධ වෘත්ත දෙකක් සම්බන්ධ කර ඇත. සංයුක්ත රූපයේ වර්ගඵලය සොයන්න. (අභ්‍යාසය 6.2 - 1)',
+            visual: svgCompositeShapePlusSemicircle('14 cm', '14 cm', 'twoAdjacent'),
+            answer: 350, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 196 cm²\nඅර්ධ වෘත්ත 2 = සම්පූර්ණ වෘත්ත 1 (r = 7) = 154 cm²\nමුළු වර්ගඵලය = 196 + 154 = 350 cm²'
+          },
+          {
+            prompt: 'දිග 20 cm හා පළල 14 cm වූ ඍජුකෝණාස්‍රයකට අර්ධ වෘත්තයක් සම්බන්ධ කර ඇත. සංයුක්ත රූපයේ වර්ගඵලය සොයන්න.',
+            visual: svgCompositeShapePlusSemicircle('20 cm', '14 cm', 'one'),
+            answer: 357, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 20 × 14 = 280 cm²\nඅර්ධ වෘත්තය (r = 7) = 77 cm²\nමුළු වර්ගඵලය = 280 + 77 = 357 cm²'
+          },
+          {
+            prompt: 'දිග 20 m හා පළල 14 m වූ ඍජුකෝණාස්‍රයක දෙකෙළවරට සමාන අර්ධ වෘත්ත දෙකක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න.',
+            visual: svgCompositeShapePlusSemicircle('20 m', '14 m', 'twoEnds'),
+            answer: 434, unit: 'm²',
+            solution: 'ඍජුකෝණාස්‍රය = 20 × 14 = 280 m²\nඅර්ධ වෘත්ත 2 (r = 7) = 154 m²\nමුළු වර්ගඵලය = 280 + 154 = 434 m²'
+          },
+          {
+            prompt: '10 cm × 7 cm ඍජුකෝණාස්‍රයක දෙපසට අරය 7 cm හා කේන්ද්‍ර කෝණය 30° බැගින් වූ කේන්ද්‍රික ඛණ්ඩ දෙකක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න. (නිදසුන 2 - දශම වලින් 95.67)',
+            visual: svgRectWithTwoSectors(),
+            answer: 95.67, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 10 × 7 = 70 cm²\n30° + 30° = 60° කේන්ද්‍රික ඛණ්ඩය (r = 7) = 154 × (1/6) = 77/3 ≈ 25.67 cm²\nමුළු වර්ගඵලය = 70 + 25.67 = 95.67 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 30 cm හා ලම්බ උස 7 cm වූ සමාන්තරාස්‍රයකට, අරය 14 cm හා කේන්ද්‍ර කෝණය 30° වූ කේන්ද්‍රික ඛණ්ඩයක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න. (අභ්‍යාසය 6.2 - 3 - දශම වලින් 261.33)',
+            visual: svgParallelogram('30 cm', '7 cm'),
+            answer: 261.33, unit: 'cm²',
+            solution: 'සමාන්තරාස්‍රය = 30 × 7 = 210 cm²\n30° කේන්ද්‍රික ඛණ්ඩය (r = 14) = 616 × (1/12) = 154/3 ≈ 51.33 cm²\nමුළු වර්ගඵලය = 210 + 51.33 = 261.33 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 20 cm හා ලම්බ උස 7 cm වූ සමාන්තරාස්‍රයකට, අරය 14 cm හා කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩයක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න.',
+            visual: svgParallelogram('20 cm', '7 cm'),
+            answer: 217, unit: 'cm²',
+            solution: 'සමාන්තරාස්‍රය = 20 × 7 = 140 cm²\n45° කේන්ද්‍රික ඛණ්ඩය (r = 14) = 616 × (1/8) = 77 cm²\nමුළු වර්ගඵලය = 140 + 77 = 217 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයක පැති 4ටම අර්ධ වෘත්ත 4ක් සම්බන්ධ කර සැකසූ මල් හැඩැති රූපයේ මුළු වර්ගඵලය සොයන්න.',
+            visual: `<svg width="190" height="190" viewBox="0 0 190 190">
+              <path d="M 60 60 A 35 35 0 0 1 130 60 A 35 35 0 0 1 130 130 A 35 35 0 0 1 60 130 A 35 35 0 0 1 60 60 Z" fill="#fbcfe8" stroke="#be185d" stroke-width="2.2"/>
+              <rect x="60" y="60" width="70" height="70" fill="none" stroke="#64748b" stroke-dasharray="4,4"/>
+              <text x="95" y="99" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">14 cm</text>
+            </svg>`,
+            answer: 504, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 14 × 14 = 196 cm²\nඅර්ධ වෘත්ත 4 = වෘත්ත 2 (r = 7) = 2 × 154 = 308 cm²\nමුළු වර්ගඵලය = 196 + 308 = 504 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 7 cm වූ සමචතුරස්‍රයකට අර්ධ වෘත්තයක් සම්බන්ධ කර ඇත. සංයුක්ත රූපයේ වර්ගඵලය සොයන්න.',
+            visual: svgCompositeShapePlusSemicircle('7 cm', '7 cm', 'one'),
+            answer: 68.25, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 7 × 7 = 49 cm²\nඅර්ධ වෘත්තය (r = 3.5) = 38.5 ÷ 2 = 19.25 cm²\nමුළු වර්ගඵලය = 49 + 19.25 = 68.25 cm²'
+          },
+          {
+            prompt: 'දිග 10 cm හා පළල 7 cm වූ ඍජුකෝණාස්‍රයක දෙකෙළවරට සමාන අර්ධ වෘත්ත දෙකක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න.',
+            visual: svgCompositeShapePlusSemicircle('10 cm', '7 cm', 'twoEnds'),
+            answer: 108.5, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 10 × 7 = 70 cm²\nඅර්ධ වෘත්ත 2 = සම්පූර්ණ වෘත්ත 1 (r = 3.5) = 38.5 cm²\nමුළු වර්ගඵලය = 70 + 38.5 = 108.5 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 14 cm හා උස 10 cm වූ ත්‍රිකෝණයක ආධාරකය මත විෂ්කම්භය 14 cm වූ අර්ධ වෘත්තයක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න.',
+            visual: svgGeneralTriangle('14 cm', '10 cm'),
+            answer: 147, unit: 'cm²',
+            solution: 'ත්‍රිකෝණය = ½ × 14 × 10 = 70 cm²\nඅර්ධ වෘත්තය (r = 7) = 77 cm²\nමුළු වර්ගඵලය = 70 + 77 = 147 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයක එක් පැත්තකට අරය 14 cm හා කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩයක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න.',
+            visual: svgSquare('14 cm'),
+            answer: 350, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 196 cm²\n90° කේන්ද්‍රික ඛණ්ඩය (r = 14) = 154 cm²\nමුළු වර්ගඵලය = 196 + 154 = 350 cm²'
+          }
+        ]
+      },
+
+      // ---------------- QUIZ 4: කපා ඉවත් කළ කොටස් හා අඳුරු කළ වර්ගඵල ----------------
+      {
+        id: 4,
+        level: 'මට්ටම 4 • අභ්‍යාසය 6.2 (II)',
+        icon: '✂️',
+        color: 'from-violet-600 to-purple-700',
+        title: 'Quiz 4: කපා ඉවත් කළ කොටස් හා අඳුරු කළ වර්ගඵල',
+        subtitle: 'තල රූපවලින් කේන්ද්‍රික ඛණ්ඩ ඉවත් කළ විට ඉතිරි අඳුරු කොටසේ වර්ගඵලය (ප්‍රශ්න 20)',
+        questions: [
+          {
+            prompt: '20 cm × 7 cm ඍජුකෝණාස්‍රාකාර තහඩුවකින් r = 7 cm වූ වෘත්ත කාලක් ඉවත් කර ඇත. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න. (නිදසුන 3)',
+            visual: svgShadedCutout('rectMinusQuarter'),
+            answer: 101.5, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 20 × 7 = 140 cm²\nවෘත්ත කාල (r = 7) = 38.5 cm²\nඅඳුරු කළ වර්ගඵලය = 140 − 38.5 = 101.5 cm²'
+          },
+          {
+            prompt: '25 cm × 7 cm ඍජුකෝණාස්‍රයකින් විෂ්කම්භය 7 cm වූ අර්ධ වෘත්ත දෙකක් ඉවත් කර ඇත. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න. (අභ්‍යාසය 6.2 - 2)',
+            visual: svgShadedCutout('rectMinusTwoSemi'),
+            answer: 136.5, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 25 × 7 = 175 cm²\nඅර්ධ වෘත්ත 2 = වෘත්ත 1 (r = 3.5) = 38.5 cm²\nඅඳුරු කළ වර්ගඵලය = 175 − 38.5 = 136.5 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයකින් අරය 14 cm වූ වෘත්ත කාලක් ඉවත් කර ඇත. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('squareMinusQuarter'),
+            answer: 42, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 14 × 14 = 196 cm²\nවෘත්ත කාල (r = 14) = 154 cm²\nඅඳුරු කළ වර්ගඵලය = 196 − 154 = 42 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයක මුළු 4න් අරය 7 cm වූ වෘත්ත කාල 4ක් ඉවත් කර ඇත. මැද අඳුරු කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('squareMinusFourQuarters'),
+            answer: 42, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 196 cm²\nවෘත්ත කාල 4 = වෘත්ත 1 (r = 7) = 154 cm²\nඅඳුරු කළ වර්ගඵලය = 196 − 154 = 42 cm²'
+          },
+          {
+            prompt: 'අරය 28 cm වූ වෘත්තාකාර තහඩුවකින් r = 14 cm, θ = 30° සහ r = 14 cm, θ = 150° කේන්ද්‍රික ඛණ්ඩ දෙක කපා ඉවත් කර ඇත. ඉතිරි කොටසේ වර්ගඵලය සොයන්න. (අභ්‍යාසය 6.2 - 4)',
+            visual: svgShadedCutout('circleMinusTwoSectors'),
+            answer: 2156, unit: 'cm²',
+            solution: 'මුළු වෘත්තය (R = 28) = (22/7) × 28 × 28 = 2464 cm²\nඉවත් කළ කොටස් (30° + 150° = 180°, r = 14) = 308 cm²\nඉතිරි වර්ගඵලය = 2464 − 308 = 2156 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 7 cm වූ සමචතුරස්‍රයකින් අරය 7 cm වූ වෘත්ත කාලක් ඉවත් කර ඇත. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('squareMinusQuarter'),
+            answer: 10.5, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 7 × 7 = 49 cm²\nවෘත්ත කාල (r = 7) = 38.5 cm²\nඅඳුරු කළ වර්ගඵලය = 49 − 38.5 = 10.5 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 28 cm වූ සමචතුරස්‍රයකින් විෂ්කම්භය 28 cm වූ වෘත්තයක් කපා ඉවත් කර ඇත. ඉතිරි මුළු 4හි වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('squareMinusFourQuarters'),
+            answer: 168, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 28 × 28 = 784 cm²\nවෘත්තය (r = 14) = 616 cm²\nඉතිරි වර්ගඵලය = 784 − 616 = 168 cm²'
+          },
+          {
+            prompt: 'දිග 30 cm හා පළල 14 cm වූ ඍජුකෝණාස්‍රයකින් විෂ්කම්භය 14 cm වූ අර්ධ වෘත්ත දෙකක් ඉවත් කර ඇත. ඉතිරි වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('rectMinusTwoSemi'),
+            answer: 266, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 30 × 14 = 420 cm²\nඅර්ධ වෘත්ත 2 = වෘත්ත 1 (r = 7) = 154 cm²\nඉතිරි වර්ගඵලය = 420 − 154 = 266 cm²'
+          },
+          {
+            prompt: 'දිග 20 cm හා පළල 14 cm වූ ඍජුකෝණාස්‍රයකින් අරය 14 cm වූ වෘත්ත කාලක් ඉවත් කර ඇත. ඉතිරි වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('rectMinusQuarter'),
+            answer: 126, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 20 × 14 = 280 cm²\nවෘත්ත කාල (r = 14) = 154 cm²\nඉතිරි වර්ගඵලය = 280 − 154 = 126 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩ දෙකක අභ්‍යන්තර අරය 7 cm සහ බාහිර අරය 14 cm වේ. අඳුරු කළ වළලු කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('annular'),
+            answer: 115.5, unit: 'cm²',
+            solution: 'විශාල 90° ඛණ්ඩය (R = 14) = 154 cm²\nකුඩා 90° ඛණ්ඩය (r = 7) = 38.5 cm²\nඅඳුරු කළ වර්ගඵලය = 154 − 38.5 = 115.5 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 180° වූ අර්ධ වෘත්ත දෙකක අභ්‍යන්තර අරය 7 cm සහ බාහිර අරය 14 cm වේ. ඒවා අතර වළලු කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('annular'),
+            answer: 231, unit: 'cm²',
+            solution: 'විශාල අර්ධ වෘත්තය (R = 14) = 308 cm²\nකුඩා අර්ධ වෘත්තය (r = 7) = 77 cm²\nවර්ගඵලය = 308 − 77 = 231 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩ දෙකක අභ්‍යන්තර අරය 7 cm සහ බාහිර අරය 14 cm වේ. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('annular'),
+            answer: 57.75, unit: 'cm²',
+            solution: 'විශාල 45° ඛණ්ඩය (R = 14) = 77 cm²\nකුඩා 45° ඛණ්ඩය (r = 7) = 19.25 cm²\nවර්ගඵලය = 77 − 19.25 = 57.75 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩ දෙකක අභ්‍යන්තර අරය 7 cm සහ බාහිර අරය 21 cm වේ. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('annular'),
+            answer: 308, unit: 'cm²',
+            solution: 'විශාල 90° ඛණ්ඩය (R = 21) = 1386 ÷ 4 = 346.5 cm²\nකුඩා 90° ඛණ්ඩය (r = 7) = 38.5 cm²\nවර්ගඵලය = 346.5 − 38.5 = 308 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ වෘත්ත කාලකින් (90°), පාද 7 cm හා 7 cm වූ ඍජුකෝණික ත්‍රිකෝණය කපා ඉවත් කර ඇත. අඳුරු කළ වෘත්ත ඛණ්ඩයේ වර්ගඵලය සොයන්න. (මිශ්‍ර අභ්‍යාසය 1 - i)',
+            visual: `<svg width="205" height="175" viewBox="0 0 205 175">
+              <path d="M 50 135 L 50 35 A 100 100 0 0 1 150 135 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2"/>
+              <path d="M 50 35 A 100 100 0 0 1 150 135 L 50 35 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.2"/>
+              <rect x="50" y="123" width="12" height="12" fill="none" stroke="#0369a1"/>
+              <text x="100" y="155" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">7 cm</text>
+            </svg>`,
+            answer: 14, unit: 'cm²',
+            solution: 'වෘත්ත කාලේ වර්ගඵලය = 38.5 cm²\nත්‍රිකෝණයේ වර්ගඵලය = ½ × 7 × 7 = 24.5 cm²\nඅඳුරු කොටසේ වර්ගඵලය = 38.5 − 24.5 = 14 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm වූ වෘත්ත කාලකින් (90°), පාද 14 cm හා 14 cm වූ ඍජුකෝණික ත්‍රිකෝණය ඉවත් කළ විට අඳුරු කොටසේ වර්ගඵලය සොයන්න.',
+            visual: `<svg width="205" height="175" viewBox="0 0 205 175">
+              <path d="M 50 135 L 50 35 A 100 100 0 0 1 150 135 Z" fill="#ffffff" stroke="#0369a1" stroke-width="2"/>
+              <path d="M 50 35 A 100 100 0 0 1 150 135 L 50 35 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.2"/>
+              <rect x="50" y="123" width="12" height="12" fill="none" stroke="#0369a1"/>
+              <text x="100" y="155" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">14 cm</text>
+            </svg>`,
+            answer: 56, unit: 'cm²',
+            solution: 'වෘත්ත කාල = 154 cm²\nත්‍රිකෝණය = ½ × 14 × 14 = 98 cm²\nඅඳුරු කොටසේ වර්ගඵලය = 154 − 98 = 56 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ අර්ධ වෘත්තයක් තුළ ඇඳිය හැකි විශාලම ත්‍රිකෝණයේ (ආධාරකය 14 cm, උස 7 cm) වර්ගඵලය ඉවත් කළ විට අඳුරු කොටසේ වර්ගඵලය සොයන්න.',
+            visual: `<svg width="240" height="150" viewBox="0 0 240 150">
+              <path d="M 35 115 A 85 85 0 0 1 205 115 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.2"/>
+              <polygon points="35,115 205,115 120,30" fill="#ffffff" stroke="#0369a1" stroke-width="2"/>
+              <text x="120" y="135" text-anchor="middle" font-size="13" font-weight="800" font-family="Fredoka, sans-serif">14 cm</text>
+            </svg>`,
+            answer: 28, unit: 'cm²',
+            solution: 'අර්ධ වෘත්තය (r = 7) = 77 cm²\nත්‍රිකෝණය = ½ × 14 × 7 = 49 cm²\nඅඳුරු කොටස = 77 − 49 = 28 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයකින්, විෂ්කම්භය 14 cm වූ අර්ධ වෘත්ත දෙකක් ඉවත් කර ඇත. ඉතිරි කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('squareMinusFourQuarters'),
+            answer: 42, unit: 'cm²',
+            solution: 'සමචතුරස්‍රය = 196 cm²\nඅර්ධ වෘත්ත 2 = වෘත්ත 1 (r = 7) = 154 cm²\nඉතිරි වර්ගඵලය = 196 − 154 = 42 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm වූ වෘත්තයකින් අරය 7 cm වූ කුඩා වෘත්තයක් කපා ඉවත් කළ විට ඉතිරි වළල්ලේ වර්ගඵලය සොයන්න.',
+            visual: `<svg width="200" height="190" viewBox="0 0 200 190">
+              <circle cx="100" cy="95" r="78" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.2"/>
+              <circle cx="100" cy="95" r="39" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+              <text x="100" y="100" text-anchor="middle" font-size="11" font-weight="800">r = 7</text>
+              <text x="155" y="45" font-size="11" font-weight="800" fill="#0369a1">R = 14</text>
+            </svg>`,
+            answer: 462, unit: 'cm²',
+            solution: 'විශාල වෘත්තය (R = 14) = 616 cm²\nකුඩා වෘත්තය (r = 7) = 154 cm²\nවළල්ලේ වර්ගඵලය = 616 − 154 = 462 cm²'
+          },
+          {
+            prompt: 'ආධාරකය 20 cm හා උස 14 cm වූ ත්‍රිකෝණයක සිරස් 3 කේන්ද්‍ර කරගෙන අරය 7 cm බැගින් වූ කේන්ද්‍රික ඛණ්ඩ 3ක් කපා ඉවත් කර ඇත. ඉතිරි කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgGeneralTriangle('20 cm', '14 cm'),
+            answer: 63, unit: 'cm²',
+            solution: 'ත්‍රිකෝණයේ වර්ගඵලය = ½ × 20 × 14 = 140 cm²\nත්‍රිකෝණයේ අභ්‍යන්තර කෝණ එකතුව = 180° (අර්ධ වෘත්තයකි)\nඉවත් කළ අර්ධ වෘත්තය (r = 7) = 77 cm²\nඉතිරි වර්ගඵලය = 140 − 77 = 63 cm²'
+          },
+          {
+            prompt: 'දිග 24 cm හා පළල 14 cm වූ ඍජුකෝණාස්‍රයක මුළු 4 කේන්ද්‍ර කරගෙන අරය 7 cm වූ වෘත්ත කාල 4ක් ඉවත් කර ඇත. ඉතිරි මැද කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('squareMinusFourQuarters'),
+            answer: 182, unit: 'cm²',
+            solution: 'ඍජුකෝණාස්‍රය = 24 × 14 = 336 cm²\nවෘත්ත කාල 4 = සම්පූර්ණ වෘත්ත 1 (r = 7) = 154 cm²\nඉතිරි වර්ගඵලය = 336 − 154 = 182 cm²'
+          }
+        ]
+      },
+
+      // ---------------- QUIZ 5: මිශ්‍ර අභ්‍යාස හා විභාග මට්ටමේ ගැටලු ----------------
+      {
+        id: 5,
+        level: 'මට්ටම 5 • මිශ්‍ර අභ්‍යාස හා විභාග ගැටලු',
+        icon: '🏆',
+        color: 'from-rose-600 via-pink-600 to-amber-600',
+        title: 'Quiz 5: මිශ්‍ර අභ්‍යාස හා විභාග මට්ටමේ ගැටලු',
+        subtitle: 'පත්‍ර හැඩැති කොටස්, අනුපාත, සංයුක්ත කේන්ද්‍රික ඛණ්ඩ හා සමරු ඵලක ගැටලු (ප්‍රශ්න 20)',
+        questions: [
+          {
+            prompt: 'පැත්තක දිග 14 cm වූ සමචතුරස්‍රයක් තුළ කේන්ද්‍රික ඛණ්ඩ දෙකක් ඇඳීමෙන් සෑදුණු අඳුරු පත්‍ර හැඩැති කොටසේ වර්ගඵලය සොයන්න. (මිශ්‍ර අභ්‍යාසය 1 - iii)',
+            visual: svgLeafInSquare('14 cm'),
+            answer: 112, unit: 'cm²',
+            solution: 'එක් වෘත්ත කාලක වර්ගඵලය (r = 14) = 154 cm²\nවෘත්ත කාල 2හි එකතුව = 154 + 154 = 308 cm²\nසමචතුරස්‍රයේ වර්ගඵලය = 14 × 14 = 196 cm²\nපත්‍ර හැඩැති කොටස = 308 − 196 = 112 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 7 cm වූ සමචතුරස්‍රයක් තුළ මෙලෙසම සෑදුණු අඳුරු පත්‍ර හැඩැති කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgLeafInSquare('7 cm'),
+            answer: 28, unit: 'cm²',
+            solution: 'වෘත්ත කාල 2හි එකතුව (r = 7) = 38.5 + 38.5 = 77 cm²\nසමචතුරස්‍රය = 7 × 7 = 49 cm²\nපත්‍ර හැඩැති කොටස = 77 − 49 = 28 cm²'
+          },
+          {
+            prompt: 'පැත්තක දිග 21 cm වූ සමචතුරස්‍රයක් තුළ මෙලෙසම සෑදුණු අඳුරු පත්‍ර හැඩැති කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgLeafInSquare('21 cm'),
+            answer: 252, unit: 'cm²',
+            solution: 'වෘත්ත කාල 2 (r = 21) = 346.5 + 346.5 = 693 cm²\nසමචතුරස්‍රය = 21 × 21 = 441 cm²\nපත්‍ර හැඩැති කොටස = 693 − 441 = 252 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 60° වූ කේන්ද්‍රික ඛණ්ඩ දෙකක අභ්‍යන්තර අරය 7 cm සහ බාහිර අරය 14 cm වේ. අඳුරු කළ කොටසේ වර්ගඵලය සොයන්න. (මිශ්‍ර අභ්‍යාසය 1 - ii)',
+            visual: svgShadedCutout('annular'),
+            answer: 77, unit: 'cm²',
+            solution: 'විශාල 60° ඛණ්ඩය (R = 14) = 616 / 6 cm²\nකුඩා 60° ඛණ්ඩය (r = 7) = 154 / 6 cm²\nඅඳුරු කොටස = (616 − 154) / 6 = 462 / 6 = 77 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 60° වූ කේන්ද්‍රික ඛණ්ඩ දෙකක අභ්‍යන්තර අරය 14 cm සහ බාහිර අරය 28 cm වේ. අඳුරු කළ වළලු කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgShadedCutout('annular'),
+            answer: 308, unit: 'cm²',
+            solution: 'විශාල 60° ඛණ්ඩය (R = 28) = 2464 / 6\nකුඩා 60° ඛණ්ඩය (r = 14) = 616 / 6\nවර්ගඵලය = (2464 − 616) / 6 = 1848 / 6 = 308 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm හා කේන්ද්‍ර කෝණය 45° වූ කේන්ද්‍රික ඛණ්ඩයක් මත, අරය 7 cm හා කේන්ද්‍ර කෝණය 45° බැගින් වූ කේන්ද්‍රික ඛණ්ඩ දෙකක් දෙපසින් සම්බන්ධ කර ඇත. මුළු අඳුරු වර්ගඵලය සොයන්න.',
+            visual: svgLayeredSectors(),
+            answer: 115.5, unit: 'cm²',
+            solution: 'විශාල 45° ඛණ්ඩය (R = 14) = 77 cm²\nකුඩා ඛණ්ඩ 2 (45° + 45° = 90°, r = 7) = 38.5 cm²\nමුළු වර්ගඵලය = 77 + 38.5 = 115.5 cm²'
+          },
+          {
+            prompt: 'අරය 14 cm හා කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩයක් සමඟ අරය 7 cm හා කේන්ද්‍ර කෝණය 45° බැගින් වූ කේන්ද්‍රික ඛණ්ඩ දෙකක් සම්බන්ධ කර ඇත. මුළු වර්ගඵලය සොයන්න.',
+            visual: svgLayeredSectors(),
+            answer: 192.5, unit: 'cm²',
+            solution: 'විශාල 90° ඛණ්ඩය (R = 14) = 154 cm²\nකුඩා ඛණ්ඩ 2 (90°, r = 7) = 38.5 cm²\nමුළු වර්ගඵලය = 154 + 38.5 = 192.5 cm²'
+          },
+          {
+            prompt: 'අරය 21 cm වූ කේන්ද්‍රික ඛණ්ඩයක, කුඩා 15° කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලයට විශාල 45° කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය දරන අනුපාතය 1 : k නම්, k හි අගය කීය ද? (අභ්‍යාසය 6.2 - 5)',
+            visual: svgSector({ angle: 45, rLabel: '21 cm', angleLabel: '45°' }),
+            answer: 3, unit: '',
+            solution: 'අරය සමාන බැවින් වර්ගඵල අනුපාතය කේන්ද්‍ර කෝණ අනුපාතයට සමාන වේ.\n15° : 45° = 1 : 3  ⇒  k = 3'
+          },
+          {
+            prompt: 'සමාන අරයන් ඇති කේන්ද්‍රික ඛණ්ඩ දෙකක කේන්ද්‍ර කෝණ 45° සහ 315° වේ. විශාල කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය කුඩා කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය මෙන් කී ගුණයක් ද? (අභ්‍යාසය 6.2 - 6)',
+            visual: svgSector({ angle: 45, rLabel: '14 cm', angleLabel: '45°', showFullCircle: true }),
+            answer: 7, unit: 'ගුණයක්',
+            solution: '315° ÷ 45° = 7\nඑබැවින් 7 ගුණයකි.'
+          },
+          {
+            prompt: 'සමරු ඵලකයක් ඉදිරිපස විෂ්කම්භය 2.1 m (210 cm) වූ අර්ධ වෘත්තාකාර බිම් කොටසක් ඇත. එම අර්ධ වෘත්තයේ අරය සෙන්ටිමීටර කීය ද? (මිශ්‍ර අභ්‍යාසය 4 - i)',
+            visual: svgPlaqueSemicircle(),
+            answer: 105, unit: 'cm',
+            solution: 'විෂ්කම්භය = 2.1 m = 210 cm\nඅරය = 210 ÷ 2 = 105 cm'
+          },
+          {
+            prompt: 'ඉහත අරය 105 cm වූ අර්ධ වෘත්තාකාර කොටසේ මුළු වර්ගඵලය වර්ග සෙන්ටිමීටරවලින් සොයන්න. (මිශ්‍ර අභ්‍යාසය 4 - ii)',
+            visual: svgPlaqueSemicircle(),
+            answer: 17325, unit: 'cm²',
+            solution: 'අර්ධ වෘත්තයේ වර්ගඵලය = ½ × (22/7) × 105 × 105\n= 11 × 15 × 105 = 17,325 cm²'
+          },
+          {
+            prompt: 'එම නිර්මාණය තුළ අරය 84 cm හා කේන්ද්‍ර කෝණය 30° වන කුඩා කේන්ද්‍රික ඛණ්ඩයක වර්ගඵලය සොයන්න. (මිශ්‍ර අභ්‍යාසය 4 - iii)',
+            visual: svgPlaqueSemicircle(),
+            answer: 1848, unit: 'cm²',
+            solution: 'වර්ගඵලය = (22/7) × 84 × 84 × (30/360)\n= 22 × 12 × 84 × (1/12) = 22 × 84 = 1848 cm²'
+          },
+          {
+            prompt: 'ඉහත විශාල කේන්ද්‍රික ඛණ්ඩයේ (r = 84 cm) වර්ගඵලය, කුඩා කේන්ද්‍රික ඛණ්ඩ දෙකෙහි වර්ගඵලවල එකතුවට (1848 × 2) වඩා 1848 cm² කින් වැඩි වේ නම්, එහි කේන්ද්‍ර කෝණය කීය ද? (මිශ්‍ර අභ්‍යාසය 4 - iv)',
+            visual: svgPlaqueSemicircle(),
+            answer: 90, unit: '°',
+            solution: 'විශාල ඛණ්ඩයේ වර්ගඵලය = (1848 × 2) + 1848 = 1848 × 3\n30° ඛණ්ඩය මෙන් 3 ගුණයක් නිසා කේන්ද්‍ර කෝණය = 30° × 3 = 90°'
+          },
+          {
+            prompt: 'ඉහත අර්ධ වෘත්තාකාර බිම් කොටසේ (මුළු වර්ගඵලය 17,325 cm²) තණකොළ වවා ඇති කේන්ද්‍රික ඛණ්ඩ 3හි මුළු වර්ගඵලය 1848 × 5 = 9240 cm² නම්, සුදු වැලි අතුරා ඇති ඉතිරි කොටසේ වර්ගඵලය කීය ද?',
+            visual: svgPlaqueSemicircle(),
+            answer: 8085, unit: 'cm²',
+            solution: 'තණකොළ වර්ගඵලය = 1848 + 1848 + 5544 = 9240 cm²\nසුදු වැලි කොටස = 17,325 − 9,240 = 8,085 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 90° වූ කේන්ද්‍රික ඛණ්ඩයක පරිමිතිය 50 cm කි. එම කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 90, rLabel: 'r', angleLabel: '90°' }),
+            answer: 154, unit: 'cm²',
+            solution: 'පරිමිතිය: (11/7)r + 2r = 50 ⇒ 25r/7 = 50 ⇒ r = 14 cm\nවර්ගඵලය = ¼ × (22/7) × 14 × 14 = 154 cm²'
+          },
+          {
+            prompt: 'අර්ධ වෘත්තාකාර (180°) තහඩුවක පරිමිතිය 36 cm කි. එම තහඩුවේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 180, rLabel: 'r', angleLabel: '180°' }),
+            answer: 77, unit: 'cm²',
+            solution: 'පරිමිතිය: (22/7)r + 2r = 36 ⇒ 36r/7 = 36 ⇒ r = 7 cm\nවර්ගඵලය = ½ × (22/7) × 7 × 7 = 77 cm²'
+          },
+          {
+            prompt: 'කේන්ද්‍ර කෝණය 60° වූ කේන්ද්‍රික ඛණ්ඩයක චාප දිග 22 cm කි. එම කේන්ද්‍රික ඛණ්ඩයේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 60, rLabel: 'r', angleLabel: '60°' }),
+            answer: 231, unit: 'cm²',
+            solution: 'චාප දිග: 2 × (22/7) × r × (1/6) = 22 ⇒ r = 21 cm\nවර්ගඵලය = (22/7) × 21 × 21 × (1/6) = 231 cm²'
+          },
+          {
+            prompt: 'අරය 7 cm වූ වෘත්තාකාර කේක් ගෙඩියක් සමාන කේන්ද්‍රික ඛණ්ඩ 4කට කපා ඇත. එක් කේක් කැබැල්ලක වර්ගඵලය කීය ද?',
+            visual: svgSector({ angle: 90, rLabel: '7 cm', angleLabel: '90°', showFullCircle: true }),
+            answer: 38.5, unit: 'cm²',
+            solution: 'මුළු කේක් ගෙඩියේ වර්ගඵලය = 154 cm²\nඑක් කැබැල්ලක වර්ගඵලය = 154 ÷ 4 = 38.5 cm²'
+          },
+          {
+            prompt: 'අරය 14 m වූ වෘත්තාකාර උද්‍යානයකින් 270° කේන්ද්‍රික ඛණ්ඩයක තණකොළ වවා ඇත. තණකොළ වවා ඇති කොටසේ වර්ගඵලය සොයන්න.',
+            visual: svgSector({ angle: 270, rLabel: '14 m', angleLabel: '270°', showFullCircle: true }),
+            answer: 462, unit: 'm²',
+            solution: 'වර්ගඵලය = (22/7) × 14 × 14 × (270/360)\n= 616 × (3/4) = 462 m²'
+          },
+          {
+            prompt: 'ඉහත උද්‍යානයේ (වර්ගඵලය 462 m²) තණකොළ වැවීමට වර්ග මීටර 1කට රු. 100ක් වැය වේ නම්, මුළු වියදම රුපියල් කීය ද?',
+            visual: svgSector({ angle: 270, rLabel: '14 m', angleLabel: '270°' }),
+            answer: 46200, unit: 'රු.',
+            solution: 'මුළු වියදම = 462 × 100 = රු. 46,200'
+          }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 4. APPLICATION STATE & INTERACTION CONTROLLER
+    // =========================================================================
+    let state = {
+      quizScores: {},
+      activeQuiz: null,
+      currentIndex: 0,
+      score: 0,
+      answeredMap: {}
+    };
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('ganithagedara_g10_area_v1');
+        if (saved) {
+          state.quizScores = JSON.parse(saved).quizScores || {};
+          updateTotalStars();
+        }
+      } catch (e) {}
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem('ganithagedara_g10_area_v1', JSON.stringify({
+          quizScores: state.quizScores
+        }));
+      } catch (e) {}
+    }
+
+    function updateTotalStars() {
+      const total = Object.values(state.quizScores).reduce((acc, v) => acc + v, 0);
+      document.getElementById('totalStarsDisplay').textContent = `${total} / 100`;
+    }
+
+    function toggleFormulaModal() {
+      document.getElementById('formulaModal').classList.toggle('hidden');
+    }
+
+    function renderQuizzesGrid() {
+      const grid = document.getElementById('quizzesGrid');
+      grid.innerHTML = QUIZZES.map(q => {
+        const best = state.quizScores[q.id] || 0;
+        const pct = Math.round((best / 20) * 100);
+        const isDone = best === 20;
+        return `
+          <button onclick="startQuiz(${q.id})" class="card-lift text-left bg-white rounded-3xl p-6 border-2 ${isDone ? 'border-emerald-400 ring-2 ring-emerald-200' : 'border-slate-200'} flex flex-col justify-between focus:outline-none group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${q.color} flex items-center justify-center text-3xl text-white shadow-md group-hover:scale-105 transition">
+                  ${q.icon}
+                </div>
+                <span class="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-100 text-sky-800">
+                  ${q.level}
+                </span>
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mb-2 group-hover:text-sky-600 transition">
+                ${q.title}
+              </h3>
+              <p class="text-sm text-slate-600 font-medium leading-relaxed mb-4">
+                ${q.subtitle}
+              </p>
+            </div>
+
+            <div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-3">
+                <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-sm font-extrabold text-amber-600">
+                  <span>⭐</span>
+                  <span class="font-num">${best} / 20</span>
+                </div>
+                <span class="inline-flex items-center gap-1 text-sm font-extrabold text-sky-600 group-hover:translate-x-1 transition">
+                  <span>ආරම්භ කරන්න</span>
+                  <span>▶️</span>
+                </span>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function startQuiz(quizId) {
+      initAudio();
+      const quiz = QUIZZES.find(q => q.id === quizId);
+      if (!quiz) return;
+
+      state.activeQuiz = quiz;
+      state.currentIndex = 0;
+      state.score = 0;
+      state.answeredMap = {};
+
+      document.getElementById('homeView').classList.add('hidden');
+      document.getElementById('resultView').classList.add('hidden');
+      document.getElementById('quizView').classList.remove('hidden');
+      document.getElementById('headerHomeBtn').classList.remove('hidden');
+
+      document.getElementById('quizIcon').textContent = quiz.icon;
+      document.getElementById('quizLevelBadge').textContent = `ගණිතගෙදර • ${quiz.level}`;
+      document.getElementById('quizTitle').textContent = quiz.title;
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestionDots() {
+      const dotsEl = document.getElementById('questionDots');
+      dotsEl.innerHTML = state.activeQuiz.questions.map((_, idx) => {
+        const rec = state.answeredMap[idx];
+        let cls = 'bg-slate-100 text-slate-500 border-slate-300';
+        if (idx === state.currentIndex) {
+          cls = 'bg-sky-600 text-white border-sky-700 scale-110 shadow-sm';
+        } else if (rec) {
+          cls = rec.isCorrect
+            ? 'bg-emerald-500 text-white border-emerald-600'
+            : 'bg-rose-500 text-white border-rose-600';
+        }
+        return `<button onclick="jumpToQuestion(${idx})" class="w-7 h-7 rounded-lg border text-xs font-num font-bold transition ${cls}">${idx + 1}</button>`;
+      }).join('');
+    }
+
+    function jumpToQuestion(idx) {
+      state.currentIndex = idx;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = state.activeQuiz.questions[state.currentIndex];
+      const rec = state.answeredMap[state.currentIndex];
+
+      document.getElementById('quizScoreDisplay').textContent = `${state.score} / 20`;
+      document.getElementById('quizProgressBar').style.width = `${((state.currentIndex + 1) / 20) * 100}%`;
+      document.getElementById('questionCounterBadge').textContent = `ප්‍රශ්නය ${state.currentIndex + 1} / 20`;
+      document.getElementById('questionPrompt').textContent = q.prompt;
+      document.getElementById('questionVisual').innerHTML = q.visual;
+      document.getElementById('unitBadge').textContent = q.unit || 'අගය';
+      document.getElementById('inputWarning').classList.add('hidden');
+
+      renderQuestionDots();
+
+      const card = document.getElementById('questionCard');
+      card.classList.remove('animate-pop');
+      void card.offsetWidth;
+      card.classList.add('animate-pop');
+
+      const inputEl = document.getElementById('shortAnswerInput');
+      const checkBtn = document.getElementById('checkAnswerBtn');
+      const feedback = document.getElementById('feedbackBanner');
+
+      if (rec) {
+        inputEl.value = rec.userVal;
+        inputEl.disabled = true;
+        checkBtn.disabled = true;
+        checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        feedback.classList.remove('hidden');
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        nextBtn.innerHTML = state.currentIndex === 19
+          ? `<span>ප්‍රතිඵල බලන්න</span><span>🏆</span>`
+          : `<span>ඊළඟ ප්‍රශ්නය</span><span>➡️</span>`;
+
+        document.getElementById('feedbackSolution').textContent = q.solution;
+
+        if (rec.isCorrect) {
+          feedback.className = 'mt-6 p-5 rounded-2xl border-2 bg-emerald-50 border-emerald-300 text-emerald-950';
+          document.getElementById('feedbackEmoji').textContent = '🎉';
+          document.getElementById('feedbackTitle').textContent = 'නිවැරදියි! ඉතා විශිෂ්ටයි! 🎉';
+          document.getElementById('feedbackAnswerText').textContent = `නිවැරදි පිළිතුර: ${q.answer} ${q.unit}`;
+        } else {
+          feedback.className = 'mt-6 p-5 rounded-2xl border-2 bg-rose-50 border-rose-300 text-rose-950';
+          document.getElementById('feedbackEmoji').textContent = '💡';
+          document.getElementById('feedbackTitle').textContent = 'වැරදියි! පහත විසඳුම හොඳින් අධ්‍යයනය කරන්න.';
+          document.getElementById('feedbackAnswerText').textContent = `ඔබේ පිළිතුර: ${rec.userVal} ${q.unit}  |  නිවැරදි පිළිතුර: ${q.answer} ${q.unit}`;
+        }
+      } else {
+        inputEl.value = '';
+        inputEl.disabled = false;
+        checkBtn.disabled = false;
+        checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        feedback.classList.add('hidden');
+        setTimeout(() => inputEl.focus(), 80);
+      }
+    }
+
+    function submitShortAnswer() {
+      if (state.answeredMap[state.currentIndex]) return;
+      const inputEl = document.getElementById('shortAnswerInput');
+      const raw = inputEl.value.trim();
+      const userVal = parseFloat(raw);
+
+      if (raw === '' || isNaN(userVal)) {
+        document.getElementById('inputWarning').classList.remove('hidden');
+        inputEl.focus();
+        return;
+      }
+
+      document.getElementById('inputWarning').classList.add('hidden');
+      const q = state.activeQuiz.questions[state.currentIndex];
+      const isCorrect = Math.abs(userVal - q.answer) < 0.02;
+
+      state.answeredMap[state.currentIndex] = { userVal, isCorrect };
+
+      if (isCorrect) {
+        state.score++;
+        playSound('correct');
+      } else {
+        playSound('wrong');
+        const card = document.getElementById('questionCard');
+        card.classList.add('animate-shake');
+        setTimeout(() => card.classList.remove('animate-shake'), 420);
+      }
+
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (state.currentIndex < 19) {
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      const prevBest = state.quizScores[state.activeQuiz.id] || 0;
+      if (state.score > prevBest) {
+        state.quizScores[state.activeQuiz.id] = state.score;
+        saveProgress();
+        updateTotalStars();
+      }
+
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.remove('hidden');
+
+      const pct = Math.round((state.score / 20) * 100);
+      const starsCount = state.score >= 18 ? 3 : state.score >= 12 ? 2 : state.score >= 5 ? 1 : 0;
+
+      document.getElementById('resultStarsVisual').textContent = '⭐'.repeat(starsCount) + '☆'.repeat(3 - starsCount);
+      document.getElementById('resultQuizTitle').textContent = state.activeQuiz.title;
+      document.getElementById('finalScoreText').textContent = `${state.score} / 20`;
+      document.getElementById('finalAccuracyText').textContent = `${pct}%`;
+      document.getElementById('finalStarsText').textContent = `⭐ ${state.score}`;
+
+      let msg = 'සුබ පැතුම් පුංචි දුවේ පුතේ! ගණිතගෙදර සමඟ ඔබ ඉතා හොඳින් ඉගෙන ගත්තා!';
+      if (state.score === 20) {
+        msg = 'අති විශිෂ්ටයි! ප්‍රශ්න 20ටම නිවැරදි පිළිතුරු ලබා දී ගණිතගෙදර සම්පූර්ණ ලකුණු හිමිකර ගත්තා! 🏆🎉';
+      } else if (state.score >= 15) {
+        msg = 'ඉතාම දක්ෂයි! ඔබ කේන්ද්‍රික ඛණ්ඩවල වර්ගඵලය පිළිබඳ ඉහළ කුසලතාවක් පෙන්නුම් කළා! 👏';
+      } else if (state.score >= 10) {
+        msg = 'හොඳ උත්සාහයක්! පියවරෙන් පියවර විසඳුම් නැවත බලා තවත් ලකුණු ලබා ගනිමු! 💪';
+      } else {
+        msg = 'කමක් නැහැ පුංචි දුවේ පුතේ! "සූත්‍ර සිහිපත් කිරීම" බලා නැවත උත්සාහ කරමු! 📘';
+      }
+      document.getElementById('resultMessage').textContent = msg;
+
+      const nextBtn = document.getElementById('nextQuizBtn');
+      if (state.activeQuiz.id < QUIZZES.length) {
+        nextBtn.classList.remove('hidden');
+      } else {
+        nextBtn.classList.add('hidden');
+      }
+
+      playSound('fanfare');
+      launchConfetti();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCurrentQuiz() {
+      if (state.activeQuiz) startQuiz(state.activeQuiz.id);
+    }
+
+    function startNextQuiz() {
+      if (state.activeQuiz && state.activeQuiz.id < QUIZZES.length) {
+        startQuiz(state.activeQuiz.id + 1);
+      }
+    }
+
+    function goHome() {
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.add('hidden');
+      document.getElementById('headerHomeBtn').classList.add('hidden');
+      document.getElementById('homeView').classList.remove('hidden');
+      renderQuizzesGrid();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function launchConfetti() {
+      const colors = ['#0284c7', '#10b981', '#f59e0b', '#ec4899', '#6366f1'];
+      for (let i = 0; i < 55; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece rounded-sm';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        piece.style.animationDelay = (Math.random() * 0.4) + 's';
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4400);
+      }
+    }
+
+    window.onload = function () {
+      loadProgress();
+      renderQuizzesGrid();
+    };
+  </script>
+</body>
+</html>
