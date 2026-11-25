@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3 ශ්‍රේණිය ගණිතය - අන්තර්ක්‍රියාකාරී ක්‍රියාකාරකම්</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Sans Sinhala & Fredoka -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Sinhala:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Sinhala', 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 50%, #fce7f3 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    .font-num {
+      font-family: 'Fredoka', 'Noto Sans Sinhala', sans-serif;
+    }
+    .bubbly-card {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    }
+    .bubbly-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+    }
+    .bubbly-btn {
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15);
+    }
+    .bubbly-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.85); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+    .confetti-piece {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      top: -20px;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b-4 border-sky-300 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <button onclick="goHome()" class="flex items-center gap-3 text-left group focus:outline-none">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-2xl shadow-md group-hover:scale-105 transition">
+          🦉
+        </div>
+        <div>
+          <span class="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-700">3 ශ්‍රේණිය ගණිතය</span>
+          <h1 class="text-lg sm:text-xl font-extrabold text-slate-800 leading-tight">ගණිත ගෙදර</h1>
+        </div>
+      </button>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Total Stars Counter -->
+        <div class="flex items-center gap-1.5 bg-amber-100 border-2 border-amber-300 px-3 py-1.5 rounded-2xl shadow-inner">
+          <span class="text-xl">⭐</span>
+          <span id="totalStarsDisplay" class="font-num font-bold text-amber-800 text-base sm:text-lg">0</span>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button id="soundToggleBtn" onclick="toggleSound()" title="ශබ්දය" class="w-11 h-11 rounded-2xl bg-indigo-100 hover:bg-indigo-200 border-2 border-indigo-300 flex items-center justify-center text-xl transition">
+          🔊
+        </button>
+
+        <!-- Home Button (visible in quiz mode) -->
+        <button id="headerHomeBtn" onclick="goHome()" class="hidden bubbly-btn bg-rose-500 hover:bg-rose-600 text-white font-bold px-3.5 py-2 rounded-2xl text-sm sm:text-base flex items-center gap-1.5">
+          <span>🏠</span>
+          <span class="hidden sm:inline">පාඩම් මාලාව</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+
+    <!-- VIEW 1: LESSON MENU -->
+    <section id="homeView" class="animate-pop">
+      <!-- Welcome Banner -->
+      <div class="bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3.5 py-1 rounded-full text-sm font-bold mb-3">
+            <span>🎒</span>
+            <span>පළමුවන හා දෙවන කොටස් - සම්පූර්ණ පාඩම් 22</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-snug">ආයුබෝවන් පුංචි යාළුවේ! 👋</h2>
+          <p class="text-sky-100 text-base sm:text-lg font-medium">
+            ඔබ කැමති පාඩමක් තෝරාගෙන රූප බලමින් ප්‍රශ්න 20කට පිළිතුරු දී තරු 20ක් දිනාගන්න!
+          </p>
+        </div>
+        <div class="hidden md:flex items-center justify-center absolute right-8 top-1/2 -translate-y-1/2 text-8xl animate-float opacity-95">
+          🚀
+        </div>
+      </div>
+
+      <!-- Filter Tabs (Part I / Part II / All) -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterLessons('all')" id="tab-all" class="filter-tab bubbly-btn px-4 py-2 rounded-2xl font-bold text-sm sm:text-base bg-sky-600 text-white">
+            සියලුම පාඩම් (22)
+          </button>
+          <button onclick="filterLessons('part1')" id="tab-part1" class="filter-tab bubbly-btn px-4 py-2 rounded-2xl font-bold text-sm sm:text-base bg-white text-slate-700 hover:bg-sky-50">
+            I කොටස (පාඩම් 1 - 11)
+          </button>
+          <button onclick="filterLessons('part2')" id="tab-part2" class="filter-tab bubbly-btn px-4 py-2 rounded-2xl font-bold text-sm sm:text-base bg-white text-slate-700 hover:bg-sky-50">
+            II කොටස (පාඩම් 12 - 22)
+          </button>
+        </div>
+        <div class="text-sm font-bold text-slate-600 bg-white/80 px-3.5 py-1.5 rounded-xl border border-slate-200">
+          සෑම පාඩමකටම ප්‍රශ්න 20 බැගින් ඇත ✨
+        </div>
+      </div>
+
+      <!-- Lessons Grid -->
+      <div id="lessonsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: INTERACTIVE QUIZ ARENA -->
+    <section id="quizView" class="hidden max-w-3xl mx-auto">
+      <!-- Lesson Header & Progress -->
+      <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-md border-2 border-sky-200 mb-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2.5">
+            <span id="quizLessonIcon" class="text-3xl">🧮</span>
+            <div>
+              <span id="quizLessonPart" class="text-xs font-bold text-sky-600 uppercase">I කොටස</span>
+              <h2 id="quizLessonTitle" class="text-lg sm:text-2xl font-extrabold text-slate-800">පාඩම</h2>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 bg-emerald-50 border-2 border-emerald-200 px-3.5 py-1.5 rounded-2xl">
+            <span class="text-sm font-bold text-emerald-700">ලකුණු:</span>
+            <span id="quizScoreDisplay" class="font-num font-extrabold text-lg text-emerald-700">0 / 20</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
+          <div id="quizProgressBar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-300" style="width: 5%"></div>
+        </div>
+
+        <!-- Question Number Pills (Quick Jump 1..20) -->
+        <div id="questionDots" class="flex flex-wrap gap-1.5 mt-3 justify-center">
+          <!-- 20 small indicator pills -->
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div id="questionCard" class="bg-white rounded-3xl p-5 sm:p-8 shadow-xl border-4 border-amber-200 animate-pop">
+        <div class="flex items-center justify-between mb-3">
+          <span id="questionCounterBadge" class="bg-amber-100 text-amber-800 font-extrabold px-3.5 py-1 rounded-full text-sm">
+            ප්‍රශ්නය 1 / 20
+          </span>
+          <span id="questionHintBadge" class="text-xs sm:text-sm font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+            රූපය හොඳින් බලන්න 👀
+          </span>
+        </div>
+
+        <!-- Question Prompt -->
+        <h3 id="questionPrompt" class="text-xl sm:text-2xl font-extrabold text-slate-800 mb-5 leading-relaxed">
+          ප්‍රශ්නය මෙතැන දිස්වේ...
+        </h3>
+
+        <!-- Rich Visual Illustration Box -->
+        <div id="questionVisual" class="bg-gradient-to-b from-sky-50 to-indigo-50/70 border-2 border-dashed border-sky-300 rounded-3xl p-4 sm:p-6 mb-6 flex flex-col items-center justify-center min-h-[160px] text-center overflow-x-auto">
+          <!-- Custom SVG / Emojis / Visuals rendered here -->
+        </div>
+
+        <!-- Answer Options Grid -->
+        <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+          <!-- 4 Big Kid-Friendly Option Buttons -->
+        </div>
+
+        <!-- Feedback Banner -->
+        <div id="feedbackBanner" class="hidden mt-6 p-4 rounded-2xl border-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span id="feedbackEmoji" class="text-4xl">🎉</span>
+            <div>
+              <h4 id="feedbackTitle" class="font-extrabold text-lg">හරි! හරිම දක්ෂයි!</h4>
+              <p id="feedbackText" class="text-sm font-semibold opacity-90">ඔබ නිවැරදි පිළිතුර තෝරා ගත්තා.</p>
+            </div>
+          </div>
+          <button id="nextQuestionBtn" onclick="nextQuestion()" class="bubbly-btn w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-6 py-3 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>ඊළඟ ප්‍රශ්නය</span>
+            <span>➡️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: LESSON COMPLETION CELEBRATION -->
+    <section id="resultView" class="hidden max-w-2xl mx-auto animate-pop">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-300 text-center">
+        <div class="text-7xl mb-4 animate-bounce">🏆</div>
+        <span class="inline-block bg-amber-100 text-amber-800 font-extrabold px-4 py-1 rounded-full text-sm mb-2">
+          පාඩම සාර්ථකව අවසන් කළා!
+        </span>
+        <h2 id="resultLessonName" class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-3">
+          ගණන් කිරීම
+        </h2>
+        <p id="resultEncouragement" class="text-lg font-bold text-emerald-600 mb-6">
+          සුබ පැතුම්! ඔබ ඉතාම දක්ෂ ලෙස ප්‍රශ්නවලට පිළිතුරු දුන්නා! 🌟
+        </p>
+
+        <!-- Score & Stars Box -->
+        <div class="grid grid-cols-2 gap-4 bg-gradient-to-br from-sky-50 to-amber-50 p-5 rounded-3xl border-2 border-amber-200 mb-8">
+          <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <div class="text-sm font-bold text-slate-500 mb-1">ලබාගත් ලකුණු</div>
+            <div id="finalScoreText" class="font-num text-3xl sm:text-4xl font-extrabold text-sky-600">20 / 20</div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <div class="text-sm font-bold text-slate-500 mb-1">දිනාගත් තරු</div>
+            <div id="finalStarsText" class="font-num text-3xl sm:text-4xl font-extrabold text-amber-500">⭐ 20</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="restartCurrentLesson()" class="bubbly-btn w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-extrabold px-6 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>🔄</span>
+            <span>නැවත කරන්න</span>
+          </button>
+          <button onclick="goHome()" class="bubbly-btn w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-6 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>📚</span>
+            <span>වෙනත් පාඩමක් තෝරන්න</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center py-6 text-slate-500 text-sm font-semibold">
+    3 ශ්‍රේණිය ගණිතය විෂය නිර්දේශය ඇසුරින් කුඩා දරුවන් වෙනුවෙන් නිර්මාණය කරන ලදී 🎈
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. AUDIO ENGINE (Web Audio API - No external URLs needed)
+    // =========================================================================
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundToggleBtn').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          // Happy ascending chime
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.25);
+          });
+        } else if (type === 'wrong') {
+          // Gentle low boop
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(165, now + 0.28);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 'fanfare') {
+          // Victory melody
+          const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+          const times = [0, 0.12, 0.24, 0.36, 0.52, 0.66];
+          notes.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + times[i]);
+            gain.gain.setValueAtTime(0.22, now + times[i]);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + times[i] + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + times[i]);
+            osc.stop(now + times[i] + 0.36);
+          });
+        }
+      } catch (e) {
+        // Ignore audio errors on restricted devices
+      }
+    }
+
+    // =========================================================================
+    // 2. SINHALA NUMBER NAME HELPER (1 to 999)
+    // =========================================================================
+    const onesWords = ["", "එක", "දෙක", "තුන", "හතර", "පහ", "හය", "හත", "අට", "නවය"];
+    const teensWords = ["දහය", "එකොළහ", "දොළහ", "දහතුන", "දහහතර", "පහළොව", "දහසය", "දහහත", "දහඅට", "දහනවය"];
+    const tensWords = ["", "දහය", "විසි", "තිස්", "හතළිස්", "පනස්", "හැට", "හැත්තෑ", "අසූ", "අනූ"];
+    const exactTensWords = ["", "දහය", "විස්ස", "තිහ", "හතළිහ", "පනහ", "හැට", "හැත්තෑව", "අසූව", "අනූව"];
+    const hundredsPrefix = ["", "එකසිය", "දෙසිය", "තුන්සිය", "හාරසිය", "පන්සිය", "හයසිය", "හත්සිය", "අටසිය", "නවසිය"];
+    const exactHundreds = ["", "සියය", "දෙසියය", "තුන්සියය", "හාරසියය", "පන්සියය", "හයසියය", "හත්සියය", "අටසියය", "නවසියය"];
+
+    function getSinhalaNumberName(n) {
+      if (n === 0) return "බින්දුව";
+      if (n < 10) return onesWords[n];
+      if (n < 20) return teensWords[n - 10];
+      if (n < 100) {
+        const t = Math.floor(n / 10);
+        const o = n % 10;
+        if (o === 0) return exactTensWords[t];
+        return `${tensWords[t]} ${onesWords[o]}`;
+      }
+      const h = Math.floor(n / 100);
+      const rem = n % 100;
+      if (rem === 0) return exactHundreds[h];
+      return `${hundredsPrefix[h]} ${getSinhalaNumberName(rem)}`;
+    }
+
+    // =========================================================================
+    // 3. SVG & VISUAL ILLUSTRATION BUILDERS FOR CHILDREN
+    // =========================================================================
+    function renderEmojiGroups(emoji, groups, perGroup, label = "") {
+      let html = `<div class="flex flex-wrap justify-center gap-3 max-w-xl">`;
+      for (let g = 0; g < groups; g++) {
+        html += `<div class="bg-white border-2 border-sky-300 rounded-2xl px-3 py-2 shadow-sm flex items-center gap-1 text-2xl sm:text-3xl">`;
+        for (let i = 0; i < perGroup; i++) {
+          html += `<span>${emoji}</span>`;
+        }
+        html += `</div>`;
+      }
+      html += `</div>`;
+      if (label) {
+        html += `<div class="mt-3 text-sm font-bold text-slate-600 bg-white/80 px-3 py-1 rounded-full">${label}</div>`;
+      }
+      return html;
+    }
+
+    function renderBase10Blocks(hundreds, tens, ones, color = "#f59e0b") {
+      let html = `<div class="flex flex-wrap items-end justify-center gap-6 bg-white p-4 rounded-2xl border-2 border-slate-200 shadow-inner">`;
+      if (hundreds > 0) {
+        html += `<div class="flex flex-col items-center"><div class="flex gap-1.5">`;
+        for (let h = 0; h < hundreds; h++) {
+          html += `<div class="w-12 h-12 rounded-md border-2 border-emerald-700 bg-emerald-400 grid grid-cols-5 grid-rows-5 gap-px p-0.5 shadow-sm" title="සියයේ කොටුවක්">
+            ${Array(25).fill('<div class="bg-emerald-200/60"></div>').join('')}
+          </div>`;
+        }
+        html += `</div><span class="text-xs font-extrabold text-emerald-700 mt-1.5">සියයේ ඒවා (${hundreds})</span></div>`;
+      }
+      if (tens >= 0) {
+        html += `<div class="flex flex-col items-center"><div class="flex gap-1.5 min-h-[64px] items-end">`;
+        for (let t = 0; t < tens; t++) {
+          html += `<div class="w-3.5 h-16 rounded-sm border border-amber-700 bg-amber-400 flex flex-col justify-between p-px shadow-sm">
+            ${Array(5).fill('<div class="h-px bg-amber-700/40 w-full"></div>').join('')}
+          </div>`;
+        }
+        if (tens === 0) html += `<span class="text-slate-400 text-xs font-bold pb-4">නැත</span>`;
+        html += `</div><span class="text-xs font-extrabold text-amber-700 mt-1.5">දහයේ ඒවා (${tens})</span></div>`;
+      }
+      if (ones >= 0) {
+        html += `<div class="flex flex-col items-center"><div class="flex flex-wrap gap-1 max-w-[90px] min-h-[64px] items-end justify-center">`;
+        for (let o = 0; o < ones; o++) {
+          html += `<div class="w-3.5 h-3.5 rounded-sm border border-sky-700 bg-sky-400 shadow-sm"></div>`;
+        }
+        if (ones === 0) html += `<span class="text-slate-400 text-xs font-bold pb-4">නැත</span>`;
+        html += `</div><span class="text-xs font-extrabold text-sky-700 mt-1.5">එකේ ඒවා (${ones})</span></div>`;
+      }
+      html += `</div>`;
+      return html;
+    }
+
+    function renderAbacusSVG(hundreds, tens, ones, showHundreds = true) {
+      const cols = showHundreds
+        ? [{ label: 'සී', val: hundreds, color: '#10b981' }, { label: 'ද', val: tens, color: '#f59e0b' }, { label: 'එ', val: ones, color: '#3b82f6' }]
+        : [{ label: 'ද', val: tens, color: '#f59e0b' }, { label: 'එ', val: ones, color: '#3b82f6' }];
+      const width = showHundreds ? 180 : 130;
+      let svg = `<svg width="${width}" height="150" viewBox="0 0 ${width} 150" class="bg-white rounded-2xl border-2 border-slate-200 p-2 shadow-sm">`;
+      svg += `<rect x="15" y="120" width="${width - 30}" height="12" rx="6" fill="#78350f"/>`;
+      cols.forEach((col, idx) => {
+        const cx = showHundreds ? 40 + idx * 50 : 42 + idx * 46;
+        svg += `<line x1="${cx}" y1="20" x2="${cx}" y2="120" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>`;
+        for (let b = 0; b < col.val; b++) {
+          const cy = 112 - b * 9.5;
+          svg += `<ellipse cx="${cx}" cy="${cy}" rx="14" ry="4.5" fill="${col.color}" stroke="#1e293b" stroke-width="1.2"/>`;
+        }
+        svg += `<text x="${cx}" y="144" text-anchor="middle" font-size="14" font-weight="800" fill="#1e293b">${col.label}</text>`;
+      });
+      svg += `</svg>`;
+      return svg;
+    }
+
+    function renderClockSVG(hour) {
+      const angle = (hour % 12) * 30;
+      let svg = `<svg width="160" height="160" viewBox="0 0 160 160" class="drop-shadow-md">
+        <circle cx="80" cy="80" r="74" fill="#38bdf8" stroke="#0284c7" stroke-width="4"/>
+        <circle cx="80" cy="80" r="62" fill="#ffffff" stroke="#1e293b" stroke-width="3"/>`;
+      for (let i = 1; i <= 12; i++) {
+        const a = (i * 30 - 90) * (Math.PI / 180);
+        const nx = 80 + 48 * Math.cos(a);
+        const ny = 80 + 48 * Math.sin(a) + 5;
+        svg += `<text x="${nx}" y="${ny}" text-anchor="middle" font-size="14" font-weight="800" fill="#1e293b" font-family="Fredoka, sans-serif">${i}</text>`;
+      }
+      // Minute hand pointing to 12
+      svg += `<line x1="80" y1="80" x2="80" y2="28" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>`;
+      // Hour hand
+      svg += `<g transform="rotate(${angle} 80 80)">
+        <line x1="80" y1="80" x2="80" y2="44" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+      </g>`;
+      svg += `<circle cx="80" cy="80" r="6" fill="#f59e0b" stroke="#1e293b" stroke-width="2"/></svg>`;
+      return svg;
+    }
+
+    function renderCrossOutVisual(emoji, total, subtract) {
+      let html = `<div class="flex flex-wrap justify-center gap-2 max-w-md bg-white p-4 rounded-2xl border-2 border-rose-200">`;
+      for (let i = 0; i < total; i++) {
+        const crossed = i >= total - subtract;
+        html += `<div class="relative text-3xl p-1 ${crossed ? 'opacity-45' : ''}">
+          <span>${emoji}</span>
+          ${crossed ? '<span class="absolute inset-0 flex items-center justify-center text-rose-600 font-black text-3xl">❌</span>' : ''}
+        </div>`;
+      }
+      html += `</div><div class="mt-2 text-sm font-bold text-slate-600">මුළු ගණන ${total}න් ${subtract}ක් ඉවත් කළ විට</div>`;
+      return html;
+    }
+
+    function renderShapeSVG(shapeName) {
+      const shapes = {
+        'සමචතුරස්‍රය': `<svg width="130" height="130" viewBox="0 0 130 130"><rect x="20" y="20" width="90" height="90" rx="6" fill="#ec4899" stroke="#831843" stroke-width="4"/></svg>`,
+        'ඍජුකෝණාස්‍රය': `<svg width="160" height="120" viewBox="0 0 160 120"><rect x="15" y="25" width="130" height="70" rx="6" fill="#f59e0b" stroke="#78350f" stroke-width="4"/></svg>`,
+        'ත්‍රිකෝණය': `<svg width="130" height="130" viewBox="0 0 130 130"><polygon points="65,15 115,110 15,110" fill="#10b981" stroke="#064e3b" stroke-width="4" stroke-linejoin="round"/></svg>`,
+        'වෘත්තය': `<svg width="130" height="130" viewBox="0 0 130 130"><circle cx="65" cy="65" r="48" fill="#3b82f6" stroke="#1e3a8a" stroke-width="4"/></svg>`,
+        'ඝනකය': `<svg width="140" height="140" viewBox="0 0 140 140">
+          <polygon points="30,45 85,45 85,100 30,100" fill="#4ade80" stroke="#14532d" stroke-width="3"/>
+          <polygon points="30,45 55,25 110,25 85,45" fill="#86efac" stroke="#14532d" stroke-width="3"/>
+          <polygon points="85,45 110,25 110,80 85,100" fill="#22c55e" stroke="#14532d" stroke-width="3"/>
+        </svg>`,
+        'ඝනකාභය': `<svg width="170" height="130" viewBox="0 0 170 130">
+          <polygon points="20,50 115,50 115,105 20,105" fill="#fb923c" stroke="#7c2d12" stroke-width="3"/>
+          <polygon points="20,50 50,25 145,25 115,50" fill="#fdba74" stroke="#7c2d12" stroke-width="3"/>
+          <polygon points="115,50 145,25 145,80 115,105" fill="#f97316" stroke="#7c2d12" stroke-width="3"/>
+        </svg>`,
+        'සිලින්ඩරය': `<svg width="130" height="140" viewBox="0 0 130 140">
+          <path d="M30,35 L30,105 A35,14 0 0,0 100,105 L100,35 Z" fill="#60a5fa" stroke="#1e3a8a" stroke-width="3"/>
+          <ellipse cx="65" cy="35" rx="35" ry="14" fill="#93c5fd" stroke="#1e3a8a" stroke-width="3"/>
+        </svg>`,
+        'චතුස්තලය': `<svg width="140" height="140" viewBox="0 0 140 140">
+          <polygon points="70,18 22,108 82,118" fill="#f472b6" stroke="#831843" stroke-width="3"/>
+          <polygon points="70,18 82,118 118,95" fill="#db2777" stroke="#831843" stroke-width="3"/>
+        </svg>`,
+        'ගෝලය': `<svg width="130" height="130" viewBox="0 0 130 130">
+          <defs><radialGradient id="ballGrad" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#fde047"/><stop offset="100%" stop-color="#ea580c"/></radialGradient></defs>
+          <circle cx="65" cy="65" r="48" fill="url(#ballGrad)" stroke="#7c2d12" stroke-width="3"/>
+          <ellipse cx="50" cy="48" rx="10" ry="6" fill="#ffffff" opacity="0.6" transform="rotate(-25 50 48)"/>
+        </svg>`
+      };
+      return shapes[shapeName] || shapes['වෘත්තය'];
+    }
+
+    function renderFractionSVG(type, shape = 'circle') {
+      if (shape === 'circle') {
+        if (type === 'half') {
+          return `<svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="52" fill="#ffffff" stroke="#15803d" stroke-width="4"/>
+            <path d="M65,13 A52,52 0 0,0 65,117 Z" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
+          </svg>`;
+        } else if (type === 'quarter') {
+          return `<svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="52" fill="#ffffff" stroke="#15803d" stroke-width="4"/>
+            <path d="M65,65 L65,13 A52,52 0 0,1 117,65 Z" fill="#facc15" stroke="#854d0e" stroke-width="3"/>
+            <line x1="65" y1="13" x2="65" y2="117" stroke="#15803d" stroke-width="2.5"/>
+            <line x1="13" y1="65" x2="117" y2="65" stroke="#15803d" stroke-width="2.5"/>
+          </svg>`;
+        } else {
+          return `<svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="52" fill="#ffffff" stroke="#dc2626" stroke-width="4"/>
+            <path d="M25,32 A52,52 0 0,0 95,108 Z" fill="#f87171" stroke="#dc2626" stroke-width="2.5"/>
+          </svg>`;
+        }
+      } else {
+        if (type === 'half') {
+          return `<svg width="140" height="110" viewBox="0 0 140 110">
+            <rect x="15" y="15" width="110" height="80" fill="#ffffff" stroke="#0369a1" stroke-width="4"/>
+            <rect x="15" y="15" width="55" height="80" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/>
+          </svg>`;
+        } else {
+          return `<svg width="140" height="110" viewBox="0 0 140 110">
+            <rect x="15" y="15" width="110" height="80" fill="#ffffff" stroke="#7e22ce" stroke-width="4"/>
+            <rect x="15" y="15" width="55" height="40" fill="#c084fc" stroke="#7e22ce" stroke-width="3"/>
+            <line x1="70" y1="15" x2="70" y2="95" stroke="#7e22ce" stroke-width="2.5"/>
+            <line x1="15" y1="55" x2="125" y2="55" stroke="#7e22ce" stroke-width="2.5"/>
+          </svg>`;
+        }
+      }
+    }
+
+    function renderMoneyVisual(items) {
+      let html = `<div class="flex flex-wrap justify-center gap-3">`;
+      items.forEach(val => {
+        if (val <= 10) {
+          const colors = { 1: '#e2e8f0', 2: '#cbd5e1', 5: '#fcd34d', 10: '#fde047' };
+          html += `<div class="w-16 h-16 rounded-full border-4 border-amber-600 flex flex-col items-center justify-center shadow-md font-num font-extrabold text-slate-800" style="background:${colors[val] || '#fde047'}">
+            <span class="text-[10px]">රු.</span>
+            <span class="text-xl leading-none">${val}</span>
+          </div>`;
+        } else {
+          const noteColors = { 20: '#f9a8d4', 50: '#93c5fd', 100: '#fdba74', 500: '#d8b4fe' };
+          html += `<div class="w-28 h-14 rounded-xl border-2 border-slate-700 flex items-center justify-between px-3 shadow-md font-num font-extrabold text-slate-900" style="background:${noteColors[val] || '#86efac'}">
+            <span class="text-xs">රුපියල්</span>
+            <span class="text-xl">${val}</span>
+          </div>`;
+        }
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    function renderContainersVisual(containers) {
+      let html = `<div class="flex flex-wrap items-end justify-center gap-5 bg-white p-4 rounded-2xl border-2 border-sky-200">`;
+      containers.forEach(c => {
+        const h = Math.max(45, c.liters * 14);
+        html += `<div class="flex flex-col items-center">
+          <div class="w-16 rounded-b-xl border-x-4 border-b-4 border-slate-600 bg-sky-300/80 flex items-end justify-center relative overflow-hidden" style="height:${h}px">
+            <div class="w-full bg-sky-500/80 h-4/5 animate-pulse"></div>
+            <span class="absolute inset-0 flex items-center justify-center font-num font-extrabold text-slate-900 text-sm">${c.liters} l</span>
+          </div>
+          <span class="mt-1.5 font-extrabold text-sm bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-lg">${c.name}</span>
+        </div>`;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    function renderPictureChart(title, rows, icon = '⭐') {
+      let html = `<div class="w-full max-w-md bg-white p-4 rounded-2xl border-2 border-indigo-200 text-left shadow-sm">
+        <div class="font-extrabold text-center text-indigo-800 mb-3 text-base">${title}</div>
+        <div class="space-y-2">`;
+      rows.forEach(r => {
+        html += `<div class="flex items-center gap-2 border-b border-slate-100 pb-1.5">
+          <div class="w-24 font-bold text-sm text-slate-700 shrink-0">${r.label}</div>
+          <div class="flex flex-wrap gap-1 text-lg">${Array(r.count).fill(icon).join('')}</div>
+          <div class="ml-auto font-num font-bold text-xs text-slate-400">(${r.count})</div>
+        </div>`;
+      });
+      html += `</div></div>`;
+      return html;
+    }
+
+    // =========================================================================
+    // 4. UTILITY TO SHUFFLE & BUILD 4 UNIQUE OPTIONS
+    // =========================================================================
+    function makeOptions(correct, distractors) {
+      const set = new Set([String(correct)]);
+      for (const d of distractors) {
+        if (set.size < 4 && String(d) !== String(correct)) {
+          set.add(String(d));
+        }
+      }
+      const arr = Array.from(set);
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return { options: arr, answer: String(correct) };
+    }
+
+    // =========================================================================
+    // 5. ALL 22 LESSONS (EACH GENERATES EXACTLY 20 RICH VISUAL QUESTIONS!)
+    // =========================================================================
+    const LESSONS = [
+      {
+        id: 1, part: 'part1', icon: '👟', color: 'from-pink-500 to-rose-500',
+        title: '1. ගණන් කිරීම',
+        subtitle: 'දෙකෙන් දෙක, පහෙන් පහ සහ දහයෙන් දහය ගණන් කරමු',
+        generateQuestions() {
+          const qs = [];
+          const items2 = [
+            { emoji: '👟', name: 'සපත්තු', groups: 5 },
+            { emoji: '🌸', name: 'මල්', groups: 7 },
+            { emoji: '🥥', name: 'පොල් ගෙඩි', groups: 10 },
+            { emoji: '🍒', name: 'චෙරි ගෙඩි', groups: 6 },
+            { emoji: '🧦', name: 'මේස්', groups: 8 },
+            { emoji: '👀', name: 'ඇස්', groups: 9 },
+            { emoji: '🧤', name: 'අත්වැසුම්', groups: 4 }
+          ];
+          items2.forEach(it => {
+            const ans = it.groups * 2;
+            const { options, answer } = makeOptions(ans, [ans + 2, ans - 2, ans + 4, it.groups]);
+            qs.push({
+              prompt: `දෙකෙන් දෙක ගණන් කරමින් මුළු ${it.name} ගණන සොයන්න.`,
+              visual: renderEmojiGroups(it.emoji, it.groups, 2, `කණ්ඩායම් ${it.groups}ක 2 බැගින් ඇත`),
+              options, answer
+            });
+          });
+
+          const items5 = [
+            { emoji: '🖐️', name: 'අත්වල ඇඟිලි', groups: 4 },
+            { emoji: '🍌', name: 'කෙසෙල් ගෙඩි', groups: 5 },
+            { emoji: '🌺', name: 'මල් පෙති', groups: 3 },
+            { emoji: '📿', name: 'පබලු', groups: 6 },
+            { emoji: '⭐', name: 'තරු', groups: 7 },
+            { emoji: '✏️', name: 'පැන්සල්', groups: 8 }
+          ];
+          items5.forEach(it => {
+            const ans = it.groups * 5;
+            const { options, answer } = makeOptions(ans, [ans + 5, ans - 5, ans + 10, it.groups * 2]);
+            qs.push({
+              prompt: `පහෙන් පහ ගණන් කරමින් මුළු ${it.name} ගණන සොයන්න.`,
+              visual: renderEmojiGroups(it.emoji, it.groups, 5, `එක් ගොඩක 5 බැගින් ගොඩවල් ${it.groups}කි`),
+              options, answer
+            });
+          });
+
+          const items10 = [
+            { emoji: '🍬', name: 'ටොෆී', groups: 8 },
+            { emoji: '🥛', name: 'කිරි ටින්', groups: 6 },
+            { emoji: '📚', name: 'පොත්', groups: 10 },
+            { emoji: '🍎', name: 'ජම්බු ගෙඩි', groups: 3 },
+            { emoji: '🍃', name: 'කොළ', groups: 5 },
+            { emoji: '🎈', name: 'බැලුන්', groups: 4 },
+            { emoji: '🖍️', name: 'පාට කූරු', groups: 7 }
+          ];
+          items10.forEach(it => {
+            const ans = it.groups * 10;
+            const { options, answer } = makeOptions(ans, [ans + 10, ans - 10, ans + 20, it.groups * 5]);
+            qs.push({
+              prompt: `දහයෙන් දහය ගණන් කරමින් මුළු ${it.name} ගණන සොයන්න.`,
+              visual: `<div class="flex flex-wrap justify-center gap-2.5 max-w-xl">
+                ${Array(it.groups).fill(`<div class="bg-white border-2 border-amber-400 rounded-2xl px-3 py-2 font-bold text-slate-700 shadow-sm flex items-center gap-1.5"><span class="text-2xl">${it.emoji}</span><span class="font-num text-amber-700">10</span></div>`).join('')}
+              </div><div class="mt-2 text-sm font-bold text-slate-600">10 බැගින් වූ කණ්ඩායම් ${it.groups}ක් ඇත</div>`,
+              options, answer
+            });
+          });
+          return qs.slice(0, 20);
+        }
+      },
+
+      {
+        id: 2, part: 'part1', icon: '🔢', color: 'from-sky-500 to-blue-600',
+        title: '2. සංඛ්‍යා - 1',
+        subtitle: '100 තෙක් සංඛ්‍යා, දහයේ ඒවා හා එකේ ඒවා',
+        generateQuestions() {
+          const qs = [];
+          // 7 Base-10 block questions
+          [[3, 4], [5, 7], [7, 0], [2, 5], [4, 1], [8, 6], [6, 9]].forEach(([t, o]) => {
+            const num = t * 10 + o;
+            const { options, answer } = makeOptions(num, [o * 10 + t, num + 10, num - 1, num + 1]);
+            qs.push({
+              prompt: `රූපයේ දැක්වෙන දහයේ ඒවා සහ එකේ ඒවා අනුව සංඛ්‍යාව කුමක් ද?`,
+              visual: renderBase10Blocks(0, t, o),
+              options, answer
+            });
+          });
+          // 7 Number name questions
+          [13, 43, 29, 51, 70, 88, 95].forEach(num => {
+            const name = getSinhalaNumberName(num);
+            const { options, answer } = makeOptions(num, [num + 10, num - 10, Number(String(num).split('').reverse().join('')) || num + 2, num + 1]);
+            qs.push({
+              prompt: `"${name}" යන සංඛ්‍යා නාමයට අදාළ සංඛ්‍යාංකය තෝරන්න.`,
+              visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-sky-300 text-2xl font-extrabold text-sky-800 shadow-sm">📝 ${name}</div>`,
+              options, answer
+            });
+          });
+          // 6 Expanded form questions
+          [[20, 3], [60, 4], [80, 2], [30, 5], [50, 7], [90, 0]].forEach(([t, o]) => {
+            const num = t + o;
+            const { options, answer } = makeOptions(num, [num + 10, num - 5, o * 10 + (t / 10), num + 2]);
+            qs.push({
+              prompt: `${t} + ${o} මගින් නිරූපණය වන සංඛ්‍යාව කීය ද?`,
+              visual: `<div class="flex items-center gap-3 text-3xl font-num font-extrabold">
+                <span class="bg-amber-100 border-2 border-amber-400 px-4 py-2 rounded-2xl text-amber-800">${t}</span>
+                <span>+</span>
+                <span class="bg-sky-100 border-2 border-sky-400 px-4 py-2 rounded-2xl text-sky-800">${o}</span>
+                <span>= ?</span>
+              </div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 3, part: 'part1', icon: '➕', color: 'from-emerald-500 to-green-600',
+        title: '3. සංඛ්‍යා එකතු කිරීම - 1',
+        subtitle: 'ඉලක්කම් දෙකේ සංඛ්‍යා එකතු කිරීම (ගෙන යාමක් නැති)',
+        generateQuestions() {
+          const qs = [];
+          const pairs = [
+            [12, 25], [11, 17], [34, 23], [15, 30], [22, 55],
+            [20, 19], [30, 50], [23, 23], [45, 54], [63, 36],
+            [25, 34], [55, 42], [24, 62], [36, 43], [21, 78]
+          ];
+          pairs.forEach(([a, b]) => {
+            const sum = a + b;
+            const { options, answer } = makeOptions(sum, [sum + 10, sum - 10, sum + 1, sum - 1]);
+            qs.push({
+              prompt: `පහත සංඛ්‍යා දෙක එකතු කර පිළිතුර තෝරන්න.`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-emerald-300 font-num text-3xl font-extrabold text-slate-800 shadow-sm inline-block text-right">
+                <div>${a}</div>
+                <div class="border-b-4 border-slate-700 pb-1">+ ${b}</div>
+                <div class="text-emerald-600 pt-1">?</div>
+              </div>`,
+              options, answer
+            });
+          });
+          const stories = [
+            { text: 'වට්ටියක අමු අඹ ගෙඩි 12ක් සහ ඉදුණු අඹ ගෙඩි 16ක් ඇත. මුළු අඹ ගෙඩි ගණන කීය ද?', a: 12, b: 16, emoji: '🥭' },
+            { text: 'එක අත්තක මල් 23ක් සහ තවත් අත්තක මල් 20කි. මුළු මල් ගණන කීය ද?', a: 23, b: 20, emoji: '🌺' },
+            { text: 'පෙට්ටියක රතු බිත්තර 43ක් සහ සුදු බිත්තර 25ක් ඇත. මුළු බිත්තර ගණන කීය ද?', a: 43, b: 25, emoji: '🥚' },
+            { text: 'සමන් පන්තියේ ළමයි 30කි. නෙලුම් පන්තියේ ළමයි 40කි. මුළු ළමයි ගණන කීය ද?', a: 30, b: 40, emoji: '🧒' },
+            { text: 'පළමු පේළියේ කොඩි 54ක් සහ දෙවන පේළියේ කොඩි 45ක් ඇත. මුළු කොඩි ගණන කීය ද?', a: 54, b: 45, emoji: '🚩' }
+          ];
+          stories.forEach(s => {
+            const sum = s.a + s.b;
+            const { options, answer } = makeOptions(sum, [sum - 10, sum + 1, sum - 2, s.b - s.a + 20]);
+            qs.push({
+              prompt: s.text,
+              visual: `<div class="flex items-center gap-4 text-2xl font-bold bg-white px-5 py-3 rounded-2xl border-2 border-emerald-200">
+                <span class="text-4xl">${s.emoji}</span>
+                <span class="font-num text-emerald-700">${s.a} + ${s.b} = ?</span>
+              </div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 4, part: 'part1', icon: '📏', color: 'from-amber-500 to-yellow-600',
+        title: '4. දිග මැනීම',
+        subtitle: 'අභිමත ඒකක සහ සම්මත ඒකකය (මීටරය - m)',
+        generateQuestions() {
+          const items = [
+            { q: 'දිග මැනීමේ සම්මත ඒකකය කුමක් ද?', vis: '📏 මීටර රූල', ans: 'මීටරය', d: ['කිලෝග්‍රෑමය', 'ලීටරය', 'තත්පරය'] },
+            { q: 'මීටරය දැක්වීමට භාවිතා කරන සම්මත සංකේතය කුමක් ද?', vis: '📐 සම්මත සංකේතය', ans: 'm', d: ['kg', 'l', 'cm'] },
+            { q: 'රූපයේ පැන්සලේ දිග ගිනිකූරු කීයකට සමාන ද?', vis: `<div class="space-y-2"><div class="text-3xl">✏️✏️✏️</div><div class="text-xl tracking-widest"> match | match | match | match | match </div></div>`, ans: 'ගිනිකූරු 5', d: ['ගිනිකූරු 3', 'ගිනිකූරු 7', 'ගිනිකූරු 2'] },
+            { q: 'එකම මේසයක දිග පැන්සලෙන් මනින විට සහ ගිනිකූරෙන් මනින විට කුමක් සිදු වේ ද?', vis: '🪑 ✏️ vs 🥢', ans: 'විවිධ අගයන් ලැබේ', d: ['එකම අගය ලැබේ', 'මැනිය නොහැක', 'බින්දුව ලැබේ'] },
+            { q: '"මීටර 7" සංකේතය භාවිතා කර ලියන්න.', vis: '🌳 ↔️ 🌳 (මීටර 7)', ans: '7 m', d: ['7 kg', '7 l', 'm 7'] },
+            { q: '"12 m" වචනයෙන් කියවන ආකාරය තෝරන්න.', vis: '🏠 ↔️ 🚪 = 12 m', ans: 'මීටර දොළහ', d: ['ලීටර දොළහ', 'කිලෝග්‍රෑම් දොළහ', 'මීටර විස්ස'] },
+            { q: 'පහත දේවල් අතරින් මීටර 1ට වඩා දිගින් වැඩි දෙය කුමක් ද?', vis: '🚌 බස් රථය vs ✏️ පැන්සල', ans: 'බස් රථයක දිග', d: ['පැන්සලක දිග', 'මකනයක දිග', 'ගිනිකූරක දිග'] },
+            { q: 'පහත දේවල් අතරින් මීටර 1ට වඩා දිගින් අඩු දෙය කුමක් ද?', vis: '📘 පොත vs 🏫 පන්ති කාමරය', ans: 'ගණිත වැඩපොතේ දිග', d: ['පන්ති කාමරයේ දිග', 'පාසල් පිට්ටනියේ දිග', 'පාලමක දිග'] },
+            { q: 'දොරක උස සාමාන්‍යයෙන් කොපමණ විය හැකි ද?', vis: '🚪 නිවසේ දොර', ans: '2 m', d: ['20 m', '50 m', '100 m'] },
+            { q: 'ගස් දෙකක් අතර දුර මීටර 5ක් නම් එය සංකේතයෙන් ලියන්න.', vis: '🌴 ⬅️ 5 ➡️ 🌴', ans: '5 m', d: ['5 l', '5 kg', '50 m'] },
+            { q: 'පාලමක දිග 10 m වේ. මෙහි "m" යන්නෙන් අදහස් වන්නේ කුමක් ද?', vis: '🌉 10 m', ans: 'මීටර', d: ['ලීටර', 'මිනිත්තු', 'මාස'] },
+            { q: 'පැන්සල් 3ක් දිග ළමා මේසයක්, පැස්ටල් කූරුවලින් මැන්නොත් ලැබෙන වාර ගණන කුමක් වේ ද?', vis: '✏️ පැන්සල දිගයි | 🖍️ පැස්ටල් කූර කොටයි', ans: '3ට වඩා වැඩි ගණනක්', d: ['3ට වඩා අඩු ගණනක්', 'හරියටම 3ක්', '1ක්'] },
+            { q: 'කමල් සිතූ දිග 9 m වූ අතර සැබෑ දිග 8 m විය. සිතූ දිග සහ සැබෑ දිග අතර වෙනස කීය ද?', vis: '🤔 9 m | 📏 8 m', ans: '1 m', d: ['2 m', '17 m', '0 m'] },
+            { q: 'කොඩි කණුවක උස 6 m වේ. දොරක උස 2 m වේ. වඩා උස කුමක් ද?', vis: '🚩 6 m vs 🚪 2 m', ans: 'කොඩි කණුව', d: ['දොර', 'දෙකම සමානයි', 'කිව නොහැක'] },
+            { q: 'නිවසේ සිට ගේට්ටුවට දුර මීටර 12කි. නිවසේ සිට ළිඳට දුර මීටර 10කි. නිවසට වඩා ළඟ කුමක් ද?', vis: '🏠 ➡️ 🪣 (10 m) | 🏠 ➡️ 🚧 (12 m)', ans: 'ළිඳ', d: ['ගේට්ටුව', 'දෙකම එකම දුරින්', 'පාසල'] },
+            { q: 'සම්මත දිග මැනීමේ ඒකකයක් අවශ්‍ය වන්නේ ඇයි?', vis: '📏 සම්මත මීටර රූල', ans: 'කවුරු මැන්නත් නිවැරදි එකම අගයක් ලබා ගැනීමට', d: ['විවිධ අගයන් ලබා ගැනීමට', 'බර මැනීමට', 'කාලය මැනීමට'] },
+            { q: 'මීටර 45ක් සංකේතයෙන් ලියන නිවැරදි ආකාරය කුමක් ද?', vis: '🛣️ මීටර 45', ans: '45 m', d: ['45 kg', '45 l', '45 cm'] },
+            { q: '64 m යන්න වචනයෙන් කියවන්න.', vis: '🧵 64 m', ans: 'මීටර හැට හතර', d: ['මීටර හතළිස් හය', 'ලීටර හැට හතර', 'මීටර හැට'] },
+            { q: 'මීටර 2ක රිබන් පටියක් සහ මීටර 3ක රිබන් පටියක් එකට තැබූ විට මුළු දිග කීය ද?', vis: '🎀 2 m + 🎀 3 m', ans: '5 m', d: ['6 m', '1 m', '4 m'] },
+            { q: 'ඉණිමඟක උස මීටර 5කි. එය සංකේතයෙන් දක්වන්න.', vis: '🪜 උස මීටර 5', ans: '5 m', d: ['5 kg', '5 l', '50 m'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold text-slate-800">${it.vis}</div>`, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 5, part: 'part1', icon: '➖', color: 'from-rose-500 to-red-600',
+        title: '5. සංඛ්‍යා අඩු කිරීම - 1',
+        subtitle: '20ට අඩු සංඛ්‍යා අඩු කිරීම',
+        generateQuestions() {
+          const qs = [];
+          const visProblems = [
+            { emoji: '🌸', total: 12, sub: 6 },
+            { emoji: '🌼', total: 18, sub: 9 },
+            { emoji: '🐠', total: 13, sub: 7 },
+            { emoji: '🌳', total: 15, sub: 6 },
+            { emoji: '🚩', total: 16, sub: 8 },
+            { emoji: '🔺', total: 14, sub: 5 },
+            { emoji: '⭐', total: 11, sub: 4 }
+          ];
+          visProblems.forEach(p => {
+            const ans = p.total - p.sub;
+            const { options, answer } = makeOptions(ans, [ans + 1, ans - 1, ans + 2, p.total]);
+            qs.push({
+              prompt: `${p.total}න් ${p.sub}ක් ඉවත් කළ විට ඉතුරු ප්‍රමාණය කීය ද?`,
+              visual: renderCrossOutVisual(p.emoji, p.total, p.sub),
+              options, answer
+            });
+          });
+          const numProblems = [
+            [9, 5], [11, 3], [12, 4], [16, 7], [10, 5],
+            [13, 5], [14, 6], [15, 7], [17, 8], [12, 9],
+            [15, 10], [13, 9], [18, 9]
+          ];
+          numProblems.forEach(([a, b]) => {
+            const ans = a - b;
+            const { options, answer } = makeOptions(ans, [ans + 1, Math.max(0, ans - 1), ans + 2, a]);
+            qs.push({
+              prompt: `අඩු කර නිවැරදි පිළිතුර තෝරන්න: ${a} - ${b} = ?`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-rose-300 font-num text-3xl font-extrabold text-slate-800 shadow-sm">
+                ${a} − ${b} = <span class="text-rose-600">?</span>
+              </div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 6, part: 'part1', icon: '⏰', color: 'from-violet-500 to-purple-600',
+        title: '6. කාලය',
+        subtitle: 'සතියේ දවස්, අවුරුද්දේ මාස සහ ඔරලෝසුවෙන් වේලාව කියවීම',
+        generateQuestions() {
+          const qs = [];
+          const clocks = [12, 3, 6, 9, 5, 10, 7, 4, 8, 1];
+          clocks.forEach(hr => {
+            const { options, answer } = makeOptions(`වේලාව ${hr}`, [`වේලාව ${hr === 12 ? 1 : hr + 1}`, `වේලාව ${hr === 1 ? 12 : hr - 1}`, 'වේලාව 12']);
+            qs.push({
+              prompt: `ඔරලෝසු මුහුණතෙහි දැක්වෙන වේලාව කීය ද?`,
+              visual: renderClockSVG(hr),
+              options, answer
+            });
+          });
+          const textQs = [
+            { q: 'සතියේ පළමුවන දවස කුමක් ද?', vis: '📅 සතියේ දින 7', ans: 'සඳුදා', d: ['ඉරිදා', 'අඟහරුවාදා', 'සිකුරාදා'] },
+            { q: 'බදාදාට පසු දවස කවදා ද?', vis: '📅 සඳුදා ➡️ අඟහරුවාදා ➡️ බදාදා ➡️ ?', ans: 'බ්‍රහස්පතින්දා', d: ['අඟහරුවාදා', 'සිකුරාදා', 'සෙනසුරාදා'] },
+            { q: 'ඉරිදාට පෙර දවස කවදා ද?', vis: '📅 ? ➡️ ඉරිදා', ans: 'සෙනසුරාදා', d: ['සඳුදා', 'සිකුරාදා', 'බදාදා'] },
+            { q: 'සතියේ අන්තිම දවස කුමක් ද?', vis: '📅 සතියේ 7 වන දවස', ans: 'ඉරිදා', d: ['සෙනසුරාදා', 'සඳුදා', 'සිකුරාදා'] },
+            { q: 'අවුරුද්දකට මාස කීයක් තිබේ ද?', vis: '🗓️ ජනවාරි සිට දෙසැම්බර් දක්වා', ans: '12', d: ['7', '10', '30'] },
+            { q: 'ශ්‍රී ලංකාවේ නිදහස් උත්සවය සමරන්නේ කුමන මාසයේ ද?', vis: '🇱🇰 ජාතික නිදහස් දිනය', ans: 'පෙබරවාරි', d: ['ජනවාරි', 'අප්‍රේල්', 'දෙසැම්බර්'] },
+            { q: 'සිංහල හා හින්දු අලුත් අවුරුද්ද පැවැත්වෙන්නේ කුමන මාසයේ ද?', vis: '☀️ කිරිබත් හා කැවිලි මේසය', ans: 'අප්‍රේල්', d: ['මැයි', 'මාර්තු', 'ජනවාරි'] },
+            { q: 'නත්තල උදාවන්නේ කුමන මාසයේ ද?', vis: '🎄 නත්තල් ගස', ans: 'දෙසැම්බර්', d: ['නොවැම්බර්', 'ජනවාරි', 'ඔක්තෝබර්'] },
+            { q: 'අප්‍රේල් මාසයට පෙර මාසය කුමක් ද?', vis: '🗓️ ? ➡️ අප්‍රේල්', ans: 'මාර්තු', d: ['මැයි', 'පෙබරවාරි', 'ජූනි'] },
+            { q: 'සැප්තැම්බර් මාසයට පසු මාසය කුමක් ද?', vis: '🗓️ සැප්තැම්බර් ➡️ ?', ans: 'ඔක්තෝබර්', d: ['අගෝස්තු', 'නොවැම්බර්', 'දෙසැම්බර්'] }
+          ];
+          textQs.forEach(t => {
+            const { options, answer } = makeOptions(t.ans, t.d);
+            qs.push({ prompt: t.q, visual: `<div class="text-xl font-bold text-purple-900 bg-white px-5 py-3 rounded-2xl border-2 border-purple-200">${t.vis}</div>`, options, answer });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 7, part: 'part1', icon: '🐰', color: 'from-orange-500 to-amber-500',
+        title: '7. ගුණ කිරීම - 1',
+        subtitle: 'දෙකෙහි ගුණන වගුව (2 ×)',
+        generateQuestions() {
+          const qs = [];
+          for (let i = 1; i <= 10; i++) {
+            const ans = i * 2;
+            const { options, answer } = makeOptions(ans, [ans + 2, Math.max(1, ans - 2), i + 2, ans + 4]);
+            qs.push({
+              prompt: `හා පැටවුන් ${i} දෙනෙකුට ඇති මුළු කන් ගණන කීය ද? (${i} × 2 = ?)`,
+              visual: renderEmojiGroups('🐰', i, 2, `එක් හාවෙකුට කන් 2 බැගින් හාවුන් ${i}කි`),
+              options, answer
+            });
+          }
+          const tableQs = [
+            { q: '3 × 2 = ?', ans: 6, d: [5, 8, 4] },
+            { q: '5 × 2 = ?', ans: 10, d: [7, 12, 8] },
+            { q: '7 × 2 = ?', ans: 14, d: [9, 12, 16] },
+            { q: '8 × 2 = ?', ans: 16, d: [10, 14, 18] },
+            { q: '9 × 2 = ?', ans: 18, d: [11, 16, 20] },
+            { q: '10 × 2 = ?', ans: 20, d: [12, 18, 10] },
+            { q: 'හිස් කොටුවට ගැළපෙන සංඛ්‍යාව තෝරන්න: [ ? ] × 2 = 8', ans: 4, d: [2, 6, 3] },
+            { q: 'හිස් කොටුවට ගැළපෙන සංඛ්‍යාව තෝරන්න: [ ? ] × 2 = 12', ans: 6, d: [4, 5, 10] },
+            { q: 'හිස් කොටුවට ගැළපෙන සංඛ්‍යාව තෝරන්න: 7 × [ ? ] = 14', ans: 2, d: [7, 4, 5] },
+            { q: 'පස් වරක් දෙක කීය ද?', ans: 10, d: [7, 5, 12] }
+          ];
+          tableQs.forEach(t => {
+            const { options, answer } = makeOptions(t.ans, t.d);
+            qs.push({
+              prompt: t.q,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-orange-300 font-num text-3xl font-extrabold text-orange-700">${t.q}</div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 8, part: 'part1', icon: '🧊', color: 'from-teal-500 to-cyan-600',
+        title: '8. ඝන වස්තු හා හැඩතල',
+        subtitle: 'සමතල හැඩතල සහ ඝන වස්තු හඳුනා ගනිමු',
+        generateQuestions() {
+          const items = [
+            { q: 'රූපයේ දැක්වෙන තල රූප හැඩයේ නම කුමක් ද?', shape: 'සමචතුරස්‍රය', ans: 'සමචතුරස්‍රය', d: ['ඍජුකෝණාස්‍රය', 'ත්‍රිකෝණය', 'වෘත්තය'] },
+            { q: 'රූපයේ දැක්වෙන තල රූප හැඩයේ නම කුමක් ද?', shape: 'ඍජුකෝණාස්‍රය', ans: 'ඍජුකෝණාස්‍රය', d: ['සමචතුරස්‍රය', 'ත්‍රිකෝණය', 'වෘත්තය'] },
+            { q: 'රූපයේ දැක්වෙන තල රූප හැඩයේ නම කුමක් ද?', shape: 'ත්‍රිකෝණය', ans: 'ත්‍රිකෝණය', d: ['සමචතුරස්‍රය', 'වෘත්තය', 'ඍජුකෝණාස්‍රය'] },
+            { q: 'රූපයේ දැක්වෙන තල රූප හැඩයේ නම කුමක් ද?', shape: 'වෘත්තය', ans: 'වෘත්තය', d: ['ගෝලය', 'සමචතුරස්‍රය', 'ත්‍රිකෝණය'] },
+            { q: 'රූපයේ දැක්වෙන ඝන වස්තුවේ නම කුමක් ද?', shape: 'ඝනකය', ans: 'ඝනකය', d: ['ඝනකාභය', 'සිලින්ඩරය', 'චතුස්තලය'] },
+            { q: 'රූපයේ දැක්වෙන ඝන වස්තුවේ නම කුමක් ද?', shape: 'ඝනකාභය', ans: 'ඝනකාභය', d: ['ඝනකය', 'චතුස්තලය', 'ගෝලය'] },
+            { q: 'රූපයේ දැක්වෙන ඝන වස්තුවේ නම කුමක් ද?', shape: 'සිලින්ඩරය', ans: 'සිලින්ඩරය', d: ['ගෝලය', 'ඝනකය', 'චතුස්තලය'] },
+            { q: 'රූපයේ දැක්වෙන ඝන වස්තුවේ නම කුමක් ද?', shape: 'චතුස්තලය', ans: 'චතුස්තලය', d: ['ඝනකය', 'ඝනකාභය', 'සිලින්ඩරය'] },
+            { q: 'රූපයේ දැක්වෙන ඝන වස්තුවේ නම කුමක් ද?', shape: 'ගෝලය', ans: 'ගෝලය', d: ['වෘත්තය', 'සිලින්ඩරය', 'ඝනකය'] },
+            { q: 'ඝනකයක පැත්තක හැඩය කුමක් ද?', shape: 'ඝනකය', ans: 'සමචතුරස්‍රය', d: ['ත්‍රිකෝණය', 'වෘත්තය', 'ඍජුකෝණාස්‍රය'] },
+            { q: 'ඝනකාභයක පැත්තක හැඩය කුමක් ද?', shape: 'ඝනකාභය', ans: 'ඍජුකෝණාස්‍රය', d: ['වෘත්තය', 'ත්‍රිකෝණය', 'ගෝලය'] },
+            { q: 'චතුස්තලයක පැත්තක හැඩය කුමක් ද?', shape: 'චතුස්තලය', ans: 'ත්‍රිකෝණය', d: ['සමචතුරස්‍රය', 'වෘත්තය', 'ඍජුකෝණාස්‍රය'] },
+            { q: 'සිලින්ඩරයක උඩ හෝ යට සමතල මුහුණතේ හැඩය කුමක් ද?', shape: 'සිලින්ඩරය', ans: 'වෘත්තය', d: ['ත්‍රිකෝණය', 'සමචතුරස්‍රය', 'ඍජුකෝණාස්‍රය'] },
+            { q: 'සමාන සමචතුරස්‍රාකාර පැති 6ක් ඇති ඝන වස්තුව කුමක් ද?', shape: 'ඝනකය', ans: 'ඝනකය', d: ['චතුස්තලය', 'සිලින්ඩරය', 'ගෝලය'] },
+            { q: 'ත්‍රිකෝණාකාර පැති 4ක් ඇති ඝන වස්තුව කුමක් ද?', shape: 'චතුස්තලය', ans: 'චතුස්තලය', d: ['ඝනකය', 'ඝනකාභය', 'සිලින්ඩරය'] },
+            { q: 'සමතල පැති 2ක් පමණක් ඇති ඝන වස්තුව කුමක් ද?', shape: 'සිලින්ඩරය', ans: 'සිලින්ඩරය', d: ['ඝනකය', 'ගෝලය', 'චතුස්තලය'] },
+            { q: 'ඕනෑම අතකට පහසුවෙන් පෙරළී යන ඝන වස්තුව කුමක් ද?', shape: 'ගෝලය', ans: 'ගෝලය', d: ['ඝනකය', 'චතුස්තලය', 'ඝනකාභය'] },
+            { q: 'සබන් පෙට්ටියක් හෝ ගඩොල් කැටයක් කුමන ඝන වස්තුවකට උදාහරණයක් ද?', shape: 'ඝනකාභය', ans: 'ඝනකාභය', d: ['ගෝලය', 'චතුස්තලය', 'සිලින්ඩරය'] },
+            { q: 'දාදු කැටයක් (Dice) කුමන ඝන වස්තුවකට උදාහරණයක් ද?', shape: 'ඝනකය', ans: 'ඝනකය', d: ['සිලින්ඩරය', 'ගෝලය', 'චතුස්තලය'] },
+            { q: 'කිරි ටින් එකක් කුමන ඝන වස්තුවකට උදාහරණයක් ද?', shape: 'සිලින්ඩරය', ans: 'සිලින්ඩරය', d: ['ඝනකාභය', 'චතුස්තලය', 'ඝනකය'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: renderShapeSVG(it.shape), options, answer };
+          });
+        }
+      },
+
+      {
+        id: 9, part: 'part1', icon: '🧺', color: 'from-lime-500 to-emerald-600',
+        title: '9. බෙදීම - 1',
+        subtitle: 'සම සමව දෙදෙනෙකු අතර බෙදීම සහ ඉතුරු සෙවීම',
+        generateQuestions() {
+          const qs = [];
+          const shareEqual = [
+            { emoji: '🥭', name: 'අඹ ගෙඩි', total: 4 },
+            { emoji: '🍇', name: 'මැංගුස් ගෙඩි', total: 10 },
+            { emoji: '🪁', name: 'සරුංගල්', total: 2 },
+            { emoji: '✂️', name: 'කතුරු', total: 4 },
+            { emoji: '🍽️', name: 'පීරිසි', total: 10 },
+            { emoji: '🥄', name: 'හැඳි', total: 16 },
+            { emoji: '🎾', name: 'බෝල', total: 18 },
+            { emoji: '🍎', name: 'ඇපල් ගෙඩි', total: 12 },
+            { emoji: '🍌', name: 'කෙසෙල් ගෙඩි', total: 14 },
+            { emoji: '🍊', name: 'දොඩම් ගෙඩි', total: 6 },
+            { emoji: '🍬', name: 'ටොෆී', total: 8 },
+            { emoji: '📘', name: 'පොත්', total: 20 }
+          ];
+          shareEqual.forEach(s => {
+            const ans = s.total / 2;
+            const { options, answer } = makeOptions(ans, [ans + 1, Math.max(1, ans - 1), s.total, 2]);
+            qs.push({
+              prompt: `${s.name} ${s.total}ක් මීනාට සහ මාලාට සම සමව බෙදූ විට එක් අයෙකුට ලැබෙන ගණන කීය ද?`,
+              visual: `<div class="flex flex-wrap justify-center gap-1.5 max-w-md bg-white p-4 rounded-2xl border-2 border-lime-300 text-2xl">
+                ${Array(s.total).fill(`<span>${s.emoji}</span>`).join('')}
+              </div><div class="mt-2 text-sm font-bold text-slate-600">👧 මීනා සහ 👧 මාලා අතර සමානව බෙදමු</div>`,
+              options, answer
+            });
+          });
+          const remainderQs = [
+            { emoji: '🍊', name: 'දොඩම් ගෙඩි', total: 5 },
+            { emoji: '📘', name: 'පොත්', total: 7 },
+            { emoji: '🚗', name: 'සෙල්ලම් කාර්', total: 3 },
+            { emoji: '☕', name: 'කෝප්ප', total: 13 },
+            { emoji: '🍓', name: 'ස්ට්‍රෝබෙරි', total: 9 },
+            { emoji: '🎈', name: 'බැලුන්', total: 11 },
+            { emoji: '🍪', name: 'බිස්කට්', total: 15 },
+            { emoji: '✏️', name: 'පැන්සල්', total: 17 }
+          ];
+          remainderQs.forEach(r => {
+            const each = Math.floor(r.total / 2);
+            const ans = `එක් අයෙකුට ${each}යි, ඉතුරු 1යි`;
+            const { options, answer } = makeOptions(ans, [
+              `එක් අයෙකුට ${each + 1}යි, ඉතුරු 0යි`,
+              `එක් අයෙකුට ${each}යි, ඉතුරු 0යි`,
+              `එක් අයෙකුට ${Math.max(1, each - 1)}යි, ඉතුරු 2යි`
+            ]);
+            qs.push({
+              prompt: `${r.name} ${r.total}ක් දෙදෙනෙකු අතර සම සමව බෙදූ විට කීය බැගින් ලැබී කීයක් ඉතුරු වේ ද?`,
+              visual: `<div class="flex flex-wrap justify-center gap-1.5 max-w-md bg-white p-4 rounded-2xl border-2 border-amber-300 text-2xl">
+                ${Array(r.total).fill(`<span>${r.emoji}</span>`).join('')}
+              </div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 10, part: 'part1', icon: '🍰', color: 'from-fuchsia-500 to-pink-600',
+        title: '10. භාග',
+        subtitle: 'බාගය සහ කාල හඳුනා ගනිමු',
+        generateQuestions() {
+          const items = [
+            { q: 'රූපයේ පාට කර ඇති කොටස කුමක් ද?', vis: renderFractionSVG('half', 'circle'), ans: 'බාගය', d: ['කාල', 'සම්පූර්ණ වෘත්තය', 'තුනෙන් එකක්'] },
+            { q: 'රූපයේ පාට කර ඇති කොටස කුමක් ද?', vis: renderFractionSVG('quarter', 'circle'), ans: 'කාල', d: ['බාගය', 'සම්පූර්ණ වෘත්තය', 'කාලේ කැබලි තුනක්'] },
+            { q: 'රූපයේ පාට කර ඇති කොටස කුමක් ද?', vis: renderFractionSVG('half', 'rect'), ans: 'බාගය', d: ['කාල', 'සම්පූර්ණ කොටුව', 'බාගයක් නොවේ'] },
+            { q: 'රූපයේ පාට කර ඇති කොටස කුමක් ද?', vis: renderFractionSVG('quarter', 'rect'), ans: 'කාල', d: ['බාගය', 'සම්පූර්ණ කොටුව', 'දෙකෙන් එකක්'] },
+            { q: 'මෙම රූපයේ පාට කර ඇති කොටස බාගයක් ද?', vis: renderFractionSVG('unequal', 'circle'), ans: 'නැත, සමාන කොටස් දෙකක් නොවේ', d: ['ඔව්, බාගයකි', 'ඔව්, කාලකි', 'සම්පූර්ණ රූපයයි'] },
+            { q: 'දොඩම් බාග දෙකක් එකතු කළ විට කුමක් ලැබේ ද?', vis: '🍊 (බාගය) + 🍊 (බාගය) = ?', ans: 'සම්පූර්ණ දොඩම් ගෙඩි 1ක්', d: ['දොඩම් කාලක්', 'දොඩම් ගෙඩි 2ක්', 'දොඩම් බාගයක්'] },
+            { q: 'කේක් ගෙඩියක් යහළුවෝ 4 දෙනෙක් අතර සමානව බෙදූ විට එක් අයෙකුට ලැබෙන කොටස කුමක් ද?', vis: '🎂 ➡️ 👦👧👦👧', ans: 'කාල', d: ['බාගය', 'සම්පූර්ණ කේක් ගෙඩිය', 'කාලේ කැබලි 3ක්'] },
+            { q: 'කාලේ කැබලි දෙකක් එකතු කළ විට කුමක් ලැබේ ද?', vis: '🍰 (කාල) + 🍰 (කාල) = ?', ans: 'බාගය', d: ['සම්පූර්ණ කේක් ගෙඩිය', 'කාල', 'කේක් ගෙඩි 2ක්'] },
+            { q: 'කාලේ කැබලි හතරක් එකතු කළ විට කුමක් ලැබේ ද?', vis: '🍰 + 🍰 + 🍰 + 🍰 = ?', ans: 'සම්පූර්ණ කේක් ගෙඩිය', d: ['බාගය', 'කාල', 'කේක් බාගයක්'] },
+            { q: 'සම්පූර්ණ පාන් ගෙඩියක කාලේ කැබලි කීයක් තිබේ ද?', vis: '🍞 පාන් ගෙඩිය', ans: '4', d: ['2', '3', '1'] },
+            { q: 'සම්පූර්ණ රොටියක බාග කීයක් තිබේ ද?', vis: '🫓 රොටිය', ans: '2', d: ['4', '1', '3'] },
+            { q: 'පහත රූපයෙන් පාට කර ඇත්තේ කුමන ප්‍රමාණය ද?', vis: `<svg width="130" height="110" viewBox="0 0 130 110"><polygon points="65,15 115,95 15,95" fill="#fff" stroke="#16a34a" stroke-width="3"/><polygon points="65,15 65,95 15,95" fill="#4ade80" stroke="#16a34a" stroke-width="2"/></svg>`, ans: 'බාගය', d: ['කාල', 'සම්පූර්ණ ත්‍රිකෝණය', 'කාලේ කැබලි 3ක්'] },
+            { q: 'සමචතුරස්‍රයක කාලක් පාට කිරීමට එය සමාන කොටස් කීයකට බෙදිය යුතු ද?', vis: '⬜ සමචතුරස්‍රය', ans: '4', d: ['2', '3', '5'] },
+            { q: 'කේක් ගෙඩියකින් බාගයක් කෑ පසු ඉතුරු වන්නේ කොපමණ ද?', vis: '🎂 ➡️ 🍽️ (බාගයක් කෑවා)', ans: 'බාගයක්', d: ['කාලක්', 'සම්පූර්ණ කේක් ගෙඩිය', 'කිසිවක් නැත'] },
+            { q: 'කේක් බාගයකට තවත් කේක් බාගයක් එකතු කළ විට ලැබෙන්නේ කුමක් ද?', vis: '🍰 (බාගය) + 🍰 (බාගය)', ans: 'සම්පූර්ණ කේක් ගෙඩිය', d: ['කාලක්', 'බාගයක්', 'කේක් 4ක්'] },
+            { q: 'මෙම කොටු 4න් 1ක් පාට කර ඇත. එය කුමන භාගය ද?', vis: `<div class="flex border-2 border-emerald-700"><div class="w-10 h-10 bg-emerald-400 border-r-2 border-emerald-700"></div><div class="w-10 h-10 bg-white border-r-2 border-emerald-700"></div><div class="w-10 h-10 bg-white border-r-2 border-emerald-700"></div><div class="w-10 h-10 bg-white"></div></div>`, ans: 'කාල', d: ['බාගය', 'සම්පූර්ණය', 'කාලේ ඒවා 3ක්'] },
+            { q: 'කොටු 4න් 2ක් පාට කළ විට එය කුමන ප්‍රමාණයට සමාන ද?', vis: `<div class="flex border-2 border-sky-700"><div class="w-10 h-10 bg-sky-400 border-r-2 border-sky-700"></div><div class="w-10 h-10 bg-sky-400 border-r-2 border-sky-700"></div><div class="w-10 h-10 bg-white border-r-2 border-sky-700"></div><div class="w-10 h-10 bg-white"></div></div>`, ans: 'බාගය', d: ['කාල', 'සම්පූර්ණය', 'කාලේ ඒවා 3ක්'] },
+            { q: 'වැඩි ප්‍රමාණය කුමක් ද? "බාගය" ද නැතිනම් "කාල" ද?', vis: '🍰 බාගය vs 🍰 කාල', ans: 'බාගය', d: ['කාල', 'දෙකම සමානයි', 'කිව නොහැක'] },
+            { q: 'කොමඩු ගෙඩියක් හරි මැදින් සමාන කොටස් 2කට කැපූ විට එක කැබැල්ලක් කුමක් ද?', vis: '🍉 ➡️ 🔪', ans: 'බාගය', d: ['කාල', 'සම්පූර්ණ ගෙඩිය', 'ඇටයක්'] },
+            { q: 'කාලේ කොටස් 2කට තවත් කාලේ කොටස් 2ක් එකතු කළ විට ලැබෙන්නේ කුමක් ද?', vis: '2 කාල + 2 කාල = ?', ans: 'සම්පූර්ණ 1ක්', d: ['බාගයක්', 'කාලක්', '2ක්'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div>${it.vis}</div>`, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 11, part: 'part1', icon: '🧭', color: 'from-indigo-500 to-blue-700',
+        title: '11. දිශා',
+        subtitle: 'වම් අත පැත්ත සහ දකුණු අත පැත්ත හඳුනා ගනිමු',
+        generateQuestions() {
+          const benchVisual = `<div class="flex items-center justify-center gap-6 bg-white px-6 py-4 rounded-2xl border-2 border-indigo-200">
+            <div class="text-center"><div class="text-4xl">👧</div><div class="font-bold text-sm text-pink-600">නිලූ</div></div>
+            <div class="text-center"><div class="text-4xl">🧒</div><div class="font-bold text-sm text-amber-600">කසුන්</div></div>
+            <div class="text-center"><div class="text-4xl">👧🏽</div><div class="font-bold text-sm text-sky-600">තාරකී</div></div>
+          </div><div class="text-xs font-bold text-slate-500 mt-1">(ඔවුන් ඔබ දෙස බලා සිටී)</div>`;
+
+          const mapVisual = `<div class="bg-white p-4 rounded-2xl border-2 border-emerald-300 text-sm font-bold space-y-2 max-w-md w-full">
+            <div class="flex justify-between items-center bg-amber-50 p-2 rounded-xl"><span>🏪 වෙළෙඳසල (වම)</span><span>⬅️ E ➡️</span><span>🛕 පන්සල (දකුණ)</span></div>
+            <div class="text-center text-slate-400">⬆️</div>
+            <div class="flex justify-between items-center bg-sky-50 p-2 rounded-xl"><span>📮 තැපැල් කාර්යාලය (වම)</span><span>⬅️ B ➡️</span><span>🏥 රෝහල (දකුණ)</span></div>
+            <div class="text-center text-slate-400">⬆️</div>
+            <div class="text-center bg-rose-100 text-rose-800 p-2 rounded-xl">🏠 නිවස (ආරම්භය)</div>
+          </div>`;
+
+          const items = [
+            { q: 'බංකුවේ මැද සිටින කසුන්ගේ දකුණු අත පැත්තෙන් සිටින්නේ කවුද?', vis: benchVisual, ans: 'නිලූ', d: ['තාරකී', 'කසුන්', 'කවුරුත් නැත'] },
+            { q: 'බංකුවේ මැද සිටින කසුන්ගේ වම් අත පැත්තෙන් සිටින්නේ කවුද?', vis: benchVisual, ans: 'තාරකී', d: ['නිලූ', 'කසුන්', 'කවුරුත් නැත'] },
+            { q: 'නිලූ, කසුන් සහ තාරකී අතරින් මැද සිටින්නේ කවුද?', vis: benchVisual, ans: 'කසුන්', d: ['නිලූ', 'තාරකී', 'මීනා'] },
+            { q: 'තාරකීගේ දකුණු අත පැත්තෙන් සිටින්නේ කවුද?', vis: benchVisual, ans: 'කසුන්', d: ['නිලූ', 'තාරකී', 'රවී'] },
+            { q: 'නිවසේ සිට ඉදිරියට ගොස් B ස්ථානයෙන් දකුණු අත පැත්තට හැරී ගිය විට හමුවන්නේ කුමක් ද?', vis: mapVisual, ans: 'රෝහල', d: ['තැපැල් කාර්යාලය', 'වෙළෙඳසල', 'පන්සල'] },
+            { q: 'නිවසේ සිට ඉදිරියට ගොස් B ස්ථානයෙන් වම් අත පැත්තට හැරී ගිය විට හමුවන්නේ කුමක් ද?', vis: mapVisual, ans: 'තැපැල් කාර්යාලය', d: ['රෝහල', 'පන්සල', 'වෙළෙඳසල'] },
+            { q: 'නිවසේ සිට E ස්ථානය ළඟට ගොස් වෙළෙඳසලට යාමට හැරිය යුත්තේ කුමන පැත්තට ද?', vis: mapVisual, ans: 'වම් අත පැත්තට', d: ['දකුණු අත පැත්තට', 'පසුපසට', 'ඉහළට'] },
+            { q: 'නිවසේ සිට E ස්ථානය ළඟට ගොස් පන්සලට යාමට හැරිය යුත්තේ කුමන පැත්තට ද?', vis: mapVisual, ans: 'දකුණු අත පැත්තට', d: ['වම් අත පැත්තට', 'පසුපසට', 'පහළට'] },
+            { q: 'මල්කිගේ දකුණු අත පැත්තේ 🌺 මලක් ද, වම් අත පැත්තේ 🦋 සමනලයෙක් ද සිටී. මල්කිගේ වම් අත පැත්තේ සිටින්නේ කවුද?', vis: '🌺 (දකුණ) ⬅️ 👧 මල්කි ➡️ 🦋 (වම)', ans: 'සමනලයා', d: ['මල', 'බෝලය', 'පූසා'] },
+            { q: 'රවීගේ දකුණු අතේ 🏏 පිත්ත ද, වම් අතේ ⚾ බෝලය ද ඇත. ඔහුගේ දකුණු අතේ ඇත්තේ කුමක් ද?', vis: '🏏 (දකුණ) ⬅️ 👦 රවී ➡️ ⚾ (වම)', ans: 'පිත්ත', d: ['බෝලය', 'කුඩය', 'පොත'] },
+            { q: 'ඔබ ඉදිරියට ගමන් කරන විට ඔබේ දකුණු අත පැත්තට හැරුණහොත් ඔබ හැරී ඇත්තේ කුමන දිශාවට ද?', vis: '🚶 ➡️', ans: 'දකුණු පැත්තට', d: ['වම් පැත්තට', 'ආපසු', 'ඉහළට'] },
+            { q: 'අපි බොහෝ විට බත් අනුභව කිරීමට සහ ලිවීමට භාවිතා කරන අත කුමක් ද?', vis: '✍️ 🍚', ans: 'දකුණු අත', d: ['වම් අත', 'දෙපය', 'හිස'] },
+            { q: 'පේළියක මැද සිටින දරුවාගේ වම් පැත්තේ 🐱 පූසෙක් ද දකුණු පැත්තේ 🐶 බල්ලෙක් ද සිටී. දකුණු පැත්තේ සිටින්නේ කවුද?', vis: '🐶 (දකුණ) | 🧒 | 🐱 (වම)', ans: 'බල්ලා', d: ['පූසා', 'ගිරවා', 'හාවා'] },
+            { q: 'මාර්ගයේ ගමන් කරන ළමයා ඉදිරියට ගොස් වම් අත පැත්තට හැරුණි. ඔහු හැරුණේ කුමන පැත්තට ද?', vis: '⬅️ 🚶', ans: 'වම් අත පැත්තට', d: ['දකුණු අත පැත්තට', 'කෙළින්ම ඉදිරියට', 'පිටුපසට'] },
+            { q: 'මේසය මත පොතට දකුණු පැත්තෙන් පෑන ද, වම් පැත්තෙන් පැන්සල ද තබා ඇත. පොතට වම් පැත්තෙන් ඇත්තේ කුමක් ද?', vis: '✏️ (වම) | 📘 (මැද) | 🖊️ (දකුණ)', ans: 'පැන්සල', d: ['පෑන', 'මකනය', 'රූල'] },
+            { q: 'මේසය මත පොතට දකුණු පැත්තෙන් පෑන ද, වම් පැත්තෙන් පැන්සල ද තබා ඇත. පොතට දකුණු පැත්තෙන් ඇත්තේ කුමක් ද?', vis: '✏️ (වම) | 📘 (මැද) | 🖊️ (දකුණ)', ans: 'පෑන', d: ['පැන්සල', 'පොත', 'බෑගය'] },
+            { q: 'නිවසේ සිට පන්සලට යාමට C හන්දියෙන් හැරිය යුතු පැත්ත කුමක් ද?', vis: mapVisual, ans: 'දකුණු පැත්තට', d: ['වම් පැත්තට', 'පසුපසට', 'නැවත නිවසට'] },
+            { q: 'ගීතාගේ දකුණු අතේ මලක් ඇත. වම් අතේ කොඩියක් ඇත. ඇගේ වම් අතේ ඇත්තේ කුමක් ද?', vis: '🌸 (දකුණ) 👧 🚩 (වම)', ans: 'කොඩියක්', d: ['මලක්', 'බෝලයක්', 'බැලුනයක්'] },
+            { q: 'නිසාර්ගේ දකුණු අතේ බෝලයක් ද වම් අතේ අඹ ගෙඩියක් ද ඇත. දකුණු අතේ ඇත්තේ කුමක් ද?', vis: '⚽ (දකුණ) 👦 🥭 (වම)', ans: 'බෝලයක්', d: ['අඹ ගෙඩියක්', 'කුඩයක්', 'මලක්'] },
+            { q: 'දේවිගේ දකුණු අතේ බැලුනයක් ද වම් අතේ කුඩයක් ද ඇත. වම් අතේ ඇත්තේ කුමක් ද?', vis: '🎈 (දකුණ) 👧 ☂️ (වම)', ans: 'කුඩයක්', d: ['බැලුනයක්', 'පොතක්', 'පෑනක්'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.vis, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 12, part: 'part2', icon: '💯', color: 'from-cyan-500 to-blue-600',
+        title: '12. සංඛ්‍යා - 2',
+        subtitle: '101 සිට 500 තෙක් සංඛ්‍යා සහ ගණක රාමුව',
+        generateQuestions() {
+          const qs = [];
+          const abacusNums = [[1, 3, 4], [2, 5, 9], [1, 0, 5], [3, 0, 0], [4, 5, 2], [2, 3, 7], [4, 0, 3]];
+          abacusNums.forEach(([h, t, o]) => {
+            const num = h * 100 + t * 10 + o;
+            const { options, answer } = makeOptions(num, [h * 100 + o * 10 + t, num + 100, num - 10, num + 1]);
+            qs.push({
+              prompt: `ගණක රාමුවෙන් නිරූපණය වන සංඛ්‍යාව කුමක් ද?`,
+              visual: renderAbacusSVG(h, t, o, true),
+              options, answer
+            });
+          });
+          const names = [122, 139, 215, 273, 301, 346, 401, 457, 480, 500];
+          names.forEach(num => {
+            const name = getSinhalaNumberName(num);
+            const { options, answer } = makeOptions(num, [num + 10, num - 10, num + 100, num - 1]);
+            qs.push({
+              prompt: `"${name}" යන සංඛ්‍යා නාමයට අදාළ සංඛ්‍යාංකය තෝරන්න.`,
+              visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-cyan-300 text-2xl font-extrabold text-cyan-900">📝 ${name}</div>`,
+              options, answer
+            });
+          });
+          [[100, 10, 5], [300, 40, 0], [200, 80, 7]].forEach(([h, t, o]) => {
+            const num = h + t + o;
+            const { options, answer } = makeOptions(num, [num + 10, num - 10, h + o, num + 100]);
+            qs.push({
+              prompt: `${h} + ${t} + ${o} මගින් සෑදෙන සංඛ්‍යාව කීය ද?`,
+              visual: `<div class="font-num text-2xl sm:text-3xl font-extrabold bg-white px-6 py-3 rounded-2xl border-2 border-cyan-300 text-slate-800">${h} + ${t} + ${o} = ?</div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 13, part: 'part2', icon: '💰', color: 'from-yellow-500 to-amber-600',
+        title: '13. මුදල් - 1',
+        subtitle: 'ශ්‍රී ලංකාවේ කාසි හා නෝට්ටු භාවිතය',
+        generateQuestions() {
+          const qs = [];
+          const moneyGroups = [
+            { items: [5, 2, 2], q: 'මෙම කාසිවල මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [10, 2, 1], q: 'මෙම කාසිවල මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [5, 1], q: 'මෙම කාසිවල මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [10, 10, 5], q: 'මෙම කාසිවල මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [20, 20], q: 'මෙම මුදල් නෝට්ටු දෙකේ මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [50, 20], q: 'මෙම මුදල් නෝට්ටු දෙකේ මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [50, 50], q: 'රුපියල් 50 නෝට්ටු දෙකක මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [100, 20], q: 'මෙම මුදල් නෝට්ටු දෙකේ මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [100, 50], q: 'මෙම මුදල් නෝට්ටු දෙකේ මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [100, 100], q: 'රුපියල් 100 නෝට්ටු දෙකක මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [500], q: 'රූපයේ දැක්වෙන මුදල් නෝට්ටුවේ වටිනාකම කීය ද?' },
+            { items: [20, 10, 5], q: 'මෙම මුදල්වල මුළු වටිනාකම රුපියල් කීය ද?' },
+            { items: [50, 20, 1], q: 'මෙම මුදල්වල මුළු වටිනාකම රුපියල් කීය ද?' }
+          ];
+          moneyGroups.forEach(m => {
+            const sum = m.items.reduce((a, b) => a + b, 0);
+            const { options, answer } = makeOptions(`රුපියල් ${sum}`, [`රුපියල් ${sum + 10}`, `රුපියල් ${Math.max(1, sum - 5)}`, `රුපියල් ${sum + 20}`]);
+            qs.push({ prompt: m.q, visual: renderMoneyVisual(m.items), options, answer });
+          });
+
+          const shopQs = [
+            { q: 'පෑනක් රුපියල් 20කි. කෝදුවක් රුපියල් 15කි. දෙකම මිල දී ගැනීමට ගෙවිය යුතු මුළු මුදල කීය ද?', vis: '🖊️ රු. 20 + 📏 රු. 15', ans: 'රුපියල් 35', d: ['රුපියල් 25', 'රුපියල් 45', 'රුපියල් 30'] },
+            { q: 'පැන්සලක් රුපියල් 10කි. මකනයක් රුපියල් 12කි. මුළු මිල කීය ද?', vis: '✏️ රු. 10 + 🧽 රු. 12', ans: 'රුපියල් 22', d: ['රුපියල් 20', 'රුපියල් 32', 'රුපියල් 12'] },
+            { q: 'පොතක් රුපියල් 22කි. කටරයක් රුපියල් 8කි. ගෙවිය යුතු මුළු මුදල කීය ද?', vis: '📘 රු. 22 + 🔪 රු. 8', ans: 'රුපියල් 30', d: ['රුපියල් 28', 'රුපියල් 32', 'රුපියල් 40'] },
+            { q: 'ගම් බෝතලයක් රුපියල් 65කි. පෑනක් රුපියල් 20කි. මුළු මිල කීය ද?', vis: '🧴 රු. 65 + 🖊️ රු. 20', ans: 'රුපියල් 85', d: ['රුපියල් 75', 'රුපියල් 95', 'රුපියල් 80'] },
+            { q: 'පාට පෙට්ටියක් රුපියල් 42කි. පෑනක් රුපියල් 20කි. මුළු මිල කීය ද?', vis: '🖍️ රු. 42 + 🖊️ රු. 20', ans: 'රුපියල් 62', d: ['රුපියල් 52', 'රුපියල් 72', 'රුපියල් 60'] },
+            { q: 'රුපියල් 15ක භාණ්ඩයක් ගැනීමට රුපියල් 20ක නෝට්ටුවක් දුන් විට ලැබෙන ඉතුරු මුදල කීය ද?', vis: 'දුන් මුදල: රු. 20 | මිල: රු. 15', ans: 'රුපියල් 5', d: ['රුපියල් 10', 'රුපියල් 35', 'රුපියල් 2'] },
+            { q: 'රුපියල් 80ක භාණ්ඩයක් ගැනීමට රුපියල් 100ක නෝට්ටුවක් දුන් විට ඉතුරු මුදල කීය ද?', vis: 'දුන් මුදල: රු. 100 | මිල: රු. 80', ans: 'රුපියල් 20', d: ['රුපියල් 10', 'රුපියල් 30', 'රුපියල් 50'] }
+          ];
+          shopQs.forEach(s => {
+            const { options, answer } = makeOptions(s.ans, s.d);
+            qs.push({ prompt: s.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-amber-300 text-xl font-extrabold text-amber-900">${s.vis}</div>`, options, answer });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 14, part: 'part2', icon: '🚂', color: 'from-purple-500 to-indigo-600',
+        title: '14. සංඛ්‍යා රටා',
+        subtitle: '2, 5 සහ 10 සංඛ්‍යා රටා හඳුනා ගනිමු',
+        generateQuestions() {
+          const seqs = [
+            { arr: [2, 4, 6, 8, '?'], ans: 10, d: [9, 12, 11] },
+            { arr: [1, 3, 5, 7, '?'], ans: 9, d: [8, 10, 11] },
+            { arr: [17, 19, 21, '?'], ans: 23, d: [22, 24, 25] },
+            { arr: [35, 37, 39, '?'], ans: 41, d: [40, 42, 43] },
+            { arr: [48, 50, 52, '?'], ans: 54, d: [53, 55, 56] },
+            { arr: [61, 63, 65, '?'], ans: 67, d: [66, 68, 69] },
+            { arr: [6, 8, 10, '?'], ans: 12, d: [11, 14, 13] },
+            { arr: [5, 10, 15, 20, '?'], ans: 25, d: [22, 30, 21] },
+            { arr: [20, 25, 30, '?'], ans: 35, d: [32, 40, 31] },
+            { arr: [1, 6, 11, '?'], ans: 16, d: [12, 15, 21] },
+            { arr: [7, 12, 17, '?', 27], ans: 22, d: [20, 25, 19] },
+            { arr: [35, 40, 45, '?'], ans: 50, d: [46, 55, 48] },
+            { arr: [50, 55, 60, '?'], ans: 65, d: [61, 70, 62] },
+            { arr: [10, 20, 30, 40, '?'], ans: 50, d: [45, 60, 41] },
+            { arr: [45, 55, 65, 75, '?'], ans: 85, d: [80, 95, 76] },
+            { arr: [6, 16, 26, 36, '?'], ans: 46, d: [40, 56, 37] },
+            { arr: [13, 23, 33, 43, '?'], ans: 53, d: [44, 63, 50] },
+            { arr: [24, 34, 44, 54, '?'], ans: 64, d: [55, 74, 60] },
+            { arr: [32, 42, 52, 62, '?'], ans: 72, d: [63, 82, 70] },
+            { arr: [49, 59, 69, 79, '?'], ans: 89, d: [80, 99, 85] }
+          ];
+          return seqs.map(s => {
+            const { options, answer } = makeOptions(s.ans, s.d);
+            const train = `<div class="flex flex-wrap items-center justify-center gap-2">
+              <span class="text-3xl">🚂</span>
+              ${s.arr.map(x => `<div class="w-14 h-14 rounded-2xl border-2 ${x === '?' ? 'bg-amber-200 border-amber-500 text-amber-900 animate-bounce' : 'bg-white border-purple-300 text-purple-900'} flex items-center justify-center font-num text-2xl font-extrabold shadow-sm">${x}</div>`).join('')}
+            </div>`;
+            return { prompt: `සංඛ්‍යා රටාව හඳුනාගෙන හිස් තැනට ගැළපෙන සංඛ්‍යාව තෝරන්න.`, visual: train, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 15, part: 'part2', icon: '🧮', color: 'from-emerald-600 to-teal-700',
+        title: '15. සංඛ්‍යා එකතු කිරීම - 2',
+        subtitle: 'දශකයක් ගෙන යාම සහිත සංඛ්‍යා එකතු කිරීම',
+        generateQuestions() {
+          const qs = [];
+          const pairs = [
+            [25, 27], [36, 28], [49, 38], [66, 27], [29, 5],
+            [38, 56], [45, 7], [73, 17], [84, 9], [74, 16],
+            [59, 26], [29, 49], [67, 24], [45, 35], [48, 37],
+            [54, 28]
+          ];
+          pairs.forEach(([a, b]) => {
+            const sum = a + b;
+            const { options, answer } = makeOptions(sum, [sum - 10, sum + 10, sum + 1, sum - 1]);
+            qs.push({
+              prompt: `එකතු කර නිවැරදි පිළිතුර තෝරන්න.`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-teal-300 font-num text-3xl font-extrabold text-slate-800 shadow-sm inline-block text-right">
+                <div>${a}</div>
+                <div class="border-b-4 border-slate-700 pb-1">+ ${b}</div>
+                <div class="text-teal-600 pt-1">?</div>
+              </div>`,
+              options, answer
+            });
+          });
+          const stories = [
+            { q: 'වත්තක පොල් ගස් 28ක් ද පුවක් ගස් 45ක් ද ඇත. මුළු ගස් ගණන කීය ද?', a: 28, b: 45, emoji: '🌴' },
+            { q: 'තරගයකට සහභාගි වූ පිරිමි ළමුන් 35කි. ගැහැනු ළමුන් 25කි. මුළු ළමුන් ගණන කීය ද?', a: 35, b: 25, emoji: '🏃' },
+            { q: 'නලින් ළඟ මුද්දර 39ක් ද ළහිරු ළඟ මුද්දර 53ක් ද ඇත. මුළු මුද්දර ගණන කීය ද?', a: 39, b: 53, emoji: '📮' },
+            { q: 'වෙළෙන්දෙකු විකුණූ ඕලු මල් 26කි. නෙලුම් මල් 54කි. මුළු මල් ගණන කීය ද?', a: 26, b: 54, emoji: '🪷' }
+          ];
+          stories.forEach(s => {
+            const sum = s.a + s.b;
+            const { options, answer } = makeOptions(sum, [sum - 10, sum + 10, sum + 2, sum - 2]);
+            qs.push({
+              prompt: s.q,
+              visual: `<div class="bg-white px-6 py-3 rounded-2xl border-2 border-teal-200 flex items-center gap-3 text-2xl font-num font-bold"><span class="text-4xl">${s.emoji}</span><span>${s.a} + ${s.b} = ?</span></div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 16, part: 'part2', icon: '🫗', color: 'from-blue-500 to-sky-600',
+        title: '16. පරිමාව හා ධාරිතාව',
+        subtitle: 'සම්මත ඒකකය ලීටරය (l) සහ භාජනවල ධාරිතාව',
+        generateQuestions() {
+          const allContainers = [
+            { name: 'F', liters: 5 }, { name: 'B', liters: 4 }, { name: 'C', liters: 2 },
+            { name: 'D', liters: 1 }, { name: 'E', liters: 2 }, { name: 'A', liters: 3 }
+          ];
+          const visSet = renderContainersVisual(allContainers);
+          const items = [
+            { q: 'පරිමාව හා ධාරිතාව මැනීමේ සම්මත ඒකකය කුමක් ද?', vis: '🥛 මිනුම් භාජනය', ans: 'ලීටරය', d: ['මීටරය', 'කිලෝග්‍රෑමය', 'පැය'] },
+            { q: 'ලීටරය දැක්වීමට භාවිතා කරන සම්මත සංකේතය කුමක් ද?', vis: '💧 ලීටර සංකේතය', ans: 'l', d: ['m', 'kg', 'g'] },
+            { q: 'රූපයේ දැක්වෙන භාජන අතරින් වැඩිම දියර ප්‍රමාණයක් අල්ලන භාජනය කුමක් ද?', vis: visSet, ans: 'F (5 l)', d: ['B (4 l)', 'A (3 l)', 'D (1 l)'] },
+            { q: 'රූපයේ දැක්වෙන භාජන අතරින් අඩුම දියර ප්‍රමාණයක් අල්ලන භාජනය කුමක් ද?', vis: visSet, ans: 'D (1 l)', d: ['C (2 l)', 'A (3 l)', 'F (5 l)'] },
+            { q: 'සමාන දියර ප්‍රමාණ අල්ලන භාජන දෙක කුමක් ද?', vis: visSet, ans: 'C සහ E (2 l බැගින්)', d: ['A සහ B', 'D සහ F', 'B සහ E'] },
+            { q: '4 l අල්ලන B භාජනය පිරවීමට 1 l අල්ලන D භාජනයෙන් ජලය කී වරක් දැමිය යුතු ද?', vis: visSet, ans: 'වාර 4ක්', d: ['වාර 2ක්', 'වාර 5ක්', 'වාර 1ක්'] },
+            { q: '5 l අල්ලන F භාජනය පිරවීමට 1 l අල්ලන D භාජනයෙන් ජලය කී වරක් දැමිය යුතු ද?', vis: visSet, ans: 'වාර 5ක්', d: ['වාර 3ක්', 'වාර 4ක්', 'වාර 10ක්'] },
+            { q: 'ලීටර 8ක බාල්දියක් පිරවීමට ලීටර 1ක බෝතලයකින් ජලය කී වරක් දැමිය යුතු ද?', vis: '🪣 8 l ⬅️ 🍼 1 l', ans: 'වාර 8ක්', d: ['වාර 4ක්', 'වාර 2ක්', 'වාර 10ක්'] },
+            { q: 'ලීටර 10ක කෑන් එකක් පිරවීමට ලීටර 2ක බෝතලයකින් ජලය කී වරක් දැමිය යුතු ද?', vis: '🛢️ 10 l ⬅️ 🧴 2 l', ans: 'වාර 5ක්', d: ['වාර 10ක්', 'වාර 2ක්', 'වාර 8ක්'] },
+            { q: 'ලීටර 6ක භාජනයක් පිරවීමට ලීටර 3ක ජෝගුවකින් ජලය කී වරක් දැමිය යුතු ද?', vis: '🪣 6 l ⬅️ 🏺 3 l', ans: 'වාර 2ක්', d: ['වාර 3ක්', 'වාර 6ක්', 'වාර 1ක්'] },
+            { q: 'A (3 l) සහ B (4 l) භාජන දෙකේම ඇති මුළු දියර ප්‍රමාණය කීය ද?', vis: visSet, ans: '7 l', d: ['6 l', '8 l', '1 l'] },
+            { q: 'F (5 l) සහ C (2 l) භාජන දෙකේම ඇති මුළු දියර ප්‍රමාණය කීය ද?', vis: visSet, ans: '7 l', d: ['3 l', '8 l', '10 l'] },
+            { q: '8 l ක නිල් භාජනයකට 3 l ක රතු භාජනයෙන් ජලය දැමූ විට, නිල් භාජනය සම්පූර්ණයෙන් පිරවීමට තව කොපමණ ජලය අවශ්‍ය ද?', vis: '🪣 8 l − 🏺 3 l = ?', ans: '5 l', d: ['11 l', '4 l', '3 l'] },
+            { q: 'ලීටර 5ක කිරි කෑන් එකකින් ලීටර 2ක් භාවිතා කළ විට ඉතුරු කිරි ප්‍රමාණය කීය ද?', vis: '🥛 5 l − 2 l = ?', ans: '3 l', d: ['7 l', '2 l', '4 l'] },
+            { q: 'පහත දේවල් අතරින් ලීටරවලින් මනින දෙයක් තෝරන්න.', vis: '🥥 පොල් තෙල් vs 🧵 රෙදි', ans: 'පොල් තෙල්', d: ['රෙදි', 'පොත් ගණන', 'කාලය'] },
+            { q: 'රතු බඳුනේ 3 l ඇත. කහ බඳුනට 2 l අල්ලයි. රතු බඳුනේ ජලය කහ බඳුන පිරෙන්නට දැමූ විට රතු බඳුනේ ඉතුරු ජලය කීය ද?', vis: '🟥 3 l ➡️ 🟨 2 l', ans: '1 l', d: ['5 l', '2 l', '0 l'] },
+            { q: 'A (3 l), C (2 l) සහ E (2 l) යන භාජන තුනේම ඇති මුළු ජල ප්‍රමාණය කීය ද?', vis: visSet, ans: '7 l', d: ['5 l', '6 l', '8 l'] },
+            { q: 'ලීටර 5ක් සංකේතය භාවිතා කර ලියන්න.', vis: '💧 ලීටර 5', ans: '5 l', d: ['5 m', '5 kg', '50 l'] },
+            { q: 'වැඩිම ජල ප්‍රමාණයක් අල්ලන්නේ කුමන භාජනයට ද?', vis: renderContainersVisual([{ name: 'කෝප්පය', liters: 1 }, { name: 'බෝතලය', liters: 2 }, { name: 'බාල්දිය', liters: 8 }]), ans: 'බාල්දිය (8 l)', d: ['කෝප්පය (1 l)', 'බෝතලය (2 l)', 'සියල්ල සමානයි'] },
+            { q: '2 l බැගින් වූ වතුර බෝතල් 4ක ඇති මුළු ජල ප්‍රමාණය කීය ද?', vis: '🍼 2 l + 🍼 2 l + 🍼 2 l + 🍼 2 l', ans: '8 l', d: ['6 l', '4 l', '10 l'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div>${it.vis}</div>`, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 17, part: 'part2', icon: '📉', color: 'from-rose-600 to-pink-700',
+        title: '17. සංඛ්‍යා අඩු කිරීම - 2',
+        subtitle: 'ඉලක්කම් දෙකේ සංඛ්‍යා අඩු කිරීම (දශක ගැනීමකින් තොරව)',
+        generateQuestions() {
+          const qs = [];
+          const pairs = [
+            [48, 32], [73, 31], [29, 14], [58, 26], [28, 18],
+            [87, 33], [88, 44], [79, 30], [56, 25], [68, 45],
+            [97, 35], [43, 11], [93, 73], [72, 51], [69, 30]
+          ];
+          pairs.forEach(([a, b]) => {
+            const diff = a - b;
+            const { options, answer } = makeOptions(diff, [diff + 10, Math.max(0, diff - 10), diff + 1, Math.max(0, diff - 1)]);
+            qs.push({
+              prompt: `අඩු කර නිවැරදි පිළිතුර තෝරන්න.`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-rose-300 font-num text-3xl font-extrabold text-slate-800 shadow-sm inline-block text-right">
+                <div>${a}</div>
+                <div class="border-b-4 border-slate-700 pb-1">− ${b}</div>
+                <div class="text-rose-600 pt-1">?</div>
+              </div>`,
+              options, answer
+            });
+          });
+          const stories = [
+            { q: 'සාමා ළඟ රඹුටන් ගෙඩි 25ක් තිබුණි. ඇය එයින් 13ක් නංගීට දුන්නා ය. ඉතුරු රඹුටන් ගණන කීය ද?', a: 25, b: 13, emoji: '🍒' },
+            { q: 'මොවිඳු ළඟ රතු සහ නිල් පෑන් 29ක් ඇත. රතු පෑන් 16ක් නම් නිල් පෑන් ගණන කීය ද?', a: 29, b: 16, emoji: '🖊️' },
+            { q: 'පන්තියේ සිටින සිසුන් ගණන 46කි. අද පැමිණ ඇත්තේ 36කි. නොපැමිණි සිසුන් ගණන කීය ද?', a: 46, b: 36, emoji: '🎒' },
+            { q: 'කෙසෙල් ඇවරියක ගෙඩි 37ක් ඇත. ඉදී ඇති ගෙඩි 14ක් නම් අමු ගෙඩි ගණන කීය ද?', a: 37, b: 14, emoji: '🍌' },
+            { q: 'බසයක මගීන් 78ක් ගමන් කළහ. ඊළඟ නැවතුමේ දී 23ක් බැස ගියහ. බසය තුළ ඉතුරු මගීන් ගණන කීය ද?', a: 78, b: 23, emoji: '🚌' }
+          ];
+          stories.forEach(s => {
+            const diff = s.a - s.b;
+            const { options, answer } = makeOptions(diff, [diff + 10, Math.max(0, diff - 10), diff + 2, s.a + s.b]);
+            qs.push({
+              prompt: s.q,
+              visual: `<div class="bg-white px-6 py-3 rounded-2xl border-2 border-rose-200 flex items-center gap-3 text-2xl font-num font-bold"><span class="text-4xl">${s.emoji}</span><span>${s.a} − ${s.b} = ?</span></div>`,
+              options, answer
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 18, part: 'part2', icon: '📊', color: 'from-indigo-500 to-purple-600',
+        title: '18. ප්‍රස්තාර',
+        subtitle: 'රූප ප්‍රස්තාර කියවා ප්‍රශ්නවලට පිළිතුරු දෙමු',
+        generateQuestions() {
+          const petChart = renderPictureChart('ළමුන් කැමති සුරතල් සතුන්', [
+            { label: '🐰 හාවා', count: 3 },
+            { label: '🐱 පූසා', count: 6 },
+            { label: '🐶 බල්ලා', count: 5 },
+            { label: '🦜 ගිරවා', count: 2 },
+            { label: '🐟 මාළුවා', count: 3 }
+          ], '😊');
+
+          const fruitChart = renderPictureChart('වෙළෙඳසලක විකුණූ පලතුරු', [
+            { label: '🥭 අඹ', count: 4 },
+            { label: '🍊 පැණි දොඩම්', count: 6 },
+            { label: '🍉 කොමඩු', count: 4 },
+            { label: '🍍 අන්නාසි', count: 3 },
+            { label: '🍈 ගස්ලබු', count: 2 }
+          ], '🍎');
+
+          const bdayChart = renderPictureChart('සිසුන්ගේ උපන් මාස', [
+            { label: 'ජනවාරි', count: 1 },
+            { label: 'මාර්තු', count: 3 },
+            { label: 'මැයි', count: 6 },
+            { label: 'ජූනි', count: 4 },
+            { label: 'නොවැම්බර්', count: 2 },
+            { label: 'දෙසැම්බර්', count: 4 }
+          ], '🎂');
+
+          const foodChart = renderPictureChart('කැමතිම ආහාර', [
+            { label: 'ආප්ප', count: 7 },
+            { label: 'ඉඳිආප්ප', count: 9 },
+            { label: 'කිරිබත්', count: 4 },
+            { label: 'පිට්ටු', count: 5 },
+            { label: 'රොටී', count: 8 }
+          ], '🍽️');
+
+          const items = [
+            { q: 'ගිරවාට කැමති ළමුන් ගණන කීය ද?', vis: petChart, ans: '2', d: ['3', '5', '6'] },
+            { q: 'පූසාට කැමති ළමුන් ගණන කීය ද?', vis: petChart, ans: '6', d: ['5', '3', '2'] },
+            { q: 'වැඩි දෙනෙකු කැමති සුරතල් සතා කවුද?', vis: petChart, ans: 'පූසා', d: ['බල්ලා', 'හාවා', 'ගිරවා'] },
+            { q: 'ළමුන් සමාන ගණනක් කැමති සතුන් දෙදෙනා කවුද?', vis: petChart, ans: 'හාවා සහ මාළුවා (3 බැගින්)', d: ['පූසා සහ බල්ලා', 'ගිරවා සහ හාවා', 'බල්ලා සහ මාළුවා'] },
+            { q: 'ගිරවාට කැමති ළමුන් ගණනට වඩා පූසාට කැමති ළමුන් ගණන කීයකින් වැඩි ද?', vis: petChart, ans: '4', d: ['2', '6', '8'] },
+
+            { q: 'අඩුවෙන්ම විකුණන ලද පලතුරු වර්ගය කුමක් ද?', vis: fruitChart, ans: 'ගස්ලබු', d: ['පැණි දොඩම්', 'අඹ', 'අන්නාසි'] },
+            { q: 'වැඩියෙන්ම විකුණන ලද පලතුරු වර්ගය කුමක් ද?', vis: fruitChart, ans: 'පැණි දොඩම්', d: ['අඹ', 'කොමඩු', 'ගස්ලබු'] },
+            { q: 'ගස්ලබුවලට වඩා කොමඩු කීයක් වැඩියෙන් විකිණී තිබේ ද?', vis: fruitChart, ans: '2', d: ['4', '6', '1'] },
+            { q: 'සමාන ප්‍රමාණවලින් විකුණන ලද පලතුරු මොනවා ද?', vis: fruitChart, ans: 'අඹ සහ කොමඩු (4 බැගින්)', d: ['පැණි දොඩම් සහ අඹ', 'අන්නාසි සහ ගස්ලබු', 'කොමඩු සහ අන්නාසි'] },
+            { q: 'විකුණන ලද මුළු පලතුරු ගණන කීය ද?', vis: fruitChart, ans: '19', d: ['15', '20', '17'] },
+
+            { q: 'අඩුම සිසුන් ගණනක් ඉපදී ඇති මාසය කුමක් ද?', vis: bdayChart, ans: 'ජනවාරි', d: ['මැයි', 'මාර්තු', 'ජූනි'] },
+            { q: 'වැඩිම සිසුන් ගණනක් ඉපදී ඇති මාසය කුමක් ද?', vis: bdayChart, ans: 'මැයි', d: ['ජූනි', 'දෙසැම්බර්', 'මාර්තු'] },
+            { q: 'නොවැම්බර් මාසයට වඩා ජූනි මාසයේ දී සිසුන් කී දෙනෙක් වැඩියෙන් ඉපදී තිබේ ද?', vis: bdayChart, ans: '2', d: ['4', '6', '1'] },
+            { q: 'මෙම කණ්ඩායමේ සිටින මුළු සිසුන් ගණන කීය ද?', vis: bdayChart, ans: '20', d: ['18', '22', '16'] },
+            { q: 'සිසුන් 4 දෙනා බැගින් ඉපදී ඇති මාස දෙක කුමක් ද?', vis: bdayChart, ans: 'ජූනි සහ දෙසැම්බර්', d: ['මැයි සහ ජූනි', 'ජනවාරි සහ මාර්තු', 'මාර්තු සහ නොවැම්බර්'] },
+
+            { q: 'රොටීවලට කැමති ළමුන් ගණන කීය ද?', vis: foodChart, ans: '8', d: ['7', '9', '5'] },
+            { q: 'කිරිබත්වලට වඩා ඉඳිආප්පවලට කී දෙනෙක් වැඩියෙන් කැමති ද?', vis: foodChart, ans: '5', d: ['4', '9', '3'] },
+            { q: 'රොටී සහ පිට්ටුවලට කැමති මුළු ළමුන් ගණන කීය ද?', vis: foodChart, ans: '13', d: ['12', '15', '11'] },
+            { q: 'ළමුන් වැඩිම දෙනෙක් කැමති ආහාරය කුමක් ද?', vis: foodChart, ans: 'ඉඳිආප්ප', d: ['ආප්ප', 'රොටී', 'කිරිබත්'] },
+            { q: 'ළමුන් අඩුම දෙනෙක් කැමති ආහාරය කුමක් ද?', vis: foodChart, ans: 'කිරිබත්', d: ['පිට්ටු', 'ආප්ප', 'රොටී'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.vis, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 19, part: 'part2', icon: '🖐️', color: 'from-orange-500 to-red-500',
+        title: '19. ගුණ කිරීම - 2',
+        subtitle: 'පහෙහි සහ දහයෙහි ගුණන වගු (5 × සහ 10 ×)',
+        generateQuestions() {
+          const qs = [];
+          const mult5 = [
+            [1, 5], [2, 5], [3, 5], [4, 5], [5, 5],
+            [6, 5], [7, 5], [8, 5], [9, 5], [10, 5]
+          ];
+          mult5.forEach(([a, b]) => {
+            const ans = a * b;
+            const { options, answer } = makeOptions(ans, [ans + 5, Math.max(5, ans - 5), a * 10, ans + 10]);
+            qs.push({
+              prompt: `පහෙහි ගුණන වගුව අනුව පිළිතුර තෝරන්න: ${a} × ${b} = ?`,
+              visual: renderEmojiGroups('⭐', a, 5, `5 බැගින් කණ්ඩායම් ${a}කි`),
+              options, answer
+            });
+          });
+          const mult10 = [
+            [2, 10], [3, 10], [4, 10], [5, 10], [6, 10],
+            [7, 10], [8, 10], [9, 10], [10, 10]
+          ];
+          mult10.forEach(([a, b]) => {
+            const ans = a * b;
+            const { options, answer } = makeOptions(ans, [ans + 10, ans - 10, a * 5, ans + 20]);
+            qs.push({
+              prompt: `දහයෙහි ගුණන වගුව අනුව පිළිතුර තෝරන්න: ${a} × ${b} = ?`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-orange-300 font-num text-3xl font-extrabold text-orange-700">${a} × 10 = ?</div>`,
+              options, answer
+            });
+          });
+          const { options, answer } = makeOptions(35, [25, 40, 30]);
+          qs.push({
+            prompt: 'ක්‍රීඩාවක දී පන්තියේ ළමුන් 5 දෙනා බැගින් කණ්ඩායම් 7ක් සෑදුවේ නම් මුළු ළමුන් ගණන කීය ද?',
+            visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-orange-300 text-2xl font-num font-bold text-slate-800">🏃 7 × 5 = ?</div>`,
+            options, answer
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 20, part: 'part2', icon: '🦋', color: 'from-pink-500 to-purple-600',
+        title: '20. සමමිතිය හා රටා',
+        subtitle: 'හැඩතල රටා සහ සමමිතික රේඛා හඳුනා ගනිමු',
+        generateQuestions() {
+          const items = [
+            { q: 'රටාව අනුව ඊළඟට ආ යුතු හැඩය තෝරන්න: 🔴 🔵 🔴 🔵 🔴 [ ? ]', vis: '🔴 🔵 🔴 🔵 🔴 ❓', ans: '🔵 නිල් වෘත්තය', d: ['🔴 රතු වෘත්තය', '🟨 කහ කොටුව', '🔺 ත්‍රිකෝණය'] },
+            { q: 'රටාව අනුව ඊළඟට ආ යුතු රූපය තෝරන්න: 🔺 🔺 ⬜ 🔺 🔺 [ ? ]', vis: '🔺 🔺 ⬜ 🔺 🔺 ❓', ans: '⬜ සමචතුරස්‍රය', d: ['🔺 ත්‍රිකෝණය', '🔵 වෘත්තය', '⭐ තරුව'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 🌸 🍃 🌸 🍃 🌸 [ ? ]', vis: '🌸 🍃 🌸 🍃 🌸 ❓', ans: '🍃 කොළය', d: ['🌸 මල', '🍎 ඇපල්', '🦋 සමනලයා'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: ⭐ 🌙 ☀️ ⭐ 🌙 [ ? ]', vis: '⭐ 🌙 ☀️ ⭐ 🌙 ❓', ans: '☀️ ඉර', d: ['⭐ තරුව', '🌙 හඳ', '☁️ වලාකුළ'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 🍎 🍌 🍊 🍎 🍌 [ ? ]', vis: '🍎 🍌 🍊 🍎 🍌 ❓', ans: '🍊 දොඩම්', d: ['🍎 ඇපල්', '🍌 කෙසෙල්', '🥭 අඹ'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: ⬆️ ➡️ ⬇️ ⬅️ ⬆️ [ ? ]', vis: '⬆️ ➡️ ⬇️ ⬅️ ⬆️ ❓', ans: '➡️ දකුණු ඊතලය', d: ['⬆️ ඉහළ ඊතලය', '⬇️ පහළ ඊතලය', '⬅️ වම් ඊතලය'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 🐱 🐶 🐱 🐶 🐱 [ ? ]', vis: '🐱 🐶 🐱 🐶 🐱 ❓', ans: '🐶 බල්ලා', d: ['🐱 පූසා', '🐰 හාවා', '🦜 ගිරවා'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 🟦 🟨 🟨 🟦 🟨 [ ? ]', vis: '🟦 🟨 🟨 🟦 🟨 ❓', ans: '🟨 කහ කොටුව', d: ['🟦 නිල් කොටුව', '🔴 රතු රවුම', '🔺 ත්‍රිකෝණය'] },
+            { q: 'සමමිති රේඛාවකින් දෙපස කෙසේ වේ ද?', vis: '🦋 සමමිති රේඛාව', ans: 'දෙපස එක හා සමාන වේ', d: ['දෙපස වෙනස් වේ', 'එක් පැත්තක් විශාල වේ', 'කිසිවක් නැත'] },
+            { q: 'සමනලයෙකුගේ රූපයකට සමමිති රේඛා කීයක් ඇඳිය හැකි ද?', vis: '🦋 සමනලයා', ans: '1', d: ['0', '5', '10'] },
+            { q: 'සමචතුරස්‍රයකට සමමිති රේඛා කීයක් ඇඳිය හැකි ද?', vis: `<svg width="110" height="110" viewBox="0 0 110 110"><rect x="15" y="15" width="80" height="80" fill="#fde047" stroke="#ca8a04" stroke-width="3"/><line x1="55" y1="5" x2="55" y2="105" stroke="#ef4444" stroke-dasharray="4"/><line x1="5" y1="55" x2="105" y2="55" stroke="#ef4444" stroke-dasharray="4"/><line x1="10" y1="10" x2="100" y2="100" stroke="#ef4444" stroke-dasharray="4"/><line x1="100" y1="10" x2="10" y2="100" stroke="#ef4444" stroke-dasharray="4"/></svg>`, ans: '4', d: ['1', '2', '0'] },
+            { q: 'ඍජුකෝණාස්‍රයකට සමමිති රේඛා කීයක් තිබේ ද?', vis: `<svg width="140" height="100" viewBox="0 0 140 100"><rect x="15" y="20" width="110" height="60" fill="#93c5fd" stroke="#1d4ed8" stroke-width="3"/><line x1="70" y1="10" x2="70" y2="90" stroke="#ef4444" stroke-dasharray="4"/><line x1="5" y1="50" x2="135" y2="50" stroke="#ef4444" stroke-dasharray="4"/></svg>`, ans: '2', d: ['4', '1', '0'] },
+            { q: 'මෙම කඩ ඉර නිවැරදි සමමිති රේඛාවක් ද?', vis: `<svg width="120" height="120" viewBox="0 0 120 120"><polygon points="60,15 105,100 15,100" fill="#86efac" stroke="#15803d" stroke-width="3"/><line x1="60" y1="10" x2="60" y2="110" stroke="#dc2626" stroke-width="3" stroke-dasharray="5"/></svg>`, ans: 'ඔව්, දෙපස සමානයි', d: ['නැත, දෙපස වෙනස්', 'රේඛාවක් නැත', 'වෘත්තයකි'] },
+            { q: 'පහත ඉංග්‍රීසි අකුරු අතරින් සමමිතික අකුර තෝරන්න.', vis: '🅰️  vs  🇫  vs  🇬', ans: 'A', d: ['F', 'G', 'J'] },
+            { q: 'පහත ඉංග්‍රීසි අකුරු අතරින් සමමිතික අකුර තෝරන්න.', vis: 'Ⓜ️  vs  🇷  vs  🇱', ans: 'M', d: ['R', 'L', 'P'] },
+            { q: 'හදවත් (Heart) හැඩයකට සමමිති රේඛා කීයක් ඇඳිය හැකි ද?', vis: '❤️ හදවත් හැඩය', ans: '1', d: ['2', '4', '0'] },
+            { q: 'කොළයක් දෙකට නවා කතුරකින් කපා දිග හැරිය විට ලැබෙන රූපය කෙබඳු ද?', vis: '📄 ➡️ ✂️ ➡️ 🦋', ans: 'සමමිතික රූපයකි', d: ['අසමමිතික රූපයකි', 'වෘත්තයක් පමණි', 'ඉරක් පමණි'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 10, 20, 10, 20, 10, [ ? ]', vis: '10 🔵 20 🟡 10 🔵 20 🟡 10 🔵 ❓', ans: '20', d: ['10', '30', '40'] },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 🚗 🚌 🚲 🚗 🚌 [ ? ]', vis: '🚗 🚌 🚲 🚗 🚌 ❓', ans: '🚲 බයිසිකලය', d: ['🚗 කාර් රථය', '🚌 බස් රථය', '✈️ ගුවන් යානය'] },
+            { q: 'සමපාද ත්‍රිකෝණයකට සමමිති රේඛා කීයක් ඇඳිය හැකි ද?', vis: '🔺 සමාන පැති 3ක් ඇති ත්‍රිකෝණය', ans: '3', d: ['1', '2', '4'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-2xl font-bold">${it.vis}</div>`, options, answer };
+          });
+        }
+      },
+
+      {
+        id: 21, part: 'part2', icon: '🏅', color: 'from-sky-600 to-indigo-700',
+        title: '21. සංඛ්‍යා - 3 සහ 4',
+        subtitle: '999 තෙක් සංඛ්‍යා, ස්ථානීය අගය හා සංඛ්‍යා සැසඳීම',
+        generateQuestions() {
+          const qs = [];
+          const abacus = [[7, 0, 8], [8, 6, 7], [9, 4, 2], [6, 2, 4], [9, 9, 9]];
+          abacus.forEach(([h, t, o]) => {
+            const num = h * 100 + t * 10 + o;
+            const { options, answer } = makeOptions(num, [num + 10, num - 10, o * 100 + t * 10 + h, num + 100]);
+            qs.push({
+              prompt: `ගණක රාමුවෙන් පෙන්වන සංඛ්‍යාව කුමක් ද?`,
+              visual: renderAbacusSVG(h, t, o, true),
+              options, answer
+            });
+          });
+          const placeVals = [
+            { num: 753, digit: 7, ans: 700, d: [70, 7, 750] },
+            { num: 472, digit: 7, ans: 70, d: [700, 7, 72] },
+            { num: 127, digit: 7, ans: 7, d: [70, 700, 27] },
+            { num: 826, digit: 8, ans: 800, d: [80, 8, 820] },
+            { num: 357, digit: 5, ans: 50, d: [500, 5, 57] }
+          ];
+          placeVals.forEach(p => {
+            const { options, answer } = makeOptions(p.ans, p.d);
+            qs.push({
+              prompt: `${p.num} හි "${p.digit}" ඉලක්කමෙන් නිරූපණය වන අගය කීය ද?`,
+              visual: `<div class="font-num text-4xl font-extrabold bg-white px-8 py-4 rounded-2xl border-2 border-indigo-300 text-indigo-900 tracking-widest">${p.num}</div>`,
+              options, answer
+            });
+          });
+          const compareQs = [
+            { q: '387 සහ 510 යන සංඛ්‍යා දෙකෙන් විශාල සංඛ්‍යාව තෝරන්න.', vis: '387  🆚  510', ans: '510', d: ['387', 'දෙකම සමානයි', '87'] },
+            { q: '872 සහ 941 යන සංඛ්‍යා දෙකෙන් විශාල සංඛ්‍යාව තෝරන්න.', vis: '872  🆚  941', ans: '941', d: ['872', '914', '72'] },
+            { q: '497 සහ 425 යන සංඛ්‍යා දෙකෙන් කුඩා සංඛ්‍යාව තෝරන්න.', vis: '497  🆚  425', ans: '425', d: ['497', '452', '97'] },
+            { q: '925 සහ 259 යන සංඛ්‍යා දෙකෙන් කුඩා සංඛ්‍යාව තෝරන්න.', vis: '925  🆚  259', ans: '259', d: ['925', '529', '952'] },
+            { q: '540, 218, 645 යන සංඛ්‍යා කුඩාම සංඛ්‍යාවේ සිට විශාලම සංඛ්‍යාව තෙක් අනුපිළිවෙළට තෝරන්න.', vis: '🔢 540, 218, 645', ans: '218, 540, 645', d: ['645, 540, 218', '540, 218, 645', '218, 645, 540'] },
+            { q: '714, 360, 927 යන සංඛ්‍යා කුඩාම සංඛ්‍යාවේ සිට විශාලම සංඛ්‍යාව තෙක් අනුපිළිවෙළට තෝරන්න.', vis: '🔢 714, 360, 927', ans: '360, 714, 927', d: ['927, 714, 360', '714, 360, 927', '360, 927, 714'] },
+            { q: '426, 378, 142 යන සංඛ්‍යා විශාලම සංඛ්‍යාවේ සිට කුඩාම සංඛ්‍යාව තෙක් අනුපිළිවෙළට තෝරන්න.', vis: '🔢 426, 378, 142', ans: '426, 378, 142', d: ['142, 378, 426', '378, 426, 142', '426, 142, 378'] },
+            { q: '5, 6, 1 යන ඉලක්කම් තුනෙන් සෑදිය හැකි කුඩාම ඉලක්කම් තුනේ සංඛ්‍යාව කුමක් ද?', vis: '🃏 [ 5 ]  [ 6 ]  [ 1 ]', ans: '156', d: ['651', '516', '165'] },
+            { q: '5, 6, 1 යන ඉලක්කම් තුනෙන් සෑදිය හැකි විශාලම ඉලක්කම් තුනේ සංඛ්‍යාව කුමක් ද?', vis: '🃏 [ 5 ]  [ 6 ]  [ 1 ]', ans: '651', d: ['156', '615', '561'] },
+            { q: '890 ට 1ක් වැඩි සංඛ්‍යාව කීය ද?', vis: '890 + 1 = ?', ans: '891', d: ['889', '900', '892'] }
+          ];
+          compareQs.forEach(c => {
+            const { options, answer } = makeOptions(c.ans, c.d);
+            qs.push({ prompt: c.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-sky-300 font-num text-2xl font-extrabold text-slate-800">${c.vis}</div>`, options, answer });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 22, part: 'part2', icon: '⚖️', color: 'from-amber-600 to-orange-700',
+        title: '22. බර මැනීම',
+        subtitle: 'සම්මත ඒකකය කිලෝග්‍රෑමය (kg) සහ තරාදිය භාවිතය',
+        generateQuestions() {
+          const scaleMore = `<div class="bg-white p-4 rounded-2xl border-2 border-amber-300 text-center">
+            <div class="text-4xl mb-1">⚖️</div>
+            <div class="font-bold text-slate-700">වම් තැටිය (බඩු පැකට්ටුව) පහළට බර වී ඇත ⬇️ | දකුණු තැටිය (1 kg පඩිය) ඉහළට එසවී ඇත ⬆️</div>
+          </div>`;
+          const scaleLess = `<div class="bg-white p-4 rounded-2xl border-2 border-amber-300 text-center">
+            <div class="text-4xl mb-1">⚖️</div>
+            <div class="font-bold text-slate-700">වම් තැටිය (තේ කොළ පැකට්ටුව) ඉහළට එසවී ඇත ⬆️ | දකුණු තැටිය (1 kg පඩිය) පහළට බර වී ඇත ⬇️</div>
+          </div>`;
+          const scaleEqual = `<div class="bg-white p-4 rounded-2xl border-2 border-emerald-300 text-center">
+            <div class="text-4xl mb-1">⚖️</div>
+            <div class="font-bold text-emerald-800">තරාදියේ දෙපැත්තම සමබරව එක මට්ටමේ පවතී (1 kg පඩියට සමානයි) ↔️</div>
+          </div>`;
+
+          const items = [
+            { q: 'බර මැනීමේ සම්මත ඒකකය කුමක් ද?', vis: '⚖️ සම්මත බර පඩිය', ans: 'කිලෝග්‍රෑමය', d: ['මීටරය', 'ලීටරය', 'සෙන්ටිමීටරය'] },
+            { q: 'කිලෝග්‍රෑමය දැක්වීමට භාවිතා කරන සම්මත සංකේතය කුමක් ද?', vis: '🏋️ සම්මත සංකේතය', ans: 'kg', d: ['m', 'l', 'km'] },
+            { q: 'සීනි පැකට්ටුව තැබූ තැටිය 1 kg පඩියට වඩා පහළට පහත් වී ඇත. සීනි පැකට්ටුවේ බර කෙබඳු ද?', vis: scaleMore, ans: '1 kg ට වඩා වැඩි ය', d: ['1 kg ට වඩා අඩු ය', '1 kg ට සමාන ය', 'බරක් නැත'] },
+            { q: 'තේ කොළ පැකට්ටුව තැබූ තැටිය 1 kg පඩියට වඩා ඉහළට එසවී ඇත. තේ කොළ පැකට්ටුවේ බර කෙබඳු ද?', vis: scaleLess, ans: '1 kg ට වඩා අඩු ය', d: ['1 kg ට වඩා වැඩි ය', '1 kg ට සමාන ය', '10 kg වේ'] },
+            { q: 'පරිප්පු පැකට්ටුවක් තැබූ විට තරාදිය 1 kg පඩිය සමඟ සමබර විය. පරිප්පු පැකට්ටුවේ බර කීය ද?', vis: scaleEqual, ans: '1 kg ට සමාන ය', d: ['1 kg ට වඩා වැඩි ය', '1 kg ට වඩා අඩු ය', '5 kg වේ'] },
+            { q: 'සීනි කිලෝග්‍රෑම් 3ක් සංකේතයෙන් ලියන නිවැරදි ආකාරය කුමක් ද?', vis: '🛍️ සීනි කිලෝග්‍රෑම් 3', ans: '3 kg', d: ['3 m', '3 l', '30 kg'] },
+            { q: 'බඩු මල්ලක සීනි 3 kg, පරිප්පු 2 kg සහ අල 1 kg ඇත. මල්ලේ මුළු බර කීය ද?', vis: '🛍️ 3 kg + 2 kg + 1 kg = ?', ans: '6 kg', d: ['5 kg', '7 kg', '4 kg'] },
+            { q: 'සහල් මල්ලක බර 10 kg වේ. එය වචනයෙන් කියවන්න.', vis: '🌾 10 kg', ans: 'කිලෝග්‍රෑම් දහය', d: ['මීටර දහය', 'ලීටර දහය', 'කිලෝග්‍රෑම් සියය'] },
+            { q: 'පහත දේවල් අතරින් වැඩිම බරක් ඇති දෙය කුමක් ද?', vis: '🐘 අලියා vs 🐱 පූසා vs 🐦 කුරුල්ලා', ans: 'අලියා', d: ['පූසා', 'කුරුල්ලා', 'සියල්ල සමානයි'] },
+            { q: 'පහත දේවල් අතරින් අඩුම බරක් ඇති දෙය කුමක් ද?', vis: '🪶 පිහාටුව vs 🍉 කොමඩු ගෙඩිය vs 🪨 ගලක්', ans: 'පිහාටුව', d: ['කොමඩු ගෙඩිය', 'ගලක්', 'පොතක්'] },
+            { q: 'කිරි පිටි පැකට්ටුවක බර 1 kg කි. සබන් කුඩු පැකට්ටුවක බර 2 kg කි. වඩා බර වැඩි කුමක් ද?', vis: '📦 කිරි පිටි (1 kg) vs 📦 සබන් කුඩු (2 kg)', ans: 'සබන් කුඩු පැකට්ටුව', d: ['කිරි පිටි පැකට්ටුව', 'දෙකම සමානයි', 'කිව නොහැක'] },
+            { q: 'තේ කොළ පැකට්ටුව 1 kg කි. කිරි පිටි පැකට්ටුව 1 kg කි. දෙකම බෑගයකට දැමූ විට මුළු බර කීය ද?', vis: '👜 1 kg + 1 kg = ?', ans: '2 kg', d: ['1 kg', '3 kg', '0 kg'] },
+            { q: 'කිලෝග්‍රෑම් 5ක වට්ටක්කා ගෙඩියක් සහ කිලෝග්‍රෑම් 2ක අන්නාසි ගෙඩියක් තරාදියේ දෙපැත්තේ තැබූ විට පහළට යන්නේ කුමක් ද?', vis: '🎃 5 kg  ⚖️  🍍 2 kg', ans: 'වට්ටක්කා ගෙඩිය (5 kg)', d: ['අන්නාසි ගෙඩිය (2 kg)', 'දෙකම සමබර වේ', 'තරාදිය කැඩේ'] },
+            { q: '2 kg බැගින් වූ පරිප්පු පැකට් 4ක මුළු බර කීය ද?', vis: '📦 2 kg + 📦 2 kg + 📦 2 kg + 📦 2 kg', ans: '8 kg', d: ['6 kg', '4 kg', '10 kg'] },
+            { q: 'කිලෝග්‍රෑම් 15ක් සංකේතයෙන් ලියන්න.', vis: '🏋️ කිලෝග්‍රෑම් 15', ans: '15 kg', d: ['15 m', '15 l', '51 kg'] },
+            { q: '10 kg ක සීනි ගෝනියකින් 4 kg ක් විකුණූ පසු ඉතුරු සීනි බර කීය ද?', vis: '🌾 10 kg − 4 kg = ?', ans: '6 kg', d: ['14 kg', '5 kg', '7 kg'] },
+            { q: 'පහත ඒවායින් කිලෝග්‍රෑම්වලින් මනින දෙයක් තෝරන්න.', vis: '🥔 අල vs 🥛 කිරි vs 🛣️ පාර', ans: 'අල සහ ලූනු', d: ['කිරි', 'පාරේ දිග', 'වේලාව'] },
+            { q: '1 kg පඩි 5ක් තරාදියේ එක් තැටියක තැබූ විට මුළු බර කීය ද?', vis: '⚖️ 1kg + 1kg + 1kg + 1kg + 1kg', ans: '5 kg', d: ['1 kg', '10 kg', '4 kg'] },
+            { q: '3 kg ට වඩා 2 kg කින් වැඩි බර කීය ද?', vis: '3 kg + 2 kg = ?', ans: '5 kg', d: ['1 kg', '6 kg', '4 kg'] },
+            { q: 'කිලෝග්‍රෑම් 25ක් සංකේතයෙන් දක්වන්න.', vis: '📦 බර කිලෝග්‍රෑම් 25', ans: '25 kg', d: ['25 l', '25 m', '25 g'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div>${it.vis}</div>`, options, answer };
+          });
+        }
+      }
+    ];
+
+    // =========================================================================
+    // 6. APPLICATION STATE & RENDERING
+    // =========================================================================
+    let state = {
+      totalStars: 0,
+      lessonScores: {}, // { lessonId: bestScore }
+      currentFilter: 'all',
+      activeLesson: null,
+      questions: [],
+      currentIndex: 0,
+      score: 0,
+      answeredMap: {} // { qIndex: { selected, isCorrect } }
+    };
+
+    function renderLessonsGrid() {
+      const grid = document.getElementById('lessonsGrid');
+      const filtered = LESSONS.filter(l => state.currentFilter === 'all' || l.part === state.currentFilter);
+
+      grid.innerHTML = filtered.map(lesson => {
+        const best = state.lessonScores[lesson.id] || 0;
+        const isCompleted = best === 20;
+        return `
+          <button onclick="startLesson(${lesson.id})" class="bubbly-card text-left bg-white rounded-3xl p-5 border-2 ${isCompleted ? 'border-emerald-400' : 'border-slate-200'} flex flex-col justify-between focus:outline-none group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${lesson.color} flex items-center justify-center text-3xl text-white shadow-md group-hover:scale-110 transition">
+                  ${lesson.icon}
+                </div>
+                <span class="text-xs font-extrabold px-3 py-1 rounded-full ${lesson.part === 'part1' ? 'bg-sky-100 text-sky-700' : 'bg-purple-100 text-purple-700'}">
+                  ${lesson.part === 'part1' ? 'I කොටස' : 'II කොටස'}
+                </span>
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-slate-800 mb-1 group-hover:text-sky-600 transition">
+                ${lesson.title}
+              </h3>
+              <p class="text-sm text-slate-500 font-semibold leading-snug mb-4">
+                ${lesson.subtitle}
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-1 text-sm font-extrabold text-amber-600">
+                <span>⭐</span>
+                <span class="font-num">${best} / 20</span>
+              </div>
+              <span class="inline-flex items-center gap-1 text-sm font-extrabold text-sky-600 group-hover:translate-x-1 transition">
+                <span>පටන් ගන්න</span>
+                <span>▶️</span>
+              </span>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function filterLessons(filter) {
+      state.currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.classList.remove('bg-sky-600', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-700');
+      });
+      const activeBtn = document.getElementById(`tab-${filter}`);
+      activeBtn.classList.remove('bg-white', 'text-slate-700');
+      activeBtn.classList.add('bg-sky-600', 'text-white');
+      renderLessonsGrid();
+    }
+
+    function startLesson(lessonId) {
+      initAudio();
+      const lesson = LESSONS.find(l => l.id === lessonId);
+      if (!lesson) return;
+
+      state.activeLesson = lesson;
+      state.questions = lesson.generateQuestions();
+      state.currentIndex = 0;
+      state.score = 0;
+      state.answeredMap = {};
+
+      document.getElementById('homeView').classList.add('hidden');
+      document.getElementById('resultView').classList.add('hidden');
+      document.getElementById('quizView').classList.remove('hidden');
+      document.getElementById('headerHomeBtn').classList.remove('hidden');
+
+      document.getElementById('quizLessonIcon').textContent = lesson.icon;
+      document.getElementById('quizLessonPart').textContent = lesson.part === 'part1' ? '3 ශ්‍රේණිය - I කොටස' : '3 ශ්‍රේණිය - II කොටස';
+      document.getElementById('quizLessonTitle').textContent = lesson.title;
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestionDots() {
+      const dotsEl = document.getElementById('questionDots');
+      dotsEl.innerHTML = state.questions.map((_, idx) => {
+        const record = state.answeredMap[idx];
+        let cls = 'bg-slate-100 text-slate-500 border-slate-300';
+        if (idx === state.currentIndex) {
+          cls = 'bg-sky-600 text-white border-sky-700 scale-110 shadow-sm';
+        } else if (record) {
+          cls = record.isCorrect
+            ? 'bg-emerald-500 text-white border-emerald-600'
+            : 'bg-rose-400 text-white border-rose-500';
+        }
+        return `<button onclick="jumpToQuestion(${idx})" class="w-7 h-7 rounded-lg border text-xs font-num font-bold transition ${cls}">${idx + 1}</button>`;
+      }).join('');
+    }
+
+    function jumpToQuestion(idx) {
+      state.currentIndex = idx;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = state.questions[state.currentIndex];
+      const record = state.answeredMap[state.currentIndex];
+
+      document.getElementById('quizScoreDisplay').textContent = `${state.score} / 20`;
+      document.getElementById('quizProgressBar').style.width = `${((state.currentIndex + 1) / 20) * 100}%`;
+      document.getElementById('questionCounterBadge').textContent = `ප්‍රශ්නය ${state.currentIndex + 1} / 20`;
+      document.getElementById('questionPrompt').textContent = q.prompt;
+      document.getElementById('questionVisual').innerHTML = q.visual;
+
+      renderQuestionDots();
+
+      const card = document.getElementById('questionCard');
+      card.classList.remove('animate-pop');
+      void card.offsetWidth;
+      card.classList.add('animate-pop');
+
+      const optionsEl = document.getElementById('optionsContainer');
+      const labels = ['අ', 'ආ', 'ඇ', 'ඈ'];
+
+      optionsEl.innerHTML = q.options.map((opt, idx) => {
+        let btnStyle = 'bg-white hover:bg-sky-50 border-slate-300 text-slate-800';
+        let badgeStyle = 'bg-sky-100 text-sky-700';
+
+        if (record) {
+          if (opt === q.answer) {
+            btnStyle = 'bg-emerald-500 border-emerald-600 text-white';
+            badgeStyle = 'bg-white/25 text-white';
+          } else if (opt === record.selected && !record.isCorrect) {
+            btnStyle = 'bg-rose-500 border-rose-600 text-white';
+            badgeStyle = 'bg-white/25 text-white';
+          } else {
+            btnStyle = 'bg-slate-50 border-slate-200 text-slate-400 opacity-70';
+          }
+        }
+
+        const safeOpt = opt.replace(/'/g, "\\'");
+        return `
+          <button onclick="selectAnswer('${safeOpt}')" ${record ? 'disabled' : ''} class="bubbly-btn border-2 ${btnStyle} p-4 rounded-2xl text-left font-extrabold text-lg sm:text-xl flex items-center gap-3.5 focus:outline-none">
+            <span class="w-9 h-9 rounded-xl ${badgeStyle} flex items-center justify-center text-base shrink-0">
+              ${labels[idx]}
+            </span>
+            <span class="leading-snug">${opt}</span>
+          </button>
+        `;
+      }).join('');
+
+      const feedback = document.getElementById('feedbackBanner');
+      if (record) {
+        feedback.classList.remove('hidden');
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        nextBtn.innerHTML = state.currentIndex === 19
+          ? `<span>ප්‍රතිඵල බලන්න</span><span>🏆</span>`
+          : `<span>ඊළඟ ප්‍රශ්නය</span><span>➡️</span>`;
+
+        if (record.isCorrect) {
+          feedback.className = 'mt-6 p-4 rounded-2xl border-2 bg-emerald-50 border-emerald-300 text-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-3';
+          document.getElementById('feedbackEmoji').textContent = '🌟';
+          document.getElementById('feedbackTitle').textContent = 'හරි! හරිම දක්ෂයි!';
+          document.getElementById('feedbackText').textContent = `නිවැරදි පිළිතුර: ${q.answer}`;
+        } else {
+          feedback.className = 'mt-6 p-4 rounded-2xl border-2 bg-rose-50 border-rose-300 text-rose-900 flex flex-col sm:flex-row items-center justify-between gap-3';
+          document.getElementById('feedbackEmoji').textContent = '💡';
+          document.getElementById('feedbackTitle').textContent = 'කමක් නැහැ! නිවැරදි පිළිතුර බලමු.';
+          document.getElementById('feedbackText').textContent = `නිවැරදි පිළිතුර: ${q.answer}`;
+        }
+      } else {
+        feedback.classList.add('hidden');
+      }
+    }
+
+    function selectAnswer(selected) {
+      if (state.answeredMap[state.currentIndex]) return;
+      const q = state.questions[state.currentIndex];
+      const isCorrect = selected === q.answer;
+
+      state.answeredMap[state.currentIndex] = { selected, isCorrect };
+
+      if (isCorrect) {
+        state.score++;
+        playSound('correct');
+      } else {
+        playSound('wrong');
+        const card = document.getElementById('questionCard');
+        card.classList.add('animate-shake');
+        setTimeout(() => card.classList.remove('animate-shake'), 450);
+      }
+
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (state.currentIndex < 19) {
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        finishLesson();
+      }
+    }
+
+    function finishLesson() {
+      const prevBest = state.lessonScores[state.activeLesson.id] || 0;
+      if (state.score > prevBest) {
+        state.totalStars += (state.score - prevBest);
+        state.lessonScores[state.activeLesson.id] = state.score;
+        document.getElementById('totalStarsDisplay').textContent = state.totalStars;
+      }
+
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.remove('hidden');
+
+      document.getElementById('resultLessonName').textContent = state.activeLesson.title;
+      document.getElementById('finalScoreText').textContent = `${state.score} / 20`;
+      document.getElementById('finalStarsText').textContent = `⭐ ${state.score}`;
+
+      let msg = 'සුබ පැතුම්! ඔබ ඉතාම දක්ෂ ලෙස ප්‍රශ්නවලට පිළිතුරු දුන්නා! 🌟';
+      if (state.score === 20) {
+        msg = 'විශිෂ්ටයි! ප්‍රශ්න 20ටම හරි පිළිතුරු දී රන් තරු 20ක් දිනා ගත්තා! 🏆🎉';
+      } else if (state.score >= 15) {
+        msg = 'හරිම දක්ෂයි! ඔබ ඉතා ඉහළ ලකුණු ප්‍රමාණයක් ලබා ගත්තා! 👏';
+      } else if (state.score >= 10) {
+        msg = 'හොඳ උත්සාහයක්! තව ටිකක් පුහුණු වී තරු 20ම දිනාගමු! 💪';
+      } else {
+        msg = 'කමක් නැහැ පුංචි යාළුවේ! නැවත උත්සාහ කර තවත් තරු දිනාගමු! 🎈';
+      }
+      document.getElementById('resultEncouragement').textContent = msg;
+
+      playSound('fanfare');
+      launchConfetti();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCurrentLesson() {
+      if (state.activeLesson) {
+        startLesson(state.activeLesson.id);
+      }
+    }
+
+    function goHome() {
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.add('hidden');
+      document.getElementById('headerHomeBtn').classList.add('hidden');
+      document.getElementById('homeView').classList.remove('hidden');
+      renderLessonsGrid();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function launchConfetti() {
+      const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#a855f7', '#ec4899'];
+      for (let i = 0; i < 55; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece rounded-sm';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        piece.style.animationDelay = (Math.random() * 0.5) + 's';
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4500);
+      }
+    }
+
+    // Initialize on load
+    window.onload = function () {
+      renderLessonsGrid();
+    };
+  </script>
+</body>
+</html>
