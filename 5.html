@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ගණිතගෙදර - 5 ශ්‍රේණිය ගණිතය</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Sinhala:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Sinhala', 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 50%, #fce7f3 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    .font-num {
+      font-family: 'Fredoka', 'Noto Sans Sinhala', sans-serif;
+    }
+    .bubbly-card {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    }
+    .bubbly-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.14);
+    }
+    .bubbly-btn {
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+    }
+    .bubbly-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      70% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+    .confetti-piece {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      top: -20px;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-sky-300 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <button onclick="goHome()" class="flex items-center gap-3 text-left group focus:outline-none">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center text-white text-2xl shadow-md group-hover:scale-105 transition">
+          🏡
+        </div>
+        <div>
+          <span class="inline-block text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800">5 ශ්‍රේණිය ගණිතය</span>
+          <h1 class="text-lg sm:text-xl font-extrabold text-slate-800 leading-tight">ගණිතගෙදර</h1>
+        </div>
+      </button>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Total Stars Counter -->
+        <div class="flex items-center gap-1.5 bg-amber-100 border-2 border-amber-300 px-3 py-1.5 rounded-2xl shadow-inner">
+          <span class="text-xl">⭐</span>
+          <span id="totalStarsDisplay" class="font-num font-bold text-amber-800 text-base sm:text-lg">0 / 720</span>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button id="soundToggleBtn" onclick="toggleSound()" title="ශබ්දය" class="w-11 h-11 rounded-2xl bg-indigo-100 hover:bg-indigo-200 border-2 border-indigo-300 flex items-center justify-center text-xl transition">
+          🔊
+        </button>
+
+        <!-- Home Button -->
+        <button id="headerHomeBtn" onclick="goHome()" class="hidden bubbly-btn bg-rose-500 hover:bg-rose-600 text-white font-bold px-3.5 py-2 rounded-2xl text-sm sm:text-base flex items-center gap-1.5">
+          <span>🏠</span>
+          <span class="hidden sm:inline">ඒකක මාලාව</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+
+    <!-- VIEW 1: LESSON MENU -->
+    <section id="homeView" class="animate-pop">
+      <!-- Welcome Banner -->
+      <div class="bg-gradient-to-r from-indigo-600 via-sky-500 to-teal-500 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3.5 py-1 rounded-full text-sm font-bold mb-3">
+            <span>🏡</span>
+            <span>ගණිතගෙදර - 5 ශ්‍රේණිය සම්පූර්ණ විෂය නිර්දේශය (ඒකක 36)</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-snug">ආයුබෝවන් පුංචි දුවේ පුතේ! 👋</h2>
+          <p class="text-sky-50 text-base sm:text-lg font-bold mb-1">
+            ගණිතගෙදර සමඟ සෙල්ලමෙන් ගණිතය ඉගෙන ගනිමු!
+          </p>
+          <p class="text-sky-100 text-sm sm:text-base font-medium">
+            පුනරීක්ෂණ ඒකක 4 ද ඇතුළුව ඒකක 36න් කැමති ඒකකයක් තෝරාගෙන රූප සටහන් බලමින් ප්‍රශ්න 20කට පිළිතුරු දී තරු 20ක් දිනාගන්න!
+          </p>
+        </div>
+        <div class="hidden md:flex items-center justify-center absolute right-8 top-1/2 -translate-y-1/2 text-8xl animate-float opacity-95">
+          🎓
+        </div>
+      </div>
+
+      <!-- Filter Tabs & Search -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6">
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterLessons('all')" id="tab-all" class="filter-tab bubbly-btn px-3.5 py-2 rounded-2xl font-bold text-sm bg-sky-600 text-white">
+            සියලුම ඒකක (36)
+          </button>
+          <button onclick="filterLessons('term1')" id="tab-term1" class="filter-tab bubbly-btn px-3.5 py-2 rounded-2xl font-bold text-sm bg-white text-slate-700 hover:bg-sky-50">
+            පළමු වාරය (1-12)
+          </button>
+          <button onclick="filterLessons('term2')" id="tab-term2" class="filter-tab bubbly-btn px-3.5 py-2 rounded-2xl font-bold text-sm bg-white text-slate-700 hover:bg-sky-50">
+            දෙවන වාරය (13-24)
+          </button>
+          <button onclick="filterLessons('term3')" id="tab-term3" class="filter-tab bubbly-btn px-3.5 py-2 rounded-2xl font-bold text-sm bg-white text-slate-700 hover:bg-sky-50">
+            තෙවන වාරය (25-36)
+          </button>
+          <button onclick="filterLessons('revisions')" id="tab-revisions" class="filter-tab bubbly-btn px-3.5 py-2 rounded-2xl font-bold text-sm bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200">
+            🌟 පුනරීක්ෂණ (4)
+          </button>
+        </div>
+
+        <div class="relative">
+          <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="ගණිතගෙදර ඒකක සොයන්න... 🔍" class="w-full md:w-64 px-4 py-2 rounded-2xl border-2 border-sky-200 bg-white font-semibold text-sm focus:outline-none focus:border-sky-500 shadow-sm" />
+        </div>
+      </div>
+
+      <!-- Lessons Grid -->
+      <div id="lessonsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: INTERACTIVE QUIZ ARENA -->
+    <section id="quizView" class="hidden max-w-3xl mx-auto">
+      <!-- Lesson Header & Progress -->
+      <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-md border-2 border-sky-200 mb-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2.5">
+            <span id="quizLessonIcon" class="text-3xl">🧮</span>
+            <div>
+              <span id="quizLessonTerm" class="text-xs font-bold text-sky-600 uppercase">ගණිතගෙදර - පළමු වාරය</span>
+              <h2 id="quizLessonTitle" class="text-lg sm:text-2xl font-extrabold text-slate-800">ඒකකය</h2>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 bg-amber-50 border-2 border-amber-300 px-3.5 py-1.5 rounded-2xl">
+            <span class="text-sm font-bold text-amber-800">තරු:</span>
+            <span id="quizScoreDisplay" class="font-num font-extrabold text-lg text-amber-700">⭐ 0 / 20</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
+          <div id="quizProgressBar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-300" style="width: 5%"></div>
+        </div>
+
+        <!-- 20 Question Indicator Pills -->
+        <div id="questionDots" class="flex flex-wrap gap-1.5 mt-3 justify-center"></div>
+      </div>
+
+      <!-- Question Card -->
+      <div id="questionCard" class="bg-white rounded-3xl p-5 sm:p-8 shadow-xl border-4 border-amber-200 animate-pop">
+        <div class="flex items-center justify-between mb-3">
+          <span id="questionCounterBadge" class="bg-amber-100 text-amber-800 font-extrabold px-3.5 py-1 rounded-full text-sm">
+            ප්‍රශ්නය 1 / 20
+          </span>
+          <span class="text-xs sm:text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+            🏡 ගණිතගෙදර අභ්‍යාස
+          </span>
+        </div>
+
+        <!-- Question Prompt -->
+        <h3 id="questionPrompt" class="text-xl sm:text-2xl font-extrabold text-slate-800 mb-5 leading-relaxed">
+          ප්‍රශ්නය මෙතැන දිස්වේ...
+        </h3>
+
+        <!-- Rich Visual Illustration Box -->
+        <div id="questionVisual" class="bg-gradient-to-b from-sky-50 to-indigo-50/70 border-2 border-dashed border-sky-300 rounded-3xl p-4 sm:p-6 mb-6 flex flex-col items-center justify-center min-h-[160px] text-center overflow-x-auto">
+        </div>
+
+        <!-- Answer Options Grid -->
+        <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+        </div>
+
+        <!-- Feedback Banner -->
+        <div id="feedbackBanner" class="hidden mt-6 p-4 rounded-2xl border-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span id="feedbackEmoji" class="text-4xl">🎉</span>
+            <div>
+              <h4 id="feedbackTitle" class="font-extrabold text-lg">නියමයි! ඉතා නිවැරදියි 🎉</h4>
+              <p id="feedbackText" class="text-sm font-bold opacity-95"></p>
+              <p id="feedbackExplanation" class="text-xs sm:text-sm font-semibold mt-1 opacity-90"></p>
+            </div>
+          </div>
+          <button id="nextQuestionBtn" onclick="nextQuestion()" class="bubbly-btn w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-6 py-3 rounded-2xl text-base flex items-center justify-center gap-2 shrink-0">
+            <span>ඊළඟ ප්‍රශ්නය</span>
+            <span>➡️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: LESSON COMPLETION CELEBRATION -->
+    <section id="resultView" class="hidden max-w-2xl mx-auto animate-pop">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-300 text-center">
+        <div class="text-6xl mb-3 animate-bounce">🏆</div>
+        <span class="inline-block bg-amber-100 text-amber-800 font-extrabold px-4 py-1 rounded-full text-sm mb-2">
+          🏡 ගණිතගෙදර - ඒකකය අවසන් කළා!
+        </span>
+        <h2 id="resultLessonName" class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-3">
+          ඒකකය
+        </h2>
+        <p id="resultEncouragement" class="text-lg font-bold text-emerald-600 mb-6">
+          සුබ පැතුම්! ඔබ ඉතාම දක්ෂ ලෙස ප්‍රශ්නවලට පිළිතුරු දුන්නා! 🌟
+        </p>
+
+        <!-- Score & Stars Box -->
+        <div class="grid grid-cols-2 gap-4 bg-gradient-to-br from-sky-50 to-amber-50 p-5 rounded-3xl border-2 border-amber-200 mb-8">
+          <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <div class="text-sm font-bold text-slate-500 mb-1">නිවැරදි පිළිතුරු</div>
+            <div id="finalScoreText" class="font-num text-3xl sm:text-4xl font-extrabold text-sky-600">20 / 20</div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <div class="text-sm font-bold text-slate-500 mb-1">දිනාගත් තරු</div>
+            <div id="finalStarsText" class="font-num text-3xl sm:text-4xl font-extrabold text-amber-500">⭐ 20 / 20</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="restartCurrentLesson()" class="bubbly-btn w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-extrabold px-6 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>🔄</span>
+            <span>නැවත කරන්න</span>
+          </button>
+          <button onclick="goHome()" class="bubbly-btn w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-6 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+            <span>🏡</span>
+            <span>ගණිතගෙදර මුල් පිටුව</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center py-6 text-slate-600 text-sm font-bold">
+    🏡 ගණිතගෙදර - 5 ශ්‍රේණිය ගණිතය විෂය නිර්දේශය ඇසුරින් කුඩා දරුවන් වෙනුවෙන් නිර්මාණය කරන ලදී 🎈
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. WEB AUDIO API SOUND EFFECTS
+    // =========================================================================
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundToggleBtn').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+            gain.gain.setValueAtTime(0.16, now + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.24);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.24);
+          });
+        } else if (type === 'wrong') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(210, now);
+          osc.frequency.linearRampToValueAtTime(155, now + 0.28);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 'fanfare') {
+          const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+          const times = [0, 0.12, 0.24, 0.36, 0.52, 0.66];
+          notes.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + times[i]);
+            gain.gain.setValueAtTime(0.2, now + times[i]);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + times[i] + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + times[i]);
+            osc.stop(now + times[i] + 0.36);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 2. SINHALA NUMBER NAME CONVERTER (0 - 100,000)
+    // =========================================================================
+    const onesW = ["", "එක", "දෙක", "තුන", "හතර", "පහ", "හය", "හත", "අට", "නවය"];
+    const teensW = ["දහය", "එකොළහ", "දොළහ", "දහතුන", "දහහතර", "පහළොව", "දහසය", "දහහත", "දහඅට", "දහනවය"];
+    const tensW = ["", "දහය", "විසි", "තිස්", "හතළිස්", "පනස්", "හැට", "හැත්තෑ", "අසූ", "අනූ"];
+    const exactTensW = ["", "දහය", "විස්ස", "තිහ", "හතළිහ", "පනහ", "හැට", "හැත්තෑව", "අසූව", "අනූව"];
+    const hundredsPre = ["", "එකසිය", "දෙසිය", "තුන්සිය", "හාරසිය", "පන්සිය", "හයසිය", "හත්සිය", "අටසිය", "නවසිය"];
+    const exactHundreds = ["", "සියය", "දෙසියය", "තුන්සියය", "හාරසියය", "පන්සියය", "හයසියය", "හත්සියය", "අටසියය", "නවසියය"];
+    const thousandsPre = ["", "එක්දහස්", "දෙදහස්", "තුන්දහස්", "හාරදහස්", "පන්දහස්", "හයදහස්", "හත්දහස්", "අටදහස්", "නවදහස්"];
+    const exactThousands = ["", "දහස", "දෙදහස", "තුන්දහස", "හාරදහස", "පන්දහස", "හයදහස", "හත්දහස", "අටදහස", "නවදහස"];
+
+    function toSinhalaName(n) {
+      if (n === 0) return "බින්දුව";
+      if (n === 100000) return "ලක්ෂය";
+      if (n < 10) return onesW[n];
+      if (n < 20) return teensW[n - 10];
+      if (n < 100) {
+        const t = Math.floor(n / 10), o = n % 10;
+        return o === 0 ? exactTensW[t] : `${tensW[t]} ${onesW[o]}`;
+      }
+      if (n < 1000) {
+        const h = Math.floor(n / 100), rem = n % 100;
+        return rem === 0 ? exactHundreds[h] : `${hundredsPre[h]} ${toSinhalaName(rem)}`;
+      }
+      if (n < 10000) {
+        const th = Math.floor(n / 1000), rem = n % 1000;
+        return rem === 0 ? exactThousands[th] : `${thousandsPre[th]} ${toSinhalaName(rem)}`;
+      }
+      const thPart = Math.floor(n / 1000);
+      const rem = n % 1000;
+      const thPrefixMap = { 10: "දස දහස්", 11: "එකොළොස් දහස්", 13: "දහ තුන්දහස්", 28: "විසි අටදහස්", 35: "තිස් පන්දහස්", 41: "හතළිස් එක්දහස්", 50: "පනස් දහස්", 69: "හැට නවදහස්" };
+      const exactThMap = { 10: "දස දහස", 20: "විසි දහස", 30: "තිස් දහස", 40: "හතළිස් දහස", 50: "පනස් දහස", 60: "හැට දහස", 70: "හැත්තෑ දහස", 80: "අසූ දහස", 90: "අනූ දහස" };
+      if (rem === 0 && exactThMap[thPart]) return exactThMap[thPart];
+      const prefix = thPrefixMap[thPart] || `${toSinhalaName(thPart)} දහස්`;
+      return rem === 0 ? prefix : `${prefix} ${toSinhalaName(rem)}`;
+    }
+
+    function fmtNum(n) {
+      return n >= 10000 ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : String(n);
+    }
+
+    // =========================================================================
+    // 3. CUSTOM SVG & VISUAL AID GENERATORS
+    // =========================================================================
+    function svgAbacus4(th, h, t, o) {
+      const cols = [
+        { label: 'දා', val: th, color: '#ec4899' },
+        { label: 'සී', val: h, color: '#10b981' },
+        { label: 'ද', val: t, color: '#f59e0b' },
+        { label: 'එ', val: o, color: '#3b82f6' }
+      ];
+      let svg = `<svg width="230" height="155" viewBox="0 0 230 155" class="bg-white rounded-2xl border-2 border-indigo-200 p-2 shadow-sm">
+        <rect x="12" y="124" width="206" height="12" rx="6" fill="#78350f"/>`;
+      cols.forEach((c, i) => {
+        const x = 36 + i * 52;
+        svg += `<line x1="${x}" y1="18" x2="${x}" y2="124" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>`;
+        for (let b = 0; b < c.val; b++) {
+          const y = 115 - b * 10;
+          svg += `<ellipse cx="${x}" cy="${y}" rx="14" ry="4.5" fill="${c.color}" stroke="#1e293b" stroke-width="1.2"/>`;
+        }
+        svg += `<text x="${x}" y="148" text-anchor="middle" font-size="14" font-weight="800" fill="#1e293b">${c.label}</text>`;
+      });
+      return svg + `</svg>`;
+    }
+
+    function svgVerticalCalc(op, a, b, unit = '') {
+      return `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-sky-300 font-num text-2xl sm:text-3xl font-extrabold text-slate-800 shadow-sm inline-block text-right">
+        ${unit ? `<div class="text-xs font-bold text-sky-600 mb-1">${unit}</div>` : ''}
+        <div>${a}</div>
+        <div class="border-b-4 border-slate-700 pb-1">${op} ${b}</div>
+        <div class="text-sky-600 pt-1">?</div>
+      </div>`;
+    }
+
+    function svgClock(hour, minute) {
+      const minAngle = minute * 6;
+      const hrAngle = ((hour % 12) + minute / 60) * 30;
+      let svg = `<svg width="165" height="165" viewBox="0 0 165 165" class="drop-shadow-md">
+        <circle cx="82.5" cy="82.5" r="76" fill="#ec4899" stroke="#9d174d" stroke-width="4"/>
+        <circle cx="82.5" cy="82.5" r="64" fill="#ffffff" stroke="#1e293b" stroke-width="3"/>`;
+      for (let i = 1; i <= 12; i++) {
+        const a = (i * 30 - 90) * (Math.PI / 180);
+        const nx = 82.5 + 49 * Math.cos(a);
+        const ny = 82.5 + 49 * Math.sin(a) + 5;
+        svg += `<text x="${nx}" y="${ny}" text-anchor="middle" font-size="14" font-weight="800" fill="#1e293b" font-family="Fredoka, sans-serif">${i}</text>`;
+      }
+      svg += `<g transform="rotate(${minAngle} 82.5 82.5)">
+        <line x1="82.5" y1="82.5" x2="82.5" y2="27" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+      </g>`;
+      svg += `<g transform="rotate(${hrAngle} 82.5 82.5)">
+        <line x1="82.5" y1="82.5" x2="82.5" y2="46" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+      </g>`;
+      svg += `<circle cx="82.5" cy="82.5" r="5.5" fill="#f59e0b" stroke="#1e293b" stroke-width="2"/></svg>`;
+      return svg;
+    }
+
+    function svgFractionGrid(totalParts, shadedParts, color = '#38bdf8') {
+      if (totalParts === 4) {
+        return `<svg width="130" height="130" viewBox="0 0 130 130" class="bg-white rounded-xl border-2 border-slate-300 shadow-sm">
+          <rect x="10" y="10" width="55" height="55" fill="${shadedParts >= 1 ? color : '#fff'}" stroke="#1e293b" stroke-width="2.5"/>
+          <rect x="65" y="10" width="55" height="55" fill="${shadedParts >= 2 ? color : '#fff'}" stroke="#1e293b" stroke-width="2.5"/>
+          <rect x="10" y="65" width="55" height="55" fill="${shadedParts >= 3 ? color : '#fff'}" stroke="#1e293b" stroke-width="2.5"/>
+          <rect x="65" y="65" width="55" height="55" fill="${shadedParts >= 4 ? color : '#fff'}" stroke="#1e293b" stroke-width="2.5"/>
+        </svg>`;
+      }
+      let svg = `<svg width="260" height="56" viewBox="0 0 260 56" class="bg-white rounded-xl border-2 border-slate-300 shadow-sm">`;
+      for (let i = 0; i < 10; i++) {
+        svg += `<rect x="${10 + i * 24}" y="10" width="24" height="36" fill="${i < shadedParts ? color : '#ffffff'}" stroke="#1e293b" stroke-width="2"/>`;
+      }
+      return svg + `</svg>`;
+    }
+
+    function svgSolid(type) {
+      if (type === 'cube') {
+        return `<svg width="140" height="135" viewBox="0 0 140 135">
+          <polygon points="30,45 85,45 85,100 30,100" fill="#4ade80" stroke="#14532d" stroke-width="3"/>
+          <polygon points="30,45 55,25 110,25 85,45" fill="#86efac" stroke="#14532d" stroke-width="3"/>
+          <polygon points="85,45 110,25 110,80 85,100" fill="#22c55e" stroke="#14532d" stroke-width="3"/>
+        </svg>`;
+      }
+      if (type === 'cuboid') {
+        return `<svg width="170" height="125" viewBox="0 0 170 125">
+          <polygon points="20,50 115,50 115,105 20,105" fill="#fb923c" stroke="#7c2d12" stroke-width="3"/>
+          <polygon points="20,50 50,25 145,25 115,50" fill="#fdba74" stroke="#7c2d12" stroke-width="3"/>
+          <polygon points="115,50 145,25 145,80 115,105" fill="#f97316" stroke="#7c2d12" stroke-width="3"/>
+        </svg>`;
+      }
+      if (type === 'tetrahedron') {
+        return `<svg width="140" height="135" viewBox="0 0 140 135">
+          <polygon points="70,15 20,105 82,115" fill="#f472b6" stroke="#831843" stroke-width="3"/>
+          <polygon points="70,15 82,115 120,92" fill="#db2777" stroke="#831843" stroke-width="3"/>
+        </svg>`;
+      }
+      return `<svg width="130" height="135" viewBox="0 0 130 135">
+        <path d="M30,35 L30,105 A35,14 0 0,0 100,105 L100,35 Z" fill="#60a5fa" stroke="#1e3a8a" stroke-width="3"/>
+        <ellipse cx="65" cy="35" rx="35" ry="14" fill="#93c5fd" stroke="#1e3a8a" stroke-width="3"/>
+      </svg>`;
+    }
+
+    function svgAngle(kind) {
+      if (kind === 'right') {
+        return `<svg width="140" height="125" viewBox="0 0 140 125" class="bg-white rounded-2xl border-2 border-sky-200 p-2">
+          <line x1="30" y1="20" x2="30" y2="100" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+          <line x1="30" y1="100" x2="115" y2="100" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+          <polyline points="30,82 48,82 48,100" fill="none" stroke="#ef4444" stroke-width="3"/>
+        </svg>`;
+      }
+      if (kind === 'acute') {
+        return `<svg width="140" height="125" viewBox="0 0 140 125" class="bg-white rounded-2xl border-2 border-emerald-200 p-2">
+          <line x1="85" y1="25" x2="30" y2="100" stroke="#059669" stroke-width="4" stroke-linecap="round"/>
+          <line x1="30" y1="100" x2="115" y2="100" stroke="#059669" stroke-width="4" stroke-linecap="round"/>
+          <path d="M55,100 A25,25 0 0,0 45,80" fill="none" stroke="#ef4444" stroke-width="3"/>
+        </svg>`;
+      }
+      return `<svg width="150" height="125" viewBox="0 0 150 125" class="bg-white rounded-2xl border-2 border-amber-200 p-2">
+        <line x1="20" y1="30" x2="65" y2="100" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+        <line x1="65" y1="100" x2="135" y2="100" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+        <path d="M90,100 A25,25 0 0,0 52,79" fill="none" stroke="#ef4444" stroke-width="3"/>
+      </svg>`;
+    }
+
+    function svgCompass8() {
+      return `<svg width="210" height="210" viewBox="0 0 210 210" class="bg-white rounded-2xl border-2 border-indigo-200 p-2 shadow-sm">
+        <circle cx="105" cy="105" r="78" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4"/>
+        <line x1="105" y1="28" x2="105" y2="182" stroke="#0284c7" stroke-width="3"/>
+        <line x1="28" y1="105" x2="182" y2="105" stroke="#0284c7" stroke-width="3"/>
+        <line x1="50" y1="50" x2="160" y2="160" stroke="#f59e0b" stroke-width="2.5"/>
+        <line x1="160" y1="50" x2="50" y2="160" stroke="#f59e0b" stroke-width="2.5"/>
+        <polygon points="105,20 100,32 110,32" fill="#ef4444"/>
+        <text x="105" y="15" text-anchor="middle" font-size="12" font-weight="800" fill="#dc2626">උතුර</text>
+        <text x="105" y="200" text-anchor="middle" font-size="12" font-weight="800" fill="#1e293b">දකුණ</text>
+        <text x="195" y="109" text-anchor="middle" font-size="11" font-weight="800" fill="#1e293b">නැගෙනහිර</text>
+        <text x="16" y="109" text-anchor="middle" font-size="11" font-weight="800" fill="#1e293b">බස්නාහිර</text>
+        <text x="168" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="#b45309">ඊසාන</text>
+        <text x="172" y="175" text-anchor="middle" font-size="11" font-weight="800" fill="#b45309">ගිනිකොන</text>
+        <text x="38" y="175" text-anchor="middle" font-size="11" font-weight="800" fill="#b45309">නිරිත</text>
+        <text x="40" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="#b45309">වයඹ</text>
+      </svg>`;
+    }
+
+    function svgSchoolDirections() {
+      return `<div class="bg-white p-3 rounded-2xl border-2 border-emerald-300 max-w-md w-full shadow-sm text-xs sm:text-sm font-bold">
+        <div class="text-right text-rose-600 mb-1">⬆️ උතුර</div>
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="bg-sky-50 border border-sky-200 p-2 rounded-xl">🧪 ගණිතාගාරය<br><span class="text-[10px] text-slate-500">(වයඹ)</span></div>
+          <div class="bg-emerald-50 border border-emerald-200 p-2 rounded-xl">🏛️ ප්‍රධාන ශාලාව<br><span class="text-[10px] text-slate-500">(උතුර)</span></div>
+          <div class="bg-lime-50 border border-lime-200 p-2 rounded-xl">🌳 අඹ ගස<br><span class="text-[10px] text-slate-500">(ඊසාන)</span></div>
+          <div class="bg-amber-50 border border-amber-200 p-2 rounded-xl">🍱 ආපණ ශාලාව<br><span class="text-[10px] text-slate-500">(බස්නාහිර)</span></div>
+          <div class="bg-amber-200 border-2 border-amber-500 p-2 rounded-xl text-amber-950">🏫 විජය ශාලාව<br><span class="text-[10px]">(මැද)</span></div>
+          <div class="bg-purple-50 border border-purple-200 p-2 rounded-xl">🏢 කාර්යාලය<br><span class="text-[10px] text-slate-500">(නැගෙනහිර)</span></div>
+          <div class="bg-pink-50 border border-pink-200 p-2 rounded-xl">📚 පුස්තකාලය<br><span class="text-[10px] text-slate-500">(නිරිත)</span></div>
+          <div class="bg-rose-50 border border-rose-200 p-2 rounded-xl">🚧 ප්‍රධාන ගේට්ටුව<br><span class="text-[10px] text-slate-500">(දකුණ)</span></div>
+          <div class="bg-indigo-50 border border-indigo-200 p-2 rounded-xl">🏫 පැරකුම් ශාලාව<br><span class="text-[10px] text-slate-500">(ගිනිකොන)</span></div>
+        </div>
+      </div>`;
+    }
+
+    function svgBarChart(title, data) {
+      const maxVal = Math.max(...data.map(d => d.val), 8);
+      const step = maxVal > 25 ? 10 : maxVal > 12 ? 5 : 2;
+      let svg = `<div class="bg-white p-3 rounded-2xl border-2 border-indigo-200 shadow-sm w-full max-w-md">
+        <div class="font-extrabold text-indigo-900 text-sm mb-2 text-center">${title}</div>
+        <svg viewBox="0 0 330 175" class="w-full h-auto">`;
+      for (let g = 0; g <= maxVal; g += step) {
+        const y = 140 - (g / maxVal) * 115;
+        svg += `<line x1="38" y1="${y}" x2="315" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="32" y="${y + 4}" text-anchor="end" font-size="10" font-weight="700" fill="#64748b" font-family="Fredoka, sans-serif">${g}</text>`;
+      }
+      svg += `<line x1="38" y1="20" x2="38" y2="140" stroke="#334155" stroke-width="2"/>
+              <line x1="38" y1="140" x2="315" y2="140" stroke="#334155" stroke-width="2"/>`;
+      const colors = ['#facc15', '#38bdf8', '#4ade80', '#f472b6', '#a78bfa'];
+      const barW = 30;
+      const gap = (265 - data.length * barW) / (data.length + 1);
+      data.forEach((d, idx) => {
+        const x = 42 + gap + idx * (barW + gap);
+        const h = (d.val / maxVal) * 115;
+        const y = 140 - h;
+        svg += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="4" fill="${colors[idx % colors.length]}" stroke="#1e293b" stroke-width="1"/>
+          <text x="${x + barW / 2}" y="${y - 4}" text-anchor="middle" font-size="11" font-weight="800" fill="#1e293b" font-family="Fredoka, sans-serif">${d.val}</text>
+          <text x="${x + barW / 2}" y="158" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">${d.label}</text>`;
+      });
+      return svg + `</svg></div>`;
+    }
+
+    function makeOptions(correct, distractors) {
+      const set = new Set([String(correct)]);
+      for (const d of distractors) {
+        if (set.size < 4 && String(d) !== String(correct)) {
+          set.add(String(d));
+        }
+      }
+      let fallback = 1;
+      while (set.size < 4) {
+        set.add(String(Number(correct) ? Number(correct) + fallback * 4 : `${correct} (${fallback})`));
+        fallback++;
+      }
+      const arr = Array.from(set);
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return { options: arr, answer: String(correct) };
+    }
+
+    // =========================================================================
+    // 4. ALL 36 UNITS FOR GRADE 5 MATHEMATICS (EXACTLY 20 QUESTIONS EACH = 720!)
+    // =========================================================================
+    const LESSONS = [
+      // ==================== TERM 1 (Units 1 - 12) ====================
+      {
+        id: 1, term: 'term1', icon: '🧮', color: 'from-sky-500 to-blue-600',
+        title: '1. සංඛ්‍යා - 1',
+        subtitle: '100,000 තෙක් සංඛ්‍යා, දස දහසස්ථානය, ගණක රාමුව හා විහිදුවා ලිවීම',
+        generateQuestions() {
+          const qs = [];
+          [[2, 3, 1, 1], [6, 0, 5, 4], [6, 0, 0, 0], [4, 0, 0, 4], [7, 8, 9, 2]].forEach(([th, h, t, o]) => {
+            const n = th * 1000 + h * 100 + t * 10 + o;
+            const { options, answer } = makeOptions(n, [n + 100, n - 100, o * 1000 + t * 100 + h * 10 + th, n + 10]);
+            qs.push({ prompt: 'ගණක රාමුවෙන් නිරූපණය වන සංඛ්‍යාව කුමක් ද?', visual: svgAbacus4(th, h, t, o), options, answer, explanation: `දා: ${th}, සී: ${h}, ද: ${t}, එ: ${o} = ${n}.` });
+          });
+          [10112, 13220, 28500, 41485, 69377, 35019, 50005].forEach(n => {
+            const name = toSinhalaName(n);
+            const { options, answer } = makeOptions(fmtNum(n), [fmtNum(n + 100), fmtNum(n - 10), fmtNum(n + 1000), fmtNum(n + 1)]);
+            qs.push({ prompt: `"${name}" යන සංඛ්‍යා නාමයට අදාළ සංඛ්‍යාංකය තෝරන්න.`, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-sky-300 text-xl sm:text-2xl font-extrabold text-sky-900">📝 ${name}</div>`, options, answer, explanation: `"${name}" සංඛ්‍යාංකයෙන් ${fmtNum(n)} ලෙස ලියයි.` });
+          });
+          const extra = [
+            { q: '9,999 ට 1ක් වැඩි සංඛ්‍යාව කීය ද?', v: '9,999 + 1 = ?', ans: '10 000 (දස දහස)', d: ['1 000', '100 000', '9 998'], exp: '9,999 + 1 = 10,000 (දස දහස) වේ.' },
+            { q: '99,999 ට 1ක් වැඩි සංඛ්‍යාව කීය ද?', v: '99,999 + 1 = ?', ans: '100 000 (ලක්ෂය)', d: ['10 000', '99 998', '1 000 000'], exp: '99,999 + 1 = 100,000 (ලක්ෂය) වේ.' },
+            { q: '38,237 හි "3" (දස දහසස්ථානයේ) ඉලක්කමෙන් නිරූපිත අගය කීය ද?', v: '38,237', ans: '30 000', d: ['3 000', '300', '30'], exp: 'දස දහසස්ථානයේ ඇති 3 මගින් 30,000 නිරූපණය වේ.' },
+            { q: '40,856 හි දහසස්ථානයේ ඉලක්කම කුමක් ද?', v: '40,856', ans: '0', d: ['4', '8', '5'], exp: '40,856 හි දහසස්ථානයේ 0 ඇත.' },
+            { q: '79,008 හි සියයස්ථානයේ ඉලක්කම කුමක් ද?', v: '79,008', ans: '0', d: ['9', '7', '8'], exp: '79,008 හි සියයස්ථානයේ 0 ඇත.' },
+            { q: 'දස දහසස්ථානය 3, දහසස්ථානය 5, සියයස්ථානය 1, දහයස්ථානය 4 හා එකස්ථානය 7 වන සංඛ්‍යාව කුමක් ද?', v: '3 | 5 | 1 | 4 | 7', ans: '35 147', d: ['35 417', '53 147', '31 547'], exp: '30,000 + 5,000 + 100 + 40 + 7 = 35,147.' },
+            { q: '59,600 ට පසු සංඛ්‍යාව කීය ද?', v: '59,600 ➡️ ?', ans: '59 601', d: ['59 599', '59 700', '60 000'], exp: '59,600 + 1 = 59,601.' },
+            { q: '85,099 ට පසු සංඛ්‍යාව කීය ද?', v: '85,099 ➡️ ?', ans: '85 100', d: ['85 098', '86 000', '85 200'], exp: '85,099 + 1 = 85,100.' }
+          ];
+          extra.forEach(e => {
+            const { options, answer } = makeOptions(e.ans, e.d);
+            qs.push({ prompt: e.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-sky-300 font-num text-2xl sm:text-3xl font-extrabold text-slate-800">${e.v}</div>`, options, answer, explanation: e.exp });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 2, term: 'term1', icon: '📶', color: 'from-indigo-500 to-purple-600',
+        title: '2. සංඛ්‍යා - 2',
+        subtitle: 'ඉලක්කම් 5 සංඛ්‍යා සැසඳීම, ආරෝහණ හා අවරෝහණ පටිපාටිය',
+        generateQuestions() {
+          const items = [
+            { q: '7, 5, 2, 1 යන ඉලක්කම්වලින් සෑදිය හැකි විශාලම සංඛ්‍යාව කුමක් ද?', v: '🃏 7, 5, 2, 1', ans: '7521', d: ['7512', '7251', '5721'] },
+            { q: '7, 5, 2, 1 යන ඉලක්කම්වලින් සෑදිය හැකි කුඩාම සංඛ්‍යාව කුමක් ද?', v: '🃏 7, 5, 2, 1', ans: '1257', d: ['1275', '1527', '2157'] },
+            { q: '6, 4, 3, 1 යන ඉලක්කම්වලින් සෑදිය හැකි විශාලම සංඛ්‍යාව කුමක් ද?', v: '🃏 6, 4, 3, 1', ans: '6431', d: ['6413', '6341', '4631'] },
+            { q: '8, 9, 4, 2 යන ඉලක්කම්වලින් සෑදිය හැකි කුඩාම සංඛ්‍යාව කුමක් ද?', v: '🃏 8, 9, 4, 2', ans: '2489', d: ['2498', '2849', '4289'] },
+            { q: '7, 9, 0, 1, 5 යන ඉලක්කම් පහම භාවිතයෙන් සෑදිය හැකි විශාලම සංඛ්‍යාව කුමක් ද?', v: '🃏 7, 9, 0, 1, 5', ans: '97 510', d: ['97 501', '97 150', '95 710'] },
+            { q: '7, 9, 0, 1, 5 යන ඉලක්කම් පහම භාවිතයෙන් සෑදිය හැකි කුඩාම ඉලක්කම් පහේ සංඛ්‍යාව කුමක් ද?', v: '🃏 7, 9, 0, 1, 5', ans: '10 579', d: ['01 579', '10 597', '15 079'] },
+            { q: 'අවරෝහණ පටිපාටියට (විශාලම සංඛ්‍යාවේ සිට කුඩාම සංඛ්‍යාව තෙක්) ලියූ පිළිතුර තෝරන්න.', v: '15 368, 32 409, 51 794', ans: '51 794, 32 409, 15 368', d: ['15 368, 32 409, 51 794', '32 409, 51 794, 15 368', '51 794, 15 368, 32 409'] },
+            { q: 'අවරෝහණ පටිපාටියට ලියූ පිළිතුර තෝරන්න.', v: '39 112, 38 009, 38 103', ans: '39 112, 38 103, 38 009', d: ['38 009, 38 103, 39 112', '39 112, 38 009, 38 103', '38 103, 39 112, 38 009'] },
+            { q: 'අවරෝහණ පටිපාටියට ලියූ පිළිතුර තෝරන්න.', v: '52 600, 52 599, 52 550', ans: '52 600, 52 599, 52 550', d: ['52 550, 52 599, 52 600', '52 599, 52 600, 52 550', '52 600, 52 550, 52 599'] },
+            { q: 'අවරෝහණ පටිපාටියට ලියූ පිළිතුර තෝරන්න.', v: '76 735, 76 729, 76 738', ans: '76 738, 76 735, 76 729', d: ['76 729, 76 735, 76 738', '76 738, 76 729, 76 735', '76 735, 76 738, 76 729'] },
+            { q: 'ආරෝහණ පටිපාටියට (කුඩාම සංඛ්‍යාවේ සිට විශාලම සංඛ්‍යාව තෙක්) ලියූ පිළිතුර තෝරන්න.', v: '15 137, 24 348, 17 230', ans: '15 137, 17 230, 24 348', d: ['24 348, 17 230, 15 137', '15 137, 24 348, 17 230', '17 230, 15 137, 24 348'] },
+            { q: 'ආරෝහණ පටිපාටියට ලියූ පිළිතුර තෝරන්න.', v: '45 928, 54 289, 42 598', ans: '42 598, 45 928, 54 289', d: ['54 289, 45 928, 42 598', '45 928, 42 598, 54 289', '42 598, 54 289, 45 928'] },
+            { q: 'ආරෝහණ පටිපාටියට ලියූ පිළිතුර තෝරන්න.', v: '97 438, 97 529, 97 670', ans: '97 438, 97 529, 97 670', d: ['97 670, 97 529, 97 438', '97 529, 97 438, 97 670', '97 438, 97 670, 97 529'] },
+            { q: 'ආරෝහණ පටිපාටියට ලියූ පිළිතුර තෝරන්න.', v: '23 509, 23 505, 23 555', ans: '23 505, 23 509, 23 555', d: ['23 555, 23 509, 23 505', '23 509, 23 505, 23 555', '23 505, 23 555, 23 509'] },
+            { q: 'මැතිවරණයක දී A: 28 546, B: 19 370, C: 32 095 ලබා ගත්හ. වැඩිම ඡන්ද ලබා ගත් අපේක්ෂකයා කවුද?', v: '🗳️ A: 28 546 | B: 19 370 | C: 32 095', ans: 'C (32 095)', d: ['A (28 546)', 'B (19 370)', 'සමානයි'] },
+            { q: 'මැතිවරණයක දී A: 28 546, B: 19 370, C: 32 095 ලබා ගත්හ. අඩුම ඡන්ද ලබා ගත් අපේක්ෂකයා කවුද?', v: '🗳️ A: 28 546 | B: 19 370 | C: 32 095', ans: 'B (19 370)', d: ['A (28 546)', 'C (32 095)', 'සමානයි'] },
+            { q: '4, 2, 6, 0, 3 යන ඉලක්කම් පහම භාවිතයෙන් සෑදිය හැකි විශාලම සංඛ්‍යාව කුමක් ද?', v: '🃏 4, 2, 6, 0, 3', ans: '64 320', d: ['64 302', '64 230', '46 320'] },
+            { q: '4, 2, 6, 0, 3 යන ඉලක්කම් පහම භාවිතයෙන් සෑදිය හැකි කුඩාම ඉලක්කම් පහේ සංඛ්‍යාව කුමක් ද?', v: '🃏 4, 2, 6, 0, 3', ans: '20 346', d: ['02 346', '20 364', '23 046'] },
+            { q: '24 871, 21 478, 24 718 යන සංඛ්‍යා අතරින් විශාලම සංඛ්‍යාව කුමක් ද?', v: '24 871 | 21 478 | 24 718', ans: '24 871', d: ['24 718', '21 478', '24 178'] },
+            { q: '24 871, 21 478, 24 718 යන සංඛ්‍යා අතරින් කුඩාම සංඛ්‍යාව කුමක් ද?', v: '24 871 | 21 478 | 24 718', ans: '21 478', d: ['24 718', '24 871', '21 748'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-purple-300 font-num text-xl sm:text-2xl font-extrabold text-purple-950">${it.v}</div>`, options, answer, explanation: `ස්ථානීය අගයන් සසඳා බැලූ විට නිවැරදි පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 3, term: 'term1', icon: '➕', color: 'from-emerald-500 to-green-600',
+        title: '3. එකතු කිරීම',
+        subtitle: '9999 තෙක් සංඛ්‍යා දෙකක් හා තුනක් එකතු කිරීම',
+        generateQuestions() {
+          const pairs = [
+            [3138, 4624], [4278, 1351], [4354, 2429], [3635, 5125], [2241, 6367],
+            [1904, 7364], [3078, 3331], [2692, 1543], [4386, 2545], [3276, 2435],
+            [5834, 1619], [2678, 1350], [3497, 5205], [4352, 3657], [3749, 2685]
+          ];
+          const qs = pairs.map(([a, b]) => {
+            const sum = a + b;
+            const { options, answer } = makeOptions(sum, [sum - 100, sum + 100, sum - 10, sum + 1]);
+            return { prompt: 'එකතු කර නිවැරදි පිළිතුර තෝරන්න.', visual: svgVerticalCalc('+', a, b), options, answer, explanation: `${a} + ${b} = ${sum} වේ.` };
+          });
+          const stories = [
+            { q: 'ගාමිණී විදුහලේ සිසුන් 645ක් ද මදීනා විදුහලේ සිසුන් 1273ක් ද සිටිති. මුළු සිසුන් ගණන කීය ද?', a: 645, b: 1273, e: '🏫' },
+            { q: 'විජය විදුහලේ සිසුන් 4046ක් ද සරස්වතී විදුහලේ සිසුන් 1938ක් ද සිටිති. මුළු සිසුන් ගණන කීය ද?', a: 4046, b: 1938, e: '🎒' },
+            { q: 'රාජා නිෂ්පාදන ආයතනය යෝගට් 4675ක් ද සුජාතා ආයතනය 3508ක් ද නිපදවීය. මුළු යෝගට් ගණන කීය ද?', a: 4675, b: 3508, e: '🥛' },
+            { q: 'ගබඩා තුනක පිටි ගෝනි 2788, 3453 හා 2319ක් ඇත. මුළු පිටි ගෝනි ගණන කීය ද?', a: '2788 + 3453', b: 2319, sum: 8560, e: '🌾' },
+            { q: 'මාස තුනක දී නිපදවූ අභ්‍යාස පොත් 2775, 3260 හා 3580කි. මුළු අභ්‍යාස පොත් ගණන කීය ද?', a: '2775 + 3260', b: 3580, sum: 9615, e: '📘' }
+          ];
+          stories.forEach(s => {
+            const sum = s.sum || (s.a + s.b);
+            const { options, answer } = makeOptions(sum, [sum - 100, sum + 100, sum - 10, sum + 2]);
+            qs.push({ prompt: s.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-emerald-200 flex items-center gap-3 text-xl font-num font-extrabold"><span class="text-4xl">${s.e}</span><span>${s.a} + ${s.b} = ?</span></div>`, options, answer, explanation: `නිවැරදි එකතුව ${sum} වේ.` });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 4, term: 'term1', icon: '🚂', color: 'from-purple-500 to-indigo-600',
+        title: '4. සංඛ්‍යා රටා - 1',
+        subtitle: '+6, +7, +8 සහ +9 බැගින් වැඩිවන සංඛ්‍යා රටා',
+        generateQuestions() {
+          const seqs = [
+            { arr: [21, 27, 33, 39, '?'], ans: 45, d: [44, 46, 47], step: '+6' },
+            { arr: [2, 8, 14, 20, '?'], ans: 26, d: [24, 25, 28], step: '+6' },
+            { arr: [36, 42, 48, 54, '?'], ans: 60, d: [58, 62, 61], step: '+6' },
+            { arr: [65, 71, 77, 83, '?'], ans: 89, d: [88, 90, 91], step: '+6' },
+            { arr: [105, 111, 117, 123, '?'], ans: 129, d: [128, 130, 127], step: '+6' },
+            { arr: [19, 26, 33, 40, '?'], ans: 47, d: [46, 48, 49], step: '+7' },
+            { arr: [1, 8, 15, 22, '?'], ans: 29, d: [28, 30, 27], step: '+7' },
+            { arr: [27, 34, 41, 48, '?'], ans: 55, d: [54, 56, 57], step: '+7' },
+            { arr: [55, 62, 69, 76, '?'], ans: 83, d: [82, 84, 85], step: '+7' },
+            { arr: [133, 140, 147, 154, '?'], ans: 161, d: [160, 162, 163], step: '+7' },
+            { arr: [65, 73, 81, 89, '?'], ans: 97, d: [96, 98, 95], step: '+8' },
+            { arr: [9, 17, 25, 33, '?'], ans: 41, d: [40, 42, 43], step: '+8' },
+            { arr: [44, 52, 60, 68, '?'], ans: 76, d: [74, 75, 78], step: '+8' },
+            { arr: [31, 39, 47, 55, '?'], ans: 63, d: [62, 64, 65], step: '+8' },
+            { arr: [163, 171, 179, 187, '?'], ans: 195, d: [194, 196, 193], step: '+8' },
+            { arr: [85, 94, 103, 112, '?'], ans: 121, d: [120, 122, 123], step: '+9' },
+            { arr: [5, 14, 23, 32, '?'], ans: 41, d: [40, 42, 43], step: '+9' },
+            { arr: [81, 90, 99, 108, '?'], ans: 117, d: [116, 118, 119], step: '+9' },
+            { arr: [38, 47, 56, 65, '?'], ans: 74, d: [73, 75, 72], step: '+9' },
+            { arr: [136, 145, 154, 163, '?'], ans: 172, d: [171, 173, 174], step: '+9' }
+          ];
+          return seqs.map(s => {
+            const { options, answer } = makeOptions(s.ans, s.d);
+            const vis = `<div class="flex flex-wrap items-center justify-center gap-2"><span class="text-3xl">🚂</span>
+              ${s.arr.map(x => `<div class="w-14 h-14 rounded-2xl border-2 ${x === '?' ? 'bg-amber-200 border-amber-500 text-amber-900 animate-bounce' : 'bg-white border-purple-300 text-purple-900'} flex items-center justify-center font-num text-lg font-extrabold shadow-sm">${x}</div>`).join('')}
+            </div>`;
+            return { prompt: 'සංඛ්‍යා රටාව හඳුනාගෙන හිස් තැනට ගැළපෙන සංඛ්‍යාව තෝරන්න.', visual: vis, options, answer, explanation: `මෙම රටාව ${s.step} බැගින් වැඩි වේ. එබැවින් පිළිතුර ${s.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 5, term: 'term1', icon: '➖', color: 'from-rose-500 to-red-600',
+        title: '5. අඩු කිරීම',
+        subtitle: '9999 තෙක් සංඛ්‍යා දශක හා ශතක ගනිමින් අඩු කිරීම',
+        generateQuestions() {
+          const pairs = [
+            [8673, 2381], [2678, 1293], [8398, 3520], [4364, 1237], [7436, 294],
+            [3054, 1424], [5098, 2673], [4127, 2065], [6321, 510], [9506, 2432],
+            [6594, 3736], [7382, 1516], [4090, 2573], [3266, 659], [8083, 3056],
+            [2405, 426], [9230, 1248]
+          ];
+          const qs = pairs.map(([a, b]) => {
+            const diff = a - b;
+            const { options, answer } = makeOptions(diff, [diff + 100, Math.max(0, diff - 100), diff + 10, Math.max(0, diff - 10)]);
+            return { prompt: 'අඩු කර නිවැරදි පිළිතුර තෝරන්න.', visual: svgVerticalCalc('−', a, b), options, answer, explanation: `${a} − ${b} = ${diff} වේ.` };
+          });
+          const stories = [
+            { q: 'ගැමුණු විදුහලේ සිසුන් 4375ක් ද ගණපති විදුහලේ සිසුන් 1236ක් ද සිටිති. ගැමුණු විදුහලේ වැඩිපුර සිටින සිසුන් ගණන කීය ද?', a: 4375, b: 1236, e: '🏫' },
+            { q: 'මෙරටට පැමිණි සංචාරකයින් 5762න් 3830ක් පිට වූහ. වෙනස කීය ද?', a: 5762, b: 3830, e: '✈️' },
+            { q: 'විජය විදුහලට පොත් 4835ක් ද ගැමුණු විදුහලට පොත් 9760ක් ද ගෙන එන ලදි. වැඩිපුර ගෙනා පොත් ගණන කීය ද?', a: 9760, b: 4835, e: '📚' }
+          ];
+          stories.forEach(s => {
+            const diff = s.a - s.b;
+            const { options, answer } = makeOptions(diff, [diff + 100, Math.max(0, diff - 100), diff + 10, diff + 2]);
+            qs.push({ prompt: s.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-rose-200 flex items-center gap-3 text-xl font-num font-extrabold"><span class="text-4xl">${s.e}</span><span>${s.a} − ${s.b} = ?</span></div>`, options, answer, explanation: `${s.a} − ${s.b} = ${diff} වේ.` });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 6, term: 'term1', icon: '🍰', color: 'from-fuchsia-500 to-pink-600',
+        title: '6. භාග',
+        subtitle: 'හතරෙන් පංගු (1/4, 2/4, 3/4) සහ දහයෙන් පංගු (1/10 සිට 9/10)',
+        generateQuestions() {
+          const items = [
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(4, 1, '#4ade80'), ans: '1/4', d: ['2/4', '3/4', '1/10'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(4, 2, '#38bdf8'), ans: '2/4 (1/2)', d: ['1/4', '3/4', '2/10'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(4, 3, '#facc15'), ans: '3/4', d: ['1/4', '2/4', '4/4'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(10, 1, '#f472b6'), ans: '1/10', d: ['2/10', '9/10', '1/4'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(10, 3, '#a78bfa'), ans: '3/10', d: ['7/10', '3/4', '4/10'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(10, 7, '#34d399'), ans: '7/10', d: ['3/10', '8/10', '6/10'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(10, 8, '#fb923c'), ans: '8/10', d: ['2/10', '7/10', '9/10'] },
+            { q: 'රූපයේ පාට කර ඇති කොටසින් නිරූපණය වන භාගය කුමක් ද?', vis: svgFractionGrid(10, 4, '#60a5fa'), ans: '4/10', d: ['6/10', '4/4', '5/10'] },
+            { q: 'බොත්තම් 32න් බාගයක (1/2) ඇති බොත්තම් ගණන කීය ද?', vis: '🔘 32 ÷ 2 = ?', ans: '16', d: ['8', '14', '18'] },
+            { q: 'බුලත් කොළ 40න් බාගයක ඇති බුලත් කොළ ගණන කීය ද?', vis: '🍃 40 ÷ 2 = ?', ans: '20', d: ['10', '15', '25'] },
+            { q: 'මල් 12කින් 1/4 ක මල් ගණන කීය ද?', vis: '🌸 12 ÷ 4 = ?', ans: '3', d: ['6', '9', '4'] },
+            { q: 'මල් 12කින් 2/4 ක මල් ගණන කීය ද?', vis: '🌸🌸 (3 × 2 = ?)', ans: '6', d: ['3', '9', '8'] },
+            { q: 'මල් 12කින් 3/4 ක මල් ගණන කීය ද?', vis: '🌸🌸🌸 (3 × 3 = ?)', ans: '9', d: ['3', '6', '12'] },
+            { q: 'වෙරළු ගෙඩි 16න් 1/4 ක වෙරළු ගෙඩි ගණන කීය ද?', vis: '🫒 16 ÷ 4 = ?', ans: '4', d: ['8', '12', '2'] },
+            { q: 'වෙරළු ගෙඩි 16න් 3/4 ක වෙරළු ගෙඩි ගණන කීය ද?', vis: '🫒 4 × 3 = ?', ans: '12', d: ['4', '8', '16'] },
+            { q: 'බෝල 8කින් හතරෙන් පංගු 3ක (3/4) බෝල කීයක් තිබේ ද?', vis: '⚽ 8න් 3/4 = ?', ans: '6', d: ['2', '4', '8'] },
+            { q: 'දොඩම් ගෙඩි 24කින් හතරෙන් පංගු දෙකක (2/4) දොඩම් ගෙඩි කීයක් තිබේ ද?', vis: '🍊 24න් 2/4 = ?', ans: '12', d: ['6', '18', '8'] },
+            { q: 'පේර ගෙඩි 20කින් 3/4 ක ඇති පේර ගෙඩි ගණන කීය ද?', vis: '🍐 20න් 3/4 = ?', ans: '15', d: ['5', '10', '12'] },
+            { q: 'පේර ගෙඩි 28කින් 1/4 ක ඇති පේර ගෙඩි ගණන කීය ද?', vis: '🍐 28 ÷ 4 = ?', ans: '7', d: ['14', '21', '4'] },
+            { q: 'පේර ගෙඩි 36කින් 3/4 ක ඇති පේර ගෙඩි ගණන කීය ද?', vis: '🍐 9 × 3 = ?', ans: '27', d: ['9', '18', '30'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.vis}</div>`, options, answer, explanation: `නිවැරදි පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 7, term: 'term1', icon: '✖️', color: 'from-orange-500 to-amber-500',
+        title: '7. ගුණ කිරීම - 1',
+        subtitle: 'ඉලක්කම් 2 හා 3 සංඛ්‍යා 2, 3, 4 සහ 5න් ගුණ කිරීම',
+        generateQuestions() {
+          const mults = [
+            [38, 2], [27, 3], [66, 2], [48, 3], [86, 4],
+            [63, 5], [90, 5], [98, 4], [438, 2], [342, 2],
+            [213, 3], [247, 2], [273, 3], [232, 4], [124, 4],
+            [105, 5], [231, 4], [131, 5], [310, 5], [401, 4]
+          ];
+          return mults.map(([a, b]) => {
+            const prod = a * b;
+            const { options, answer } = makeOptions(prod, [prod + 10, Math.max(2, prod - 10), prod + b, a + b]);
+            return { prompt: `${a}, ${b}න් ගුණ කර නිවැරදි පිළිතුර තෝරන්න.`, visual: svgVerticalCalc('×', a, b), options, answer, explanation: `${a} × ${b} = ${prod} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 8, term: 'term1', icon: '⏰', color: 'from-violet-500 to-purple-600',
+        title: '8. කාලය - 1',
+        subtitle: 'ඔරලෝසුව, පෙ.ව. / ප.ව. සහ පැය 24 ඔරලෝසු වේලාව',
+        generateQuestions() {
+          const items = [
+            { q: 'ඔරලෝසු මුහුණතේ දැක්වෙන වේලාව කුමක් ද?', vis: svgClock(1, 20), ans: '1.20 (එක පසුවී මිනිත්තු විස්සයි)', d: ['4.05', '1.40', '2.20'] },
+            { q: 'ඔරලෝසු මුහුණතේ දැක්වෙන වේලාව කුමක් ද?', vis: svgClock(2, 30), ans: '2.30 (දෙක පසුවී මිනිත්තු තිහයි)', d: ['6.10', '3.30', '2.00'] },
+            { q: 'ඔරලෝසු මුහුණතේ දැක්වෙන වේලාව කුමක් ද?', vis: svgClock(4, 40), ans: '4.40 (පහට මිනිත්තු විස්සයි)', d: ['8.20', '5.40', '4.20'] },
+            { q: 'ඔරලෝසු මුහුණතේ දැක්වෙන වේලාව කුමක් ද?', vis: svgClock(11, 0), ans: '11.00 (එකොළහයි)', d: ['12.55', '11.30', '10.00'] },
+            { q: 'ඔරලෝසු මුහුණතේ දැක්වෙන වේලාව කුමක් ද?', vis: svgClock(9, 45), ans: '9.45 (දහයට මිනිත්තු පහළොවයි)', d: ['10.45', '9.15', '8.45'] },
+            { q: 'ඔරලෝසු මුහුණතේ දැක්වෙන වේලාව කුමක් ද?', vis: svgClock(12, 25), ans: '12.25 (දොළහ පසුවී මිනිත්තු විසිපහයි)', d: ['5.00', '12.35', '1.25'] },
+            { q: '"නවය පසුවී මිනිත්තු පනස් පහයි" යන වේලාව වෙනත් ආකාරයකින් කියන්නේ කෙසේ ද?', vis: svgClock(9, 55), ans: 'දහයට මිනිත්තු පහයි', d: ['නවයට මිනිත්තු පහයි', 'දහය පසුවී මිනිත්තු පහයි', 'එකොළහට මිනිත්තු පහයි'] },
+            { q: 'මධ්‍යම රාත්‍රි 12 සිට මධ්‍යාහ්න 12 දක්වා කාලය දක්වන්නේ කෙසේ ද?', vis: '🌅 උදෑසන කාලය', ans: 'පෙරවරු (පෙ.ව.)', d: ['පස්වරු (ප.ව.)', 'මධ්‍යාහ්නය', 'සවස'] },
+            { q: 'මධ්‍යාහ්න 12 සිට මධ්‍යම රාත්‍රි 12 දක්වා කාලය දක්වන්නේ කෙසේ ද?', vis: '🌇 දහවල් සහ රාත්‍රි කාලය', ans: 'පස්වරු (ප.ව.)', d: ['පෙරවරු (පෙ.ව.)', 'උදෑසන', 'අලුයම'] },
+            { q: 'පාසල උදෑසන 7.30ට ආරම්භ වේ. එය පෙ.ව. / ප.ව. යොදා ලියන්න.', vis: '🏫 උදෑසන 7.30', ans: 'පෙ.ව. 7.30', d: ['ප.ව. 7.30', '19:30', 'ප.ව. 1.30'] },
+            { q: 'බැංකුවක ගනුදෙනු සවස 3.00ට අවසන් වේ. එය පෙ.ව. / ප.ව. යොදා ලියන්න.', vis: '🏦 සවස 3.00', ans: 'ප.ව. 3.00', d: ['පෙ.ව. 3.00', '03:00', 'පෙ.ව. 15.00'] },
+            { q: 'පෙ.ව. 10.45 යන වේලාව පැය 24 ඔරලෝසුවෙන් දක්වන්න.', vis: '🕒 පෙ.ව. 10.45 ➡️ ?', ans: '10:45', d: ['22:45', '12:45', '00:45'] },
+            { q: 'ප.ව. 1.30 යන වේලාව පැය 24 ඔරලෝසුවෙන් දක්වන්න.', vis: '🕒 ප.ව. 1.30 ➡️ ?', ans: '13:30', d: ['01:30', '11:30', '23:30'] },
+            { q: 'ප.ව. 9.40 යන වේලාව පැය 24 ඔරලෝසුවෙන් දක්වන්න.', vis: '🕒 ප.ව. 9.40 ➡️ ?', ans: '21:40', d: ['09:40', '19:40', '22:40'] },
+            { q: 'ප.ව. 3.20 යන වේලාව පැය 24 ඔරලෝසුවෙන් දක්වන්න.', vis: '🕒 ප.ව. 3.20 ➡️ ?', ans: '15:20', d: ['03:20', '13:20', '16:20'] },
+            { q: 'ප.ව. 10.00 යන වේලාව පැය 24 ඔරලෝසුවෙන් දක්වන්න.', vis: '🕒 ප.ව. 10.00 ➡️ ?', ans: '22:00', d: ['10:00', '20:00', '24:00'] },
+            { q: 'පැය 24 ඔරලෝසුවේ 18:00 යනු පැය 12 ඔරලෝසුවෙන් කීය ද?', vis: '📟 18:00 ➡️ ?', ans: 'ප.ව. 6.00', d: ['පෙ.ව. 6.00', 'ප.ව. 8.00', 'පෙ.ව. 8.00'] },
+            { q: 'පැය 24 ඔරලෝසුවේ 16:45 යනු පැය 12 ඔරලෝසුවෙන් කීය ද?', vis: '📟 16:45 ➡️ ?', ans: 'ප.ව. 4.45', d: ['පෙ.ව. 4.45', 'ප.ව. 6.45', 'ප.ව. 5.45'] },
+            { q: 'පැය 24 ඔරලෝසුවේ 23:05 යනු පැය 12 ඔරලෝසුවෙන් කීය ද?', vis: '📟 23:05 ➡️ ?', ans: 'ප.ව. 11.05', d: ['පෙ.ව. 11.05', 'ප.ව. 9.05', 'ප.ව. 1.05'] },
+            { q: 'පැය 24 ඔරලෝසුවේ 07:55 යනු පැය 12 ඔරලෝසුවෙන් කීය ද?', vis: '📟 07:55 ➡️ ?', ans: 'පෙ.ව. 7.55', d: ['ප.ව. 7.55', 'ප.ව. 5.55', 'පෙ.ව. 5.55'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.vis}</div>`, options, answer, explanation: `ප.ව. වේලාවන් පැය 24 ඔරලෝසුවට හැරවීමේදී පැය ගණනට 12ක් එකතු කරයි.` };
+          });
+        }
+      },
+
+      {
+        id: 9, term: 'term1', icon: '➗', color: 'from-teal-500 to-emerald-600',
+        title: '9. බෙදීම - 1',
+        subtitle: 'ඉලක්කම් 2 හා 3 සංඛ්‍යා 2, 3, 4 සහ 5න් බෙදීම',
+        generateQuestions() {
+          const exact = [
+            [48, 3], [92, 4], [95, 5], [265, 5], [55, 5],
+            [305, 5], [565, 5], [700, 5], [645, 5], [850, 5],
+            [515, 5], [525, 5], [905, 5], [640, 5]
+          ];
+          const qs = exact.map(([a, b]) => {
+            const ans = a / b;
+            const { options, answer } = makeOptions(ans, [ans + 10, Math.max(1, ans - 10), ans + 1, ans - 1]);
+            return { prompt: `${a}, ${b}න් බෙදූ විට පිළිතුර කීය ද? (${a} ÷ ${b} = ?)`, visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-emerald-300 font-num text-3xl font-extrabold text-emerald-800">${a} ÷ ${b} = ?</div>`, options, answer, explanation: `${a} ÷ ${b} = ${ans} වේ.` };
+          });
+          const rem = [
+            [50, 4, 12, 2], [570, 4, 142, 2], [89, 2, 44, 1],
+            [425, 3, 141, 2], [893, 5, 178, 3], [742, 5, 148, 2]
+          ];
+          rem.forEach(([a, b, q, r]) => {
+            const ans = `${q} ඉතුරු ${r}`;
+            const { options, answer } = makeOptions(ans, [`${q + 1} ඉතුරු 0`, `${q} ඉතුරු 0`, `${q - 1} ඉතුරු ${r + 1}`]);
+            qs.push({ prompt: `${a}, ${b}න් බෙදූ විට ලැබෙන පිළිතුර සහ ඉතුරු ගණන තෝරන්න.`, visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-amber-300 font-num text-3xl font-extrabold text-amber-800">${a} ÷ ${b} = ?</div>`, options, answer, explanation: `${q} × ${b} = ${q * b} වන අතර ${r}ක් ඉතුරු වේ.` });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 10, term: 'term1', icon: '🛣️', color: 'from-amber-500 to-yellow-600',
+        title: '10. දිග හා දුර - 1',
+        subtitle: 'කිලෝමීටර (km) සහ මීටර (m) පරිවර්තනය, එකතු කිරීම හා අඩු කිරීම',
+        generateQuestions() {
+          const items = [
+            { q: 'කිලෝමීටර 1කට මීටර කීයක් තිබේ ද? (1 km = ? m)', v: '🛣️ 1 km = ? m', ans: '1000 m', d: ['100 m', '10 m', '500 m'] },
+            { q: '3000 m කිලෝමීටරවලින් ලියන්න.', v: '🛣️ 3000 m = ? km', ans: '3 km', d: ['30 km', '300 km', '13 km'] },
+            { q: '12 000 m කිලෝමීටරවලින් ලියන්න.', v: '🛣️ 12 000 m = ? km', ans: '12 km', d: ['120 km', '1 km 200 m', '1200 km'] },
+            { q: '6 km මීටරවලින් ලියන්න.', v: '🛣️ 6 km = ? m', ans: '6000 m', d: ['600 m', '60 m', '60000 m'] },
+            { q: '42 km මීටරවලින් ලියන්න.', v: '🛣️ 42 km = ? m', ans: '42 000 m', d: ['4200 m', '420 m', '420 000 m'] },
+            { q: '4250 m කිලෝමීටර හා මීටරවලින් ලියන්න.', v: '🛣️ 4250 m = ?', ans: '4 km 250 m', d: ['42 km 50 m', '4 km 25 m', '40 km 250 m'] },
+            { q: '3080 m කිලෝමීටර හා මීටරවලින් ලියන්න.', v: '🛣️ 3080 m = ?', ans: '3 km 80 m', d: ['3 km 800 m', '30 km 80 m', '3 km 8 m'] },
+            { q: '17 287 m කිලෝමීටර හා මීටරවලින් ලියන්න.', v: '🛣️ 17 287 m = ?', ans: '17 km 287 m', d: ['1 km 728 m', '172 km 87 m', '17 km 28 m'] },
+            { q: '2 km 400 m මීටරවලින් ලියන්න.', v: '🛣️ 2 km 400 m = ? m', ans: '2400 m', d: ['2040 m', '240 m', '24000 m'] },
+            { q: '10 km 155 m මීටරවලින් ලියන්න.', v: '🛣️ 10 km 155 m = ? m', ans: '10 155 m', d: ['1155 m', '101 550 m', '1055 m'] },
+            { q: '8 km 404 m මීටරවලින් ලියන්න.', v: '🛣️ 8 km 404 m = ? m', ans: '8404 m', d: ['844 m', '8440 m', '80404 m'] },
+            { q: '17 km 60 m මීටරවලින් ලියන්න.', v: '🛣️ 17 km 60 m = ? m', ans: '17 060 m', d: ['17 600 m', '1760 m', '170 060 m'] },
+            { q: 'එකතු කරන්න: 4 km 210 m + 3 km 190 m', v: svgVerticalCalc('+', '4 km 210 m', '3 km 190 m'), ans: '7 km 400 m', d: ['7 km 300 m', '8 km 400 m', '1 km 20 m'] },
+            { q: 'එකතු කරන්න: 1 km 300 m + 24 km 700 m (1000 m = 1 km)', v: svgVerticalCalc('+', '1 km 300 m', '24 km 700 m'), ans: '26 km', d: ['25 km', '25 km 100 m', '26 km 100 m'] },
+            { q: 'එකතු කරන්න: 30 km 423 m + 11 km 976 m', v: svgVerticalCalc('+', '30 km 423 m', '11 km 976 m'), ans: '42 km 399 m', d: ['41 km 399 m', '42 km 299 m', '41 km 1399 m'] },
+            { q: 'පාපැදි තරගකරුවෙක් පළමු දින 32 km 400 m ක් ද දෙවන දින 27 km 600 m ක් ද ගමන් කළේ ය. මුළු දුර කීය ද?', v: '🚴 32 km 400 m + 27 km 600 m', ans: '60 km', d: ['59 km', '59 km 100 m', '61 km'] },
+            { q: 'අඩු කරන්න: 26 km 923 m − 15 km 733 m', v: svgVerticalCalc('−', '26 km 923 m', '15 km 733 m'), ans: '11 km 190 m', d: ['11 km 290 m', '12 km 190 m', '10 km 190 m'] },
+            { q: 'අඩු කරන්න: 35 km 594 m − 12 km 751 m', v: svgVerticalCalc('−', '35 km 594 m', '12 km 751 m'), ans: '22 km 843 m', d: ['23 km 843 m', '23 km 157 m', '22 km 157 m'] },
+            { q: 'කොළඹ සිට කතරගමට ඇති මුළු දුර 219 km කි. දැනට 80 km 500 m ක් ගමන් කර ඇත්නම් තව යා යුතු දුර කීය ද?', v: '🚌 219 km − 80 km 500 m', ans: '138 km 500 m', d: ['139 km 500 m', '139 km', '128 km 500 m'] },
+            { q: 'සහන්ට 12 km ක දුරක් යා යුතු විය. ඔහු 10 km 200 m ක් බසයෙන් ගියේ නම් ඉතුරු දුර කීය ද?', v: '🛺 12 km − 10 km 200 m', ans: '1 km 800 m', d: ['2 km 800 m', '2 km 200 m', '1 km 200 m'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: `1 km = 1000 m බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 11, term: 'term1', icon: '💰', color: 'from-yellow-500 to-amber-600',
+        title: '11. මුදල් - 1',
+        subtitle: 'රුපියල් හා සත එකතු කිරීම, අඩු කිරීම සහ ඉතුරු මුදල් සෙවීම',
+        generateQuestions() {
+          const items = [
+            { q: 'එකතු කරන්න: රු. 150.75 + රු. 267.50', v: svgVerticalCalc('+', 'රු. 150.75', 'රු. 267.50'), ans: 'රු. 418.25', d: ['රු. 417.25', 'රු. 418.75', 'රු. 318.25'] },
+            { q: 'එකතු කරන්න: රු. 4220.75 + රු. 5145.75', v: svgVerticalCalc('+', 'රු. 4220.75', 'රු. 5145.75'), ans: 'රු. 9366.50', d: ['රු. 9365.50', 'රු. 9366.00', 'රු. 8366.50'] },
+            { q: 'එකතු කරන්න: රු. 750.25 + රු. 120.75', v: svgVerticalCalc('+', 'රු. 750.25', 'රු. 120.75'), ans: 'රු. 871.00', d: ['රු. 870.00', 'රු. 870.50', 'රු. 881.00'] },
+            { q: 'එකතු කරන්න: රු. 6105.50 + රු. 3400.50', v: svgVerticalCalc('+', 'රු. 6105.50', 'රු. 3400.50'), ans: 'රු. 9506.00', d: ['රු. 9505.00', 'රු. 9505.50', 'රු. 8506.00'] },
+            { q: 'එකතු කරන්න: රු. 1350.25 + රු. 1700.25', v: svgVerticalCalc('+', 'රු. 1350.25', 'රු. 1700.25'), ans: 'රු. 3050.50', d: ['රු. 3050.00', 'රු. 2050.50', 'රු. 3150.50'] },
+            { q: 'එකතු කරන්න: රු. 2112.75 + රු. 1156.25', v: svgVerticalCalc('+', 'රු. 2112.75', 'රු. 1156.25'), ans: 'රු. 3269.00', d: ['රු. 3268.00', 'රු. 3268.50', 'රු. 3369.00'] },
+            { q: 'අඩු කරන්න: රු. 920.00 − රු. 185.00', v: svgVerticalCalc('−', 'රු. 920.00', 'රු. 185.00'), ans: 'රු. 735.00', d: ['රු. 835.00', 'රු. 745.00', 'රු. 865.00'] },
+            { q: 'අඩු කරන්න: රු. 1400.00 − රු. 1250.00', v: svgVerticalCalc('−', 'රු. 1400.00', 'රු. 1250.00'), ans: 'රු. 150.00', d: ['රු. 250.00', 'රු. 100.00', 'රු. 200.00'] },
+            { q: 'අඩු කරන්න: රු. 1525.25 − රු. 1500.75', v: svgVerticalCalc('−', 'රු. 1525.25', 'රු. 1500.75'), ans: 'රු. 24.50', d: ['රු. 25.50', 'රු. 25.00', 'රු. 24.00'] },
+            { q: 'අඩු කරන්න: රු. 3750.50 − රු. 2520.75', v: svgVerticalCalc('−', 'රු. 3750.50', 'රු. 2520.75'), ans: 'රු. 1229.75', d: ['රු. 1230.75', 'රු. 1230.25', 'රු. 1129.75'] },
+            { q: 'රු. 450ක තොප්පියක්, රු. 375ක කුඩයක් සහ රු. 100ක බෝතලයක් මිල දී ගත් විට ගෙවිය යුතු මුළු මුදල කීය ද?', v: '👒 450 + ☂️ 375 + 🍼 100', ans: 'රු. 925.00', d: ['රු. 825.00', 'රු. 975.00', 'රු. 900.00'] },
+            { q: 'සුපුන් රු. 490ක කෑම පෙට්ටියක් හා රු. 895ක බෑගයක් මිල දී ගත්තේ ය. මුළු මුදල කීය ද?', v: '🍱 රු. 490 + 🎒 රු. 895', ans: 'රු. 1385.00', d: ['රු. 1285.00', 'රු. 1395.00', 'රු. 1485.00'] },
+            { q: 'ෆාතිමා රු. 175ක පැන්සල් පෙට්ටියක් හා රු. 775ක සපත්තු කුට්ටමක් මිල දී ගත්තා ය. මුළු මුදල කීය ද?', v: '✏️ රු. 175 + 👟 රු. 775', ans: 'රු. 950.00', d: ['රු. 850.00', 'රු. 940.00', 'රු. 1050.00'] },
+            { q: 'මීනා රු. 1300ක ගවුමක්, රු. 895ක බෑගයක් හා රු. 490ක කෑම පෙට්ටියක් මිල දී ගත්තා ය. මුළු මුදල කීය ද?', v: '👗 1300 + 🎒 895 + 🍱 490', ans: 'රු. 2685.00', d: ['රු. 2585.00', 'රු. 2695.00', 'රු. 2785.00'] },
+            { q: 'රු. 5000ක් දී රු. 2500ක සහ රු. 1700ක භාණ්ඩ දෙකක් මිල දී ගත් විට ලැබෙන ඉතුරු මුදල කීය ද?', v: '5000 − (2500 + 1700) = ?', ans: 'රු. 800.00', d: ['රු. 700.00', 'රු. 900.00', 'රු. 1800.00'] },
+            { q: 'රු. 3500ක් දී රු. 2200ක සහ රු. 950ක භාණ්ඩ දෙකක් මිල දී ගත් විට ඉතුරු මුදල කීය ද?', v: '3500 − (2200 + 950) = ?', ans: 'රු. 350.00', d: ['රු. 450.00', 'රු. 250.00', 'රු. 550.00'] },
+            { q: 'රු. 4000ක් දී රු. 1650ක සහ රු. 1700ක භාණ්ඩ දෙකක් මිල දී ගත් විට ඉතුරු මුදල කීය ද?', v: '4000 − (1650 + 1700) = ?', ans: 'රු. 650.00', d: ['රු. 750.00', 'රු. 550.00', 'රු. 850.00'] },
+            { q: 'නිම්නා රු. 1300ක ගවුමක් ගැනීමට ගිය නමුත් ඇය ළඟ තිබුණේ රු. 925කි. තව කොපමණ මුදලක් අවශ්‍ය ද?', v: '👗 රු. 1300 − රු. 925 = ?', ans: 'රු. 375.00', d: ['රු. 475.00', 'රු. 425.00', 'රු. 325.00'] },
+            { q: 'කෙවින් රු. 1500ක් අතැතිව කඩයට ගියේ ය. රු. 1800ක කලිසමක් ගැනීමට තව කොපමණ මුදලක් අවශ්‍ය ද?', v: '👖 රු. 1800 − රු. 1500 = ?', ans: 'රු. 300.00', d: ['රු. 200.00', 'රු. 400.00', 'රු. 3300.00'] },
+            { q: 'රු. 450ක කුඩයක් ගැනීමට රමේෂ්ට තව රු. 150ක් අවශ්‍ය වේ නම් ඔහු ළඟ තිබූ මුදල කීය ද?', v: '☂️ රු. 450 − රු. 150 = ?', ans: 'රු. 300.00', d: ['රු. 600.00', 'රු. 200.00', 'රු. 350.00'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: `රුපියල් හා සත නිවැරදිව ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 12, term: 'term1', isRevision: true, icon: '🌟', color: 'from-amber-500 via-orange-500 to-rose-500',
+        title: '12. පුනරීක්ෂණය - 1',
+        subtitle: 'පළමුවන වාර පුනරීක්ෂණය (1 සිට 11 දක්වා ඒකක ඇසුරෙන්)',
+        generateQuestions() {
+          const items = [
+            { q: '58,047 හි "7" ඉලක්කමෙන් දැක්වෙන අගය කීය ද?', v: '58,047', ans: '7', d: ['70', '700', '7000'], exp: '7 එකස්ථානයේ ඇති බැවින් අගය 7 වේ.' },
+            { q: '90,386 හි "9" ඉලක්කම පිහිටි ස්ථානය කුමක් ද?', v: '90,386', ans: 'දස දහසස්ථානය', d: ['දහසස්ථානය', 'සියයස්ථානය', 'දහයස්ථානය'], exp: '9 දස දහසස්ථානයේ පිහිටා ඇත.' },
+            { q: 'විහිදුවා ලියන්න: 7081 = ?', v: '7081', ans: '7000 + 0 + 80 + 1', d: ['700 + 80 + 1', '7000 + 800 + 1', '7080 + 10'], exp: '7000 + 0 + 80 + 1 = 7081.' },
+            { q: '89,199 ට 1ක් වැඩි සංඛ්‍යාව කුමක් ද?', v: '89,199 + 1 = ?', ans: '89 200', d: ['89 198', '90 000', '89 100'], exp: '89,199 + 1 = 89,200.' },
+            { q: '29,999 ට 2ක් වැඩි සංඛ්‍යාව කුමක් ද?', v: '29,999 + 2 = ?', ans: '30 001', d: ['30 000', '29 997', '30 002'], exp: '29,999 + 2 = 30,001.' },
+            { q: '1, 9, 5, 7, 3 යන ඉලක්කම්වලින් සෑදිය හැකි විශාලම සංඛ්‍යාව කුමක් ද?', v: '🃏 1, 9, 5, 7, 3', ans: '97 531', d: ['97 513', '95 731', '79 531'], exp: 'විශාලම ඉලක්කම් පිළිවෙළින් තැබූ විට 97,531 ලැබේ.' },
+            { q: 'රුහුණු කුමාරි දුම්රියෙන් 2962ක් ද යාල්දේවි දුම්රියෙන් 1750ක් ද පැමිණියහ. මුළු මගීන් ගණන කීය ද?', v: '🚆 2962 + 1750 = ?', ans: '4712', d: ['4612', '4702', '3712'], exp: '2962 + 1750 = 4712.' },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 108, 116, 124, 132, [ ? ]', v: '🚂 108 ➡️ 116 ➡️ 124 ➡️ 132 ➡️ ?', ans: '140', d: ['138', '142', '144'], exp: '+8 බැගින් වැඩි වේ. 132 + 8 = 140.' },
+            { q: 'පොල් ගොඩක පොල් ගෙඩි 3275ක් තිබුණි. 1468ක් විකිණූ පසු ඉතුරු පොල් ගෙඩි ගණන කීය ද?', v: '🥥 3275 − 1468 = ?', ans: '1807', d: ['1817', '2807', '1707'], exp: '3275 − 1468 = 1807.' },
+            { q: 'රූපයේ පාට කළ කොටස මුළු රූපයෙන් කවර භාගයක් ද?', v: svgFractionGrid(10, 7, '#f472b6'), ans: '7/10', d: ['3/10', '8/10', '7/8'], exp: 'කොටස් 10න් 7ක් පාට කර ඇත.' },
+            { q: 'පොත් 48න් 3/4 ක ඇති පොත් ගණන කීය ද?', v: '📚 48න් 3/4 = ?', ans: '36', d: ['12', '24', '32'], exp: '48 ÷ 4 = 12; 12 × 3 = 36.' },
+            { q: 'ගුණ කරන්න: 493 × 3 = ?', v: svgVerticalCalc('×', 493, 3), ans: '1479', d: ['1469', '1279', '1379'], exp: '493 × 3 = 1479.' },
+            { q: 'සුමුදුගේ වයස අවුරුදු 9කි. අක්කාගේ වයස ඒ මෙන් දෙගුණයකි. ආච්චිගේ වයස අක්කාගේ වයස මෙන් 4 ගුණයකි. ආච්චිගේ වයස කීය ද?', v: '👵 9 × 2 = 18 ➡️ 18 × 4 = ?', ans: 'අවුරුදු 72', d: ['අවුරුදු 36', 'අවුරුදු 64', 'අවුරුදු 80'], exp: 'අක්කා 18යි; ආච්චි 18 × 4 = 72යි.' },
+            { q: 'පෙ.ව. 8.45 යන වේලාව පැය 24 ඔරලෝසුවෙන් ලියන්න.', v: '🕒 පෙ.ව. 8.45 ➡️ ?', ans: '08:45', d: ['20:45', '18:45', '08:15'], exp: 'පෙරවරු වේලාවක් නිසා 08:45 ලෙස ලියයි.' },
+            { q: 'ප.ව. 4.15 යන වේලාව පැය 24 ඔරලෝසුවෙන් ලියන්න.', v: '🕒 ප.ව. 4.15 ➡️ ?', ans: '16:15', d: ['04:15', '14:15', '18:15'], exp: '4 + 12 = 16; එබැවින් 16:15 වේ.' },
+            { q: 'බෙදන්න: 605 ÷ 5 = ?', v: '➗ 605 ÷ 5 = ?', ans: '121', d: ['120', '101', '111'], exp: '605 ÷ 5 = 121.' },
+            { q: 'පුටු 610ක් කාමර 5ක සමානව තබා ඇත. එක් කාමරයක ඇති පුටු ගණන කීය ද?', v: '🪑 610 ÷ 5 = ?', ans: '122', d: ['120', '112', '132'], exp: '610 ÷ 5 = 122.' },
+            { q: 'එකතු කරන්න: 21 km 217 m + 12 km 445 m', v: svgVerticalCalc('+', '21 km 217 m', '12 km 445 m'), ans: '33 km 662 m', d: ['33 km 562 m', '34 km 662 m', '9 km 228 m'], exp: '21 km 217 m + 12 km 445 m = 33 km 662 m.' },
+            { q: 'මහවැලි ගඟේ දිග 335 km කි. මල්වතු ඔයේ දිග 164 km කි. වෙනස කීය ද?', v: '🏞️ 335 km − 164 km = ?', ans: '171 km', d: ['161 km', '271 km', '499 km'], exp: '335 − 164 = 171 km.' },
+            { q: 'පෑනක් රු. 12.75ක් ද මකනයක් රු. 7.50ක් ද වේ. දෙකම ගැනීමට ගෙවිය යුතු මුදල කීය ද?', v: '🖊️ රු. 12.75 + 🧽 රු. 7.50', ans: 'රු. 20.25', d: ['රු. 19.25', 'රු. 20.75', 'රු. 19.75'], exp: '12.75 + 7.50 = රු. 20.25.' }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: it.exp };
+          });
+        }
+      },
+
+      // ==================== TERM 2 (Units 13 - 24) ====================
+      {
+        id: 13, term: 'term2', icon: '🫗', color: 'from-blue-500 to-sky-600',
+        title: '13. පරිමාව හා ධාරිතාව - 1',
+        subtitle: 'ලීටර (l) සහ මිලිලීටර (ml) එකතු කිරීම හා අඩු කිරීම',
+        generateQuestions() {
+          const items = [
+            { q: 'එකතු කරන්න: 4 l 850 ml + 2 l 740 ml', v: svgVerticalCalc('+', '4 l 850 ml', '2 l 740 ml'), ans: '7 l 590 ml', d: ['6 l 590 ml', '6 l 1590 ml', '7 l 490 ml'] },
+            { q: 'එකතු කරන්න: 6 l 550 ml + 7 l 910 ml', v: svgVerticalCalc('+', '6 l 550 ml', '7 l 910 ml'), ans: '14 l 460 ml', d: ['13 l 460 ml', '13 l 1460 ml', '14 l 360 ml'] },
+            { q: 'එකතු කරන්න: 12 l 200 ml + 11 l 810 ml', v: svgVerticalCalc('+', '12 l 200 ml', '11 l 810 ml'), ans: '24 l 10 ml', d: ['23 l 10 ml', '24 l 100 ml', '23 l 1010 ml'] },
+            { q: 'එකතු කරන්න: 6 l 75 ml + 2 l 325 ml', v: svgVerticalCalc('+', '6 l 75 ml', '2 l 325 ml'), ans: '8 l 400 ml', d: ['8 l 300 ml', '9 l 400 ml', '8 l 1075 ml'] },
+            { q: 'භාජනයක තිබූ ජලය 8 l 825 ml කට තවත් 7 l 270 ml ක් එකතු කළ විට මුළු ජල ප්‍රමාණය කීය ද?', v: '💧 8 l 825 ml + 7 l 270 ml', ans: '16 l 95 ml', d: ['15 l 95 ml', '16 l 950 ml', '15 l 1095 ml'] },
+            { q: 'රතු තීන්ත 4 l 400 ml කට සුදු තීන්ත 2 l 200 ml ක් එකතු කළ විට මුළු තීන්ත ප්‍රමාණය කීය ද?', v: '🎨 4 l 400 ml + 2 l 200 ml', ans: '6 l 600 ml', d: ['6 l 200 ml', '7 l 600 ml', '2 l 200 ml'] },
+            { q: 'ඉන්ධන 4 l 500 ml ක් සහ 5 l 750 ml ක මුළු ප්‍රමාණය කීය ද?', v: '⛽ 4 l 500 ml + 5 l 750 ml', ans: '10 l 250 ml', d: ['9 l 250 ml', '9 l 1250 ml', '10 l 500 ml'] },
+            { q: 'කිරි 6 l 250 ml ක් සහ 4 l 900 ml ක මුළු කිරි ප්‍රමාණය කීය ද?', v: '🥛 6 l 250 ml + 4 l 900 ml', ans: '11 l 150 ml', d: ['10 l 150 ml', '10 l 1150 ml', '11 l 250 ml'] },
+            { q: 'පොල් තෙල් 10 l 600 ml ක් සහ 11 l 750 ml ක මුළු ප්‍රමාණය කීය ද?', v: '🥥 10 l 600 ml + 11 l 750 ml', ans: '22 l 350 ml', d: ['21 l 350 ml', '21 l 1350 ml', '22 l 250 ml'] },
+            { q: 'අඩු කරන්න: 7 l 450 ml − 5 l 325 ml', v: svgVerticalCalc('−', '7 l 450 ml', '5 l 325 ml'), ans: '2 l 125 ml', d: ['2 l 225 ml', '12 l 775 ml', '1 l 125 ml'] },
+            { q: 'අඩු කරන්න: 6 l 410 ml − 3 l 700 ml', v: svgVerticalCalc('−', '6 l 410 ml', '3 l 700 ml'), ans: '2 l 710 ml', d: ['3 l 710 ml', '3 l 290 ml', '2 l 290 ml'] },
+            { q: 'අඩු කරන්න: 16 l 125 ml − 13 l 200 ml', v: svgVerticalCalc('−', '16 l 125 ml', '13 l 200 ml'), ans: '2 l 925 ml', d: ['3 l 925 ml', '3 l 75 ml', '2 l 75 ml'] },
+            { q: 'අඩු කරන්න: 14 l 50 ml − 11 l 850 ml', v: svgVerticalCalc('−', '14 l 50 ml', '11 l 850 ml'), ans: '2 l 200 ml', d: ['3 l 200 ml', '3 l 800 ml', '2 l 800 ml'] },
+            { q: 'ටැංකියක තිබූ ජලය 15 l 800 ml කින් 8 l 750 ml ක් ඉවත් කළ විට ඉතුරු ජල ප්‍රමාණය කීය ද?', v: '🚰 15 l 800 ml − 8 l 750 ml', ans: '7 l 50 ml', d: ['7 l 500 ml', '8 l 50 ml', '6 l 50 ml'] },
+            { q: 'භාජනයක කිරි 17 l 650 ml ක් තිබුණි. 12 l 750 ml ක් විකිණූ පසු ඉතුරු කිරි ප්‍රමාණය කීය ද?', v: '🥛 17 l 650 ml − 12 l 750 ml', ans: '4 l 900 ml', d: ['5 l 900 ml', '5 l 100 ml', '4 l 100 ml'] },
+            { q: 'පොල් තෙල් 7 l 500 ml කින් 1 l 900 ml ක් ඉතුරු විය. විකිණී ඇති පොල් තෙල් ප්‍රමාණය කීය ද?', v: '🥥 7 l 500 ml − 1 l 900 ml', ans: '5 l 600 ml', d: ['6 l 600 ml', '6 l 400 ml', '5 l 400 ml'] },
+            { q: 'දොඩම් බීම 14 l 200 ml ක් සහ දිවුල් බීම 10 l 150 ml ක් අතර වෙනස කීය ද?', v: '🧃 14 l 200 ml − 10 l 150 ml', ans: '4 l 50 ml', d: ['4 l 500 ml', '24 l 350 ml', '3 l 50 ml'] },
+            { q: '25 l ක් දැමිය හැකි බැරලයක 16 l 500 ml ක් ඇත. බැරලය පිරවීමට තව කොපමණ ජලය අවශ්‍ය ද?', v: '🛢️ 25 l − 16 l 500 ml', ans: '8 l 500 ml', d: ['9 l 500 ml', '9 l', '8 l'] },
+            { q: '3 l 480 ml + 6 l 124 ml = ?', v: svgVerticalCalc('+', '3 l 480 ml', '6 l 124 ml'), ans: '9 l 604 ml', d: ['9 l 504 ml', '10 l 604 ml', '8 l 604 ml'] },
+            { q: '9 l 325 ml − 3 l 125 ml = ?', v: svgVerticalCalc('−', '9 l 325 ml', '3 l 125 ml'), ans: '6 l 200 ml', d: ['6 l 450 ml', '12 l 450 ml', '5 l 200 ml'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `1 l = 1000 ml බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 14, term: 'term2', icon: '⚖️', color: 'from-amber-600 to-orange-700',
+        title: '14. බර මැනීම - 1',
+        subtitle: 'කිලෝග්‍රෑම් (kg) සහ ග්රෑම් (g) එකතු කිරීම හා අඩු කිරීම',
+        generateQuestions() {
+          const items = [
+            { q: 'භාණ්ඩයක සියුම් බර ඉලක්කම් මගින් පෙන්වන තරාදි වර්ගය කුමක් ද?', v: '📟 ඩිජිටල් තිරයක් සහිත තරාදිය', ans: 'ඉලෙක්ට්‍රොනික තරාදිය', d: ['තැටි තරාදිය', 'දුනු තරාදිය', 'බිම් තරාදිය'] },
+            { q: 'අර්තාපල් 2 kg 500 g ක් සහ කොමඩු 1 kg 800 g ක මුළු බර කීය ද?', v: '🥔 2 kg 500 g + 🍉 1 kg 800 g', ans: '4 kg 300 g', d: ['3 kg 300 g', '3 kg 1300 g', '4 kg 200 g'] },
+            { q: 'එකතු කරන්න: 5 kg 500 g + 3 kg 750 g', v: svgVerticalCalc('+', '5 kg 500 g', '3 kg 750 g'), ans: '9 kg 250 g', d: ['8 kg 250 g', '8 kg 1250 g', '9 kg 150 g'] },
+            { q: 'එකතු කරන්න: 8 kg 75 g + 2 kg 51 g', v: svgVerticalCalc('+', '8 kg 75 g', '2 kg 51 g'), ans: '10 kg 126 g', d: ['10 kg 26 g', '11 kg 126 g', '10 kg 116 g'] },
+            { q: 'එකතු කරන්න: 3 kg 225 g + 1 kg 190 g', v: svgVerticalCalc('+', '3 kg 225 g', '1 kg 190 g'), ans: '4 kg 415 g', d: ['4 kg 315 g', '5 kg 415 g', '2 kg 35 g'] },
+            { q: 'එකතු කරන්න: 25 kg 900 g + 45 kg 500 g', v: svgVerticalCalc('+', '25 kg 900 g', '45 kg 500 g'), ans: '71 kg 400 g', d: ['70 kg 400 g', '70 kg 1400 g', '71 kg 300 g'] },
+            { q: 'එකතු කරන්න: 52 kg 500 g + 33 kg 500 g', v: svgVerticalCalc('+', '52 kg 500 g', '33 kg 500 g'), ans: '86 kg', d: ['85 kg', '85 kg 100 g', '86 kg 500 g'] },
+            { q: 'එකතු කරන්න: 4 kg 250 g + 5 kg 825 g', v: svgVerticalCalc('+', '4 kg 250 g', '5 kg 825 g'), ans: '10 kg 75 g', d: ['9 kg 75 g', '9 kg 1075 g', '10 kg 750 g'] },
+            { q: 'එකතු කරන්න: 11 kg 750 g + 13 kg 250 g', v: svgVerticalCalc('+', '11 kg 750 g', '13 kg 250 g'), ans: '25 kg', d: ['24 kg', '24 kg 100 g', '25 kg 500 g'] },
+            { q: 'සහල් මලු දෙකක බර 5 kg 500 g ක් සහ 8 kg 750 g කි. මුළු බර කීය ද?', v: '🌾 5 kg 500 g + 8 kg 750 g', ans: '14 kg 250 g', d: ['13 kg 250 g', '13 kg 1250 g', '14 kg 350 g'] },
+            { q: 'තේ දලු 21 kg 250 g කට 17 kg 750 g ක් එකතු කළ විට මුළු බර කීය ද?', v: '🍃 21 kg 250 g + 17 kg 750 g', ans: '39 kg', d: ['38 kg', '38 kg 100 g', '39 kg 500 g'] },
+            { q: 'ගම්මිරිස් 12 kg 750 g ක් සහ 2 kg 500 g ක මුළු බර කීය ද?', v: '🫘 12 kg 750 g + 2 kg 500 g', ans: '15 kg 250 g', d: ['14 kg 250 g', '14 kg 1250 g', '15 kg 350 g'] },
+            { q: 'අඩු කරන්න: 4 kg 350 g − 1 kg 750 g', v: svgVerticalCalc('−', '4 kg 350 g', '1 kg 750 g'), ans: '2 kg 600 g', d: ['3 kg 600 g', '3 kg 400 g', '2 kg 400 g'] },
+            { q: 'අඩු කරන්න: 12 kg 840 g − 4 kg 510 g', v: svgVerticalCalc('−', '12 kg 840 g', '4 kg 510 g'), ans: '8 kg 330 g', d: ['8 kg 230 g', '17 kg 350 g', '7 kg 330 g'] },
+            { q: 'අඩු කරන්න: 6 kg 320 g − 2 kg 150 g', v: svgVerticalCalc('−', '6 kg 320 g', '2 kg 150 g'), ans: '4 kg 170 g', d: ['4 kg 270 g', '8 kg 470 g', '3 kg 170 g'] },
+            { q: 'අඩු කරන්න: 15 kg 400 g − 9 kg 500 g', v: svgVerticalCalc('−', '15 kg 400 g', '9 kg 500 g'), ans: '5 kg 900 g', d: ['6 kg 900 g', '6 kg 100 g', '5 kg 100 g'] },
+            { q: 'අඩු කරන්න: 39 kg 670 g − 23 kg 765 g', v: svgVerticalCalc('−', '39 kg 670 g', '23 kg 765 g'), ans: '15 kg 905 g', d: ['16 kg 905 g', '16 kg 95 g', '15 kg 95 g'] },
+            { q: 'වට්ටක්කා ගෙඩියක බර 4 kg 200 g කි. 2 kg 90 g ක් ඉතුරු වන සේ කොටසක් විකුණුවේ නම් විකුණූ කොටසේ බර කීය ද?', v: '🎃 4 kg 200 g − 2 kg 90 g', ans: '2 kg 110 g', d: ['2 kg 290 g', '2 kg 190 g', '1 kg 110 g'] },
+            { q: 'අයියාගේ බර 46 kg 250 g කි. මල්ලීගේ බර 32 kg 500 g කි. අයියා කොපමණ බරින් වැඩි ද?', v: '👦 46 kg 250 g − 32 kg 500 g', ans: '13 kg 750 g', d: ['14 kg 750 g', '14 kg 250 g', '13 kg 250 g'] },
+            { q: '50 kg ක පත්තර මිටියක් සෑදීමට 42 kg 750 g කට තව කොපමණ පත්තර අවශ්‍ය ද?', v: '📰 50 kg − 42 kg 750 g', ans: '7 kg 250 g', d: ['8 kg 250 g', '8 kg 750 g', '7 kg 750 g'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `1000 g = 1 kg බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 15, term: 'term2', icon: '🧩', color: 'from-purple-600 to-indigo-700',
+        title: '15. ගැටලු විසඳීම - 1',
+        subtitle: 'පියවර දෙකේ වගන්ති ගැටලු (එකතු කිරීම හා අඩු කිරීම)',
+        generateQuestions() {
+          const items = [
+            { q: 'පත්තර වෙළෙන්දෙක් සෙනසුරාදා 785ක් ද ඉරිදා 516ක් ද විකුණුවේ ය. මුළු පත්තර ගණන කීය ද?', v: '📰 785 + 516 = ?', ans: '1301', d: ['1291', '1311', '1201'] },
+            { q: 'ගබඩාවක වී 4675 kg ක් ඇත. තවත් 1430 kg ක් ගබඩා කළ විට මුළු වී ප්‍රමාණය කීය ද?', v: '🌾 4675 kg + 1430 kg', ans: '6105 kg', d: ['6005 kg', '5105 kg', '6115 kg'] },
+            { q: 'විදුලි කේතලයක මිල රු. 4750කි. එහි මිල රු. 275කින් වැඩි වූ විට නව මිල කීය ද?', v: '🫖 රු. 4750 + රු. 275', ans: 'රු. 5025', d: ['රු. 4925', 'රු. 5015', 'රු. 4475'] },
+            { q: 'ටැංකියකින් ජලය 2725 l ක් බෙදා හැර ඇති අතර 3075 l ක් ඉතුරු වී ඇත. මුලින් තිබූ ජලය ප්‍රමාණය කීය ද?', v: '💧 2725 l + 3075 l', ans: '5800 l', d: ['5700 l', '5890 l', '350 l'] },
+            { q: 'වහලයකට උළු කැට 3465ක් අවශ්‍ය වේ. 2500ක් ගෙනැවිත් ඇත්නම් තව කොපමණ උළු කැට අවශ්‍ය ද?', v: '🏠 3465 − 2500 = ?', ans: '965', d: ['1965', '865', '955'] },
+            { q: '1250 m ක් දිග වේල්ලක වැඩ නිම කිරීමට තව 645 m ක් ඉතුරුව ඇත. වැඩ නිම කර ඇති කොටසේ දිග කීය ද?', v: '🌊 1250 m − 645 m', ans: '605 m', d: ['615 m', '705 m', '595 m'] },
+            { q: 'ලොරියක ගඩොල් 2750ක් ද ට්‍රැක්ටරයක 1275ක් ද පටවා ඇත. ලොරියට වැඩිපුර පටවා ඇති ගඩොල් ගණන කීය ද?', v: '🧱 2750 − 1275 = ?', ans: '1475', d: ['1575', '1525', '1425'] },
+            { q: 'පුටු 1750ක් ඇති ශාලාවක 987 දෙනෙක් අසුන් ගෙන සිටිති. තව කී දෙනෙකුට අසුන් ගත හැකි ද?', v: '🪑 1750 − 987 = ?', ans: '763', d: ['863', '773', '837'] },
+            { q: 'පාපැදියක මිල රු. 5750කි. නිමල් ළඟ රු. 3825ක් ඇත. තව කොපමණ මුදලක් අවශ්‍ය ද?', v: '🚲 රු. 5750 − රු. 3825', ans: 'රු. 1925', d: ['රු. 2925', 'රු. 1935', 'රු. 2125'] },
+            { q: 'ඇස් කණ්ණාඩි 3985කින් 2394ක් බෙදා දුන් විට ඉතුරු වූ ගණන කීය ද?', v: '👓 3985 − 2394 = ?', ans: '1591', d: ['1691', '1581', '1611'] },
+            { q: 'මුල් දින දෙකේ විකුණූ පොත් 290 සහ 460 කි. තුන්වන දිනයේ 570 කි. මුල් දින දෙකේ වැඩියෙන් විකුණූ පොත් ගණන කීය ද?', v: '📘 (290 + 460) − 570 = ?', ans: '180', d: ['750', '280', '170'] },
+            { q: 'කසුන් අඹ 400ක් ද මාලනී 350ක් ද ගත්හ. කුමාර ගත්තේ 560කි. ඔවුන් දෙදෙනාට සමාන වීමට කුමාර තව අඹ කීයක් ගත යුතු ද?', v: '🥭 (400 + 350) − 560 = ?', ans: '190', d: ['750', '290', '180'] },
+            { q: 'දුම්රියක මගීහු 750ක් සිටියහ. 125ක් බැස ගොස් 290ක් ගොඩ වූහ. දැන් සිටින මුළු මගීන් ගණන කීය ද?', v: '🚆 (750 − 125) + 290 = ?', ans: '915', d: ['625', '815', '1165'] },
+            { q: '350 l ක් දැමිය හැකි ටැංකියකට 50 l ක් සහ 95 l ක් දමා ඇත. ටැංකිය පිරවීමට තව ජලය කොපමණ දැමිය හැකි ද?', v: '🛢️ 350 − (50 + 95) = ?', ans: '205 l', d: ['145 l', '215 l', '195 l'] },
+            { q: 'මයුර නිවාසය 693ක් ද කෝකිල 597ක් ද පරෙවි 765ක් ද ලකුණු ගත්හ. මයුර හා කෝකිල එකතුව පරෙවිට වඩා කොපමණ වැඩි ද?', v: '🏆 (693 + 597) − 765 = ?', ans: '525', d: ['1290', '535', '425'] },
+            { q: '750 g ක වට්ටක්කා ගෙඩියකින් 290 g ක් හා 270 g ක් කැපූ විට ඉතුරු කැබැල්ලේ බර කීය ද?', v: '🎃 750 − (290 + 270) = ?', ans: '190 g', d: ['560 g', '290 g', '210 g'] },
+            { q: 'වතු තුනකින් කඩන ලද පොල් 1500, 1445 හා 2550 කි. පළමු හා දෙවන වතුවල එකතුව තුන්වන වත්තට වඩා කොපමණ වැඩි ද?', v: '🥥 (1500 + 1445) − 2550 = ?', ans: '395', d: ['2945', '495', '385'] },
+            { q: 'සංදර්ශනයක් සෙනසුරාදා 430ක් ද ඉරිදා 475ක් ද නැරඹූහ. සඳුදා නැරඹුවේ 360කි. සමාන වීමට සඳුදා තව කී දෙනෙක් පැමිණිය යුතු ද?', v: '🎭 (430 + 475) − 360 = ?', ans: '545', d: ['905', '535', '445'] },
+            { q: 'රු. 1000ක් රැගෙන කඩයට ගිය මව රු. 350ක සහල් සහ රු. 280ක එළවළු ගත්තා ය. ඇය ළඟ ඉතුරු මුදල කීය ද?', v: '💵 1000 − (350 + 280) = ?', ans: 'රු. 370', d: ['රු. 630', 'රු. 470', 'රු. 270'] },
+            { q: 'බස් රථයක 45 දෙනෙක් සිටියහ. 18 දෙනෙක් බැස ගොස් 24 දෙනෙක් නැග්ගාහ. දැන් බස් රථයේ සිටින පිරිස කීය ද?', v: '🚌 (45 − 18) + 24 = ?', ans: '51', d: ['27', '41', '63'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-indigo-200 font-num text-xl sm:text-2xl font-extrabold text-indigo-900">${it.v}</div>`, options, answer, explanation: `පියවර දෙකම නිවැරදිව සුළු කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 16, term: 'term2', icon: '🧊', color: 'from-teal-500 to-cyan-600',
+        title: '16. හැඩ හා ඝන වස්තු',
+        subtitle: 'මුහුණත්, දාර, ශීර්ෂ, පතොරම්, තිරස්/සිරස් තල, ස්ප්‍රීතු ලෙවලය හා ලඹය',
+        generateQuestions() {
+          const items = [
+            { q: 'ඝනකාභයකට ඇති මුහුණත් ගණන කීය ද?', v: svgSolid('cuboid'), ans: '6', d: ['8', '12', '4'] },
+            { q: 'ඝනකාභයකට ඇති දාර ගණන කීය ද?', v: svgSolid('cuboid'), ans: '12', d: ['6', '8', '10'] },
+            { q: 'ඝනකාභයකට ඇති ශීර්ෂ (මුළු) ගණන කීය ද?', v: svgSolid('cuboid'), ans: '8', d: ['6', '12', '4'] },
+            { q: 'ඝනකයකට ඇති සමචතුරස්‍රාකාර මුහුණත් ගණන කීය ද?', v: svgSolid('cube'), ans: '6', d: ['4', '8', '12'] },
+            { q: 'චතුස්තලයකට ඇති ත්‍රිකෝණාකාර මුහුණත් ගණන කීය ද?', v: svgSolid('tetrahedron'), ans: '4', d: ['3', '6', '5'] },
+            { q: 'චතුස්තලයකට ඇති දාර ගණන කීය ද?', v: svgSolid('tetrahedron'), ans: '6', d: ['4', '8', '12'] },
+            { q: 'චතුස්තලයකට ඇති ශීර්ෂ ගණන කීය ද?', v: svgSolid('tetrahedron'), ans: '4', d: ['6', '3', '8'] },
+            { q: 'සිලින්ඩරයකට ඇති වෘත්තාකාර සමතල මුහුණත් ගණන කීය ද?', v: svgSolid('cylinder'), ans: '2', d: ['1', '3', '0'] },
+            { q: 'සිලින්ඩරයකට ඇති වක්‍ර දාර ගණන කීය ද?', v: svgSolid('cylinder'), ans: '2', d: ['0', '1', '4'] },
+            { q: 'සිලින්ඩරයකට ඇති ශීර්ෂ (මුළු) ගණන කීය ද?', v: svgSolid('cylinder'), ans: '0 (ශීර්ෂ නැත)', d: ['2', '4', '8'] },
+            { q: 'ඝනකයක පතොරමක් සෑදී ඇත්තේ කුමන හැඩතල 6කින් ද?', v: '➕ සමචතුරස්‍ර 6ක පතොරම', ans: 'සමචතුරස්‍ර 6කින්', d: ['ත්‍රිකෝණ 4කින්', 'වෘත්ත 2කින්', 'පංචාස්‍ර 6කින්'] },
+            { q: 'චතුස්තලයක පතොරමක් සෑදී ඇත්තේ කුමන හැඩතලවලින් ද?', v: '🔺 ත්‍රිකෝණ පතොරම', ans: 'ත්‍රිකෝණ 4කින්', d: ['සමචතුරස්‍ර 6කින්', 'ඍජුකෝණාස්‍ර 4කින්', 'වෘත්ත 3කින්'] },
+            { q: 'නිවසක ගෙබිම හෝ මේසයක මතුපිට කුමන තලයකට උදාහරණයක් ද?', v: '🏠 ගෙබිම / මේසය', ans: 'තිරස් තලය', d: ['සිරස් තලය', 'වක්‍ර තලය', 'ඇල තලය'] },
+            { q: 'නිවසක බිත්තිය හෝ කොඩි කණුව කුමන තලයකට උදාහරණයක් ද?', v: '🧱 බිත්තිය / කොඩි කණුව', ans: 'සිරස් තලය', d: ['තිරස් තලය', 'වක්‍ර තලය', 'සමතලය'] },
+            { q: 'තලයක තිරස් බව පරීක්ෂා කිරීමට භාවිතා කරන උපකරණය කුමක් ද?', v: '📏 🟡 බුබුළක් සහිත උපකරණය', ans: 'ස්ප්‍රීතු ලෙවලය', d: ['ලඹය', 'කවකටුව', 'කෝදුව'] },
+            { q: 'තලයක සිරස් බව පරීක්ෂා කිරීමට පෙදරේරුවන් භාවිතා කරන උපකරණය කුමක් ද?', v: '🧵🔻 ලණුවක එල්ලූ බරක්', ans: 'ලඹය', d: ['ස්ප්‍රීතු ලෙවලය', 'මීටර රූල', 'කතුර'] },
+            { q: 'ත්‍රිකෝණාකාර මුහුණත් පමණක් ඇති ඝන වස්තුව කුමක් ද?', v: svgSolid('tetrahedron'), ans: 'චතුස්තලය', d: ['ඝනකය', 'ඝනකාභය', 'සිලින්ඩරය'] },
+            { q: 'ශීර්ෂ 8ක් සහ දාර 12ක් ඇති ඝන වස්තු දෙක මොනවා ද?', v: '🧊 සහ 📦', ans: 'ඝනකය සහ ඝනකාභය', d: ['චතුස්තලය සහ සිලින්ඩරය', 'ගෝලය සහ ඝනකය', 'සිලින්ඩරය සහ ඝනකාභය'] },
+            { q: 'සමචතුරස්‍රාකාර මුහුණත් පමණක් ඇති ඝන වස්තුව කුමක් ද?', v: svgSolid('cube'), ans: 'ඝනකය', d: ['ඝනකාභය', 'චතුස්තලය', 'සිලින්ඩරය'] },
+            { q: 'වක්‍ර මුහුණතක් සහ සමතල මුහුණත් 2ක් ඇති ඝන වස්තුව කුමක් ද?', v: svgSolid('cylinder'), ans: 'සිලින්ඩරය', d: ['ඝනකය', 'චතුස්තලය', 'ඝනකාභය'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: `ඝන වස්තු හා තල ලක්ෂණ අනුව නිවැරදි පිළිතුර "${it.ans}" වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 17, term: 'term2', icon: '📊', color: 'from-cyan-500 to-teal-600',
+        title: '17. දත්ත හැසිරවීම - 1',
+        subtitle: 'පරිමාණ සහිත තීර ප්‍රස්තාර (1, 2, 5 බැගින් වූ කොටු)',
+        generateQuestions() {
+          const sweetChart = svgBarChart('ආපණ ශාලාවේ අලෙවි වූ රසකැවිලි', [
+            { label: 'කැවුම්', val: 5 }, { label: 'කොකිස්', val: 7 },
+            { label: 'අග්ගලා', val: 6 }, { label: 'තලගුළි', val: 8 }, { label: 'පැණිවළලු', val: 7 }
+          ]);
+          const fruitChart = svgBarChart('විකුණන ලද පලතුරු ගෙඩි ගණන', [
+            { label: 'දිවුල්', val: 10 }, { label: 'අන්නාසි', val: 14 },
+            { label: 'අඹ', val: 16 }, { label: 'කොමඩු', val: 12 }, { label: 'පැපොල්', val: 7 }
+          ]);
+          const foodChart = svgBarChart('සිසුන් කැමති ආහාර (එක් කොටුවකින් 5ක්)', [
+            { label: 'බත්', val: 15 }, { label: 'කඩල', val: 10 },
+            { label: 'රොටි', val: 20 }, { label: 'තෝසේ', val: 10 }, { label: 'ආප්ප', val: 5 }
+          ]);
+          const plantChart = svgBarChart('පැළ තවානේ ඇති පැළ ගණන', [
+            { label: 'අඹ', val: 45 }, { label: 'මිරිස්', val: 60 },
+            { label: 'දෙහි', val: 50 }, { label: 'බටු', val: 30 }, { label: 'තක්කාලි', val: 45 }
+          ]);
+
+          const items = [
+            { q: 'වැඩිපුරම අලෙවි වී ඇති රසකැවිලි වර්ගය කුමක් ද?', v: sweetChart, ans: 'තලගුළි (8)', d: ['කොකිස් (7)', 'අග්ගලා (6)', 'කැවුම් (5)'] },
+            { q: 'අලෙවි වී ඇති කොකිස් ගණන කීය ද?', v: sweetChart, ans: '7', d: ['5', '6', '8'] },
+            { q: 'සමාන ප්‍රමාණ අලෙවි වී ඇති කැවිලි වර්ග දෙක මොනවා ද?', v: sweetChart, ans: 'කොකිස් සහ පැණිවළලු (7 බැගින්)', d: ['කැවුම් සහ අග්ගලා', 'තලගුළි සහ කොකිස්', 'කැවුම් සහ පැණිවළලු'] },
+            { q: 'කැවුම් ගණනට වඩා පැණිවළලු කීයක් වැඩිපුර අලෙවි වී තිබේ ද?', v: sweetChart, ans: '2', d: ['7', '5', '3'] },
+            { q: 'රසකැවිලි වර්ග පහේම මුළු ගණන කීය ද?', v: sweetChart, ans: '33', d: ['30', '35', '28'] },
+
+            { q: 'වැඩිම අලෙවියක් වී ඇති පලතුරු වර්ගය කුමක් ද?', v: fruitChart, ans: 'අඹ (16)', d: ['අන්නාසි (14)', 'කොමඩු (12)', 'දිවුල් (10)'] },
+            { q: 'අඩුම අලෙවියක් වී ඇති පලතුරු වර්ගය කුමක් ද?', v: fruitChart, ans: 'පැපොල් (7)', d: ['දිවුල් (10)', 'කොමඩු (12)', 'අන්නාසි (14)'] },
+            { q: 'කොමඩු ගෙඩි කීයක් විකිණී තිබේ ද?', v: fruitChart, ans: '12', d: ['10', '14', '16'] },
+            { q: 'දිවුල්වලට වඩා අඹ ගෙඩි කීයක් වැඩියෙන් විකිණී ඇත් ද?', v: fruitChart, ans: '6', d: ['4', '10', '16'] },
+            { q: 'අන්නාසි සහ පැපොල් ගෙඩිවල එකතුව කීය ද?', v: fruitChart, ans: '21', d: ['20', '19', '24'] },
+
+            { q: 'අඩුම සිසුන් ගණනක් කැමති ආහාර වර්ගය කුමක් ද?', v: foodChart, ans: 'ආප්ප (5)', d: ['කඩල (10)', 'තෝසේ (10)', 'බත් (15)'] },
+            { q: 'වැඩිම සිසුන් ගණනක් කැමති ආහාර වර්ගය කුමක් ද?', v: foodChart, ans: 'රොටි (20)', d: ['බත් (15)', 'කඩල (10)', 'තෝසේ (10)'] },
+            { q: 'සිසුන් සමාන ප්‍රමාණයක් කැමති ආහාර වර්ග දෙක මොනවා ද?', v: foodChart, ans: 'කඩල සහ තෝසේ (10 බැගින්)', d: ['බත් සහ රොටි', 'ආප්ප සහ කඩල', 'රොටි සහ තෝසේ'] },
+            { q: 'බත්වලට කැමති සිසුන් ගණන කීය ද?', v: foodChart, ans: '15', d: ['10', '20', '5'] },
+            { q: 'මෙම කණ්ඩායමේ සිටින මුළු සිසුන් ගණන කීය ද?', v: foodChart, ans: '60', d: ['50', '55', '65'] },
+
+            { q: 'පැළ තවානේ වැඩියෙන්ම ඇති පැළ වර්ගය කුමක් ද?', v: plantChart, ans: 'මිරිස් (60)', d: ['දෙහි (50)', 'අඹ (45)', 'බටු (30)'] },
+            { q: 'පැළ තවානේ අඩුවෙන්ම ඇති පැළ වර්ගය කුමක් ද?', v: plantChart, ans: 'බටු (30)', d: ['අඹ (45)', 'දෙහි (50)', 'තක්කාලි (45)'] },
+            { q: 'සමාන පැළ ගණනක් ඇති පැළ වර්ග දෙක කුමක් ද?', v: plantChart, ans: 'අඹ සහ තක්කාලි (45 බැගින්)', d: ['මිරිස් සහ දෙහි', 'බටු සහ අඹ', 'දෙහි සහ තක්කාලි'] },
+            { q: 'බටු පැළ ගණනට වඩා මිරිස් පැළ කීයක් වැඩි ද?', v: plantChart, ans: '30', d: ['20', '15', '60'] },
+            { q: 'දෙහි පැළ ගණන කීය ද?', v: plantChart, ans: '50', d: ['45', '60', '30'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `ප්‍රස්තාරය අනුව නිවැරදි පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 18, term: 'term2', icon: '🔟', color: 'from-pink-500 to-rose-600',
+        title: '18. දශම',
+        subtitle: 'දශම සංඛ්‍යා (0.1 සිට 0.9) සහ භාග අතර සම්බන්ධය',
+        generateQuestions() {
+          const qs = [];
+          for (let i = 1; i <= 9; i++) {
+            const dec = `0.${i}`;
+            const { options, answer } = makeOptions(dec, [`0.${10 - i === i ? 5 : 10 - i}`, `${i}.0`, `0.0${i}`]);
+            qs.push({
+              prompt: `කොටස් 10න් ${i}ක් පාට කර ඇත. එය දශම සංඛ්‍යාවක් ලෙස තෝරන්න.`,
+              visual: svgFractionGrid(10, i, '#38bdf8'),
+              options, answer,
+              explanation: `දහයෙන් ${i} (${i}/10) දශම සංඛ්‍යාවක් ලෙස 0.${i} වේ.`
+            });
+          }
+          const conv = [
+            { q: '4/10 දශම සංඛ්‍යාවක් ලෙස ලියන්න.', v: '4 / 10 = ?', ans: '0.4', d: ['4.0', '0.04', '1.4'] },
+            { q: '5/10 දශම සංඛ්‍යාවක් ලෙස ලියන්න.', v: '5 / 10 = ?', ans: '0.5', d: ['5.0', '0.05', '1.5'] },
+            { q: '2/10 දශම සංඛ්‍යාවක් ලෙස ලියන්න.', v: '2 / 10 = ?', ans: '0.2', d: ['2.0', '0.02', '1.2'] },
+            { q: '8/10 දශම සංඛ්‍යාවක් ලෙස ලියන්න.', v: '8 / 10 = ?', ans: '0.8', d: ['8.0', '0.08', '1.8'] },
+            { q: '0.7 භාගයක් ලෙස ලියන්න.', v: '0.7 = ?', ans: '7/10', d: ['7/100', '1/7', '7/1'] },
+            { q: '0.9 භාගයක් ලෙස ලියන්න.', v: '0.9 = ?', ans: '9/10', d: ['9/100', '1/9', '9/1'] },
+            { q: '0.3 භාගයක් ලෙස ලියන්න.', v: '0.3 = ?', ans: '3/10', d: ['3/100', '1/3', '3/1'] },
+            { q: '0.6 භාගයක් ලෙස ලියන්න.', v: '0.6 = ?', ans: '6/10', d: ['6/100', '1/6', '6/1'] },
+            { q: '"0.2" වචනයෙන් කියවන නිවැරදි ආකාරය තෝරන්න.', v: '📝 0.2', ans: 'බින්දුවයි දශම දෙක', d: ['දෙකයි දශම බින්දුව', 'බින්දුවයි දශම විස්ස', 'දහයෙන් දෙක'] },
+            { q: '"බින්දුවයි දශම පහ" සංඛ්‍යාංකයෙන් ලියන්න.', v: '📝 බින්දුවයි දශම පහ', ans: '0.5', d: ['5.0', '0.05', '5.5'] },
+            { q: 'රූපයක 0.4 ක් පාට කර ඇත්නම්, පාට නොකළ කොටස දශම සංඛ්‍යාවක් ලෙස කීය ද?', v: svgFractionGrid(10, 4, '#facc15'), ans: '0.6', d: ['0.4', '0.5', '1.0'] }
+          ];
+          conv.forEach(c => {
+            const { options, answer } = makeOptions(c.ans, c.d);
+            qs.push({ prompt: c.q, visual: `<div class="font-num text-2xl sm:text-3xl font-extrabold text-pink-800">${c.v}</div>`, options, answer, explanation: `නිවැරදි පිළිතුර ${c.ans} වේ.` });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 19, term: 'term2', icon: '📏', color: 'from-emerald-600 to-teal-700',
+        title: '19. දිග හා දුර - 2',
+        subtitle: 'මීටර (m) සහ සෙන්ටිමීටර (cm) එකතු, අඩු, ගුණ හා බෙදීම',
+        generateQuestions() {
+          const items = [
+            { q: 'එකතු කරන්න: 38 m 50 cm + 13 m 70 cm', v: svgVerticalCalc('+', '38 m 50 cm', '13 m 70 cm'), ans: '52 m 20 cm', d: ['51 m 20 cm', '51 m 120 cm', '52 m 30 cm'] },
+            { q: 'එකතු කරන්න: 41 m 35 cm + 12 m 15 cm', v: svgVerticalCalc('+', '41 m 35 cm', '12 m 15 cm'), ans: '53 m 50 cm', d: ['53 m 40 cm', '54 m 50 cm', '29 m 20 cm'] },
+            { q: 'එකතු කරන්න: 33 m 44 cm + 91 m 61 cm', v: svgVerticalCalc('+', '33 m 44 cm', '91 m 61 cm'), ans: '125 m 5 cm', d: ['124 m 5 cm', '125 m 50 cm', '124 m 105 cm'] },
+            { q: 'එකතු කරන්න: 73 m 51 cm + 21 m 49 cm', v: svgVerticalCalc('+', '73 m 51 cm', '21 m 49 cm'), ans: '95 m', d: ['94 m', '94 m 100 cm', '95 m 10 cm'] },
+            { q: 'අක්කාට රෙදි 2 m 25 cm ක් ද නංගීට 1 m 50 cm ක් ද අවශ්‍ය වේ. මුළු රෙදි ප්‍රමාණය කීය ද?', v: '👗 2 m 25 cm + 1 m 50 cm', ans: '3 m 75 cm', d: ['3 m 25 cm', '4 m 75 cm', '75 cm'] },
+            { q: 'අඩු කරන්න: 16 m 25 cm − 7 m 50 cm', v: svgVerticalCalc('−', '16 m 25 cm', '7 m 50 cm'), ans: '8 m 75 cm', d: ['9 m 75 cm', '9 m 25 cm', '8 m 25 cm'] },
+            { q: 'අඩු කරන්න: 85 m 53 cm − 11 m 52 cm', v: svgVerticalCalc('−', '85 m 53 cm', '11 m 52 cm'), ans: '74 m 1 cm', d: ['74 m 10 cm', '96 m 105 cm', '73 m 1 cm'] },
+            { q: 'අඩු කරන්න: 47 m 36 cm − 31 m 54 cm', v: svgVerticalCalc('−', '47 m 36 cm', '31 m 54 cm'), ans: '15 m 82 cm', d: ['16 m 82 cm', '16 m 18 cm', '15 m 18 cm'] },
+            { q: 'අඩු කරන්න: 67 m 72 cm − 18 m 34 cm', v: svgVerticalCalc('−', '67 m 72 cm', '18 m 34 cm'), ans: '49 m 38 cm', d: ['59 m 38 cm', '49 m 48 cm', '51 m 38 cm'] },
+            { q: '8 m 20 cm ක් දිග ලණුවකින් කොටසක් භාවිතා කළ පසු 2 m 80 cm ක් ඉතුරු විය. භාවිතා කළ දිග කීය ද?', v: '🪢 8 m 20 cm − 2 m 80 cm', ans: '5 m 40 cm', d: ['6 m 40 cm', '6 m 60 cm', '5 m 60 cm'] },
+            { q: 'ගුණ කරන්න: 40 m 75 cm × 4', v: svgVerticalCalc('×', '40 m 75 cm', '4'), ans: '163 m', d: ['160 m 300 cm', '162 m', '164 m'] },
+            { q: 'ගුණ කරන්න: 2 m 10 cm × 2', v: svgVerticalCalc('×', '2 m 10 cm', '2'), ans: '4 m 20 cm', d: ['4 m 10 cm', '2 m 20 cm', '4 m 2 cm'] },
+            { q: 'ගුණ කරන්න: 13 m 41 cm × 3', v: svgVerticalCalc('×', '13 m 41 cm', '3'), ans: '40 m 23 cm', d: ['39 m 23 cm', '39 m 123 cm', '40 m 33 cm'] },
+            { q: 'ගුණ කරන්න: 24 m 20 cm × 4', v: svgVerticalCalc('×', '24 m 20 cm', '4'), ans: '96 m 80 cm', d: ['96 m 20 cm', '86 m 80 cm', '97 m 80 cm'] },
+            { q: 'ගුණ කරන්න: 1 m 50 cm × 4', v: '🪵 1 m 50 cm × 4 = ?', ans: '6 m', d: ['4 m 50 cm', '5 m', '6 m 50 cm'] },
+            { q: 'පුටුවකට 2 m 25 cm ක් බැගින් පුටු 4කට අවශ්‍ය රෙදිවල මුළු දිග කීය ද?', v: '🪑 2 m 25 cm × 4 = ?', ans: '9 m', d: ['8 m 25 cm', '8 m', '9 m 50 cm'] },
+            { q: 'බෙදන්න: 120 m 63 cm ÷ 3', v: '➗ 120 m 63 cm ÷ 3 = ?', ans: '40 m 21 cm', d: ['40 m 31 cm', '4 m 21 cm', '41 m 21 cm'] },
+            { q: 'බෙදන්න: 6 m 36 cm ÷ 2', v: '➗ 6 m 36 cm ÷ 2 = ?', ans: '3 m 18 cm', d: ['3 m 13 cm', '3 m 36 cm', '2 m 18 cm'] },
+            { q: 'බෙදන්න: 75 m 15 cm ÷ 5', v: '➗ 75 m 15 cm ÷ 5 = ?', ans: '15 m 3 cm', d: ['15 m 30 cm', '13 m 3 cm', '15 m 5 cm'] },
+            { q: '8 m 80 cm ක් දිග රෙද්දක් සමාන කැබලි 4කට කැපූ විට එක් කැබැල්ලක දිග කීය ද?', v: '✂️ 8 m 80 cm ÷ 4 = ?', ans: '2 m 20 cm', d: ['2 m 40 cm', '4 m 40 cm', '2 m 2 cm'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `100 cm = 1 m බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 20, term: 'term2', icon: '🚌', color: 'from-amber-500 to-orange-600',
+        title: '20. මුදල් - 2',
+        subtitle: 'බස් ගාස්තු, ළමා ටිකට්පත්, බිල්පත් ගණනය සහ ඉතුරු මුදල්',
+        generateQuestions() {
+          const fareTable = `<div class="bg-white p-3 rounded-2xl border-2 border-amber-300 text-xs sm:text-sm max-w-md w-full shadow-sm">
+            <div class="font-extrabold text-amber-900 mb-1.5">🚌 P නගරයේ සිට බස් ගාස්තු (වැඩිහිටි)</div>
+            <div class="grid grid-cols-2 gap-1 font-bold text-left">
+              <div>📍 A නගරය: රු. 14.00</div><div>📍 B නගරය: රු. 24.00</div>
+              <div>📍 C නගරය: රු. 38.00</div><div>📍 D නගරය: රු. 66.00</div>
+            </div>
+            <div class="text-[11px] text-rose-600 font-bold mt-1">* ළමා ටිකට්පතක් = වැඩිහිටි ගාස්තුවෙන් බාගයකි</div>
+          </div>`;
+
+          const shopTable = `<div class="bg-white p-3 rounded-2xl border-2 border-sky-300 text-xs sm:text-sm max-w-md w-full shadow-sm">
+            <div class="font-extrabold text-sky-900 mb-1.5">🏪 පොත් හලේ මිල දර්ශනය</div>
+            <div class="grid grid-cols-2 gap-1 font-bold text-left">
+              <div>🖊️ පෑනක්: රු. 12.00</div><div>✂️ කතුරක්: රු. 55.00</div>
+              <div>🧴 ගම් බෝතලය: රු. 80.00</div><div>🖍️ පාට පැන්සල්: රු. 98.00</div>
+              <div>📏 අඩි කෝදුව: රු. 30.00</div>
+            </div>
+          </div>`;
+
+          const items = [
+            { q: 'P සිට B නගරයට වැඩිහිටි ගාස්තුව රු. 24.00කි. ළමා ප්‍රවේශපත්‍රයක මිල කීය ද?', v: fareTable, ans: 'රු. 12.00', d: ['රු. 24.00', 'රු. 6.00', 'රු. 14.00'] },
+            { q: 'P සිට B නගරයට වැඩිහිටි 5 දෙනෙක් සහ ළමයි 3 දෙනෙක් ගමන් කළහ. ගෙවිය යුතු මුළු මුදල කීය ද?', v: fareTable, ans: 'රු. 156.00', d: ['රු. 120.00', 'රු. 192.00', 'රු. 144.00'] },
+            { q: 'P සිට D නගරයට වැඩිහිටි ගාස්තුව රු. 66.00කි. ළමා ප්‍රවේශපත්‍රයක මිල කීය ද?', v: fareTable, ans: 'රු. 33.00', d: ['රු. 66.00', 'රු. 22.00', 'රු. 30.00'] },
+            { q: 'P සිට D නගරයට වැඩිහිටියන් 4 දෙනෙක් සහ ළමයි 2 දෙනෙක් ගමන් කළහ. ගෙවිය යුතු මුළු ගාස්තුව කීය ද?', v: fareTable, ans: 'රු. 330.00', d: ['රු. 264.00', 'රු. 396.00', 'රු. 300.00'] },
+            { q: 'P සිට C නගරයට වැඩිහිටි ගාස්තුව රු. 38.00කි. ළමා ප්‍රවේශපත්‍රයක මිල කීය ද?', v: fareTable, ans: 'රු. 19.00', d: ['රු. 18.00', 'රු. 38.00', 'රු. 20.00'] },
+            { q: 'P සිට C නගරයට වැඩිහිටියන් 5 දෙනෙක් සහ ළමයි 4 දෙනෙක් ගමන් කළහ. මුළු බස් ගාස්තුව කීය ද?', v: fareTable, ans: 'රු. 266.00', d: ['රු. 190.00', 'රු. 342.00', 'රු. 256.00'] },
+            { q: 'වැඩිහිටියන් 5 දෙනෙක් P සිට A නගරයට ගොස් නැවත P නගරයට පැමිණියහ. ගෙවූ මුළු මුදල කීය ද?', v: fareTable, ans: 'රු. 140.00', d: ['රු. 70.00', 'රු. 28.00', 'රු. 100.00'] },
+
+            { q: 'පාට පැන්සල් පෙට්ටි 3ක මිල කීය ද?', v: shopTable, ans: 'රු. 294.00', d: ['රු. 284.00', 'රු. 300.00', 'රු. 196.00'] },
+            { q: 'ගම් බෝතල් 2ක මිල කීය ද?', v: shopTable, ans: 'රු. 160.00', d: ['රු. 80.00', 'රු. 180.00', 'රු. 140.00'] },
+            { q: 'පාට පැන්සල් පෙට්ටි 3ක් (රු. 294) සහ ගම් බෝතල් 2ක් (රු. 160) ගත් විට මුළු මුදල කීය ද?', v: shopTable, ans: 'රු. 454.00', d: ['රු. 444.00', 'රු. 354.00', 'රු. 464.00'] },
+            { q: 'පෑන් 4ක් (රු. 48), අඩි කෝදු 3ක් (රු. 90) සහ කතුරු 5ක් (රු. 275) ගත් විට මුළු මුදල කීය ද?', v: shopTable, ans: 'රු. 413.00', d: ['රු. 403.00', 'රු. 313.00', 'රු. 423.00'] },
+            { q: 'පෑන් 3ක්, අඩි කෝදු 4ක් සහ ගම් බෝතල් 5ක් ගත් විට මුළු මුදල කීය ද?', v: shopTable, ans: 'රු. 556.00', d: ['රු. 546.00', 'රු. 456.00', 'රු. 566.00'] },
+            { q: 'කතුරු 3ක් සහ පාට පැන්සල් පෙට්ටි 5ක් ගත් විට මුළු මුදල කීය ද?', v: shopTable, ans: 'රු. 655.00', d: ['රු. 645.00', 'රු. 555.00', 'රු. 665.00'] },
+
+            { q: 'සහල් 1 kg ක් රු. 85.00කි. සහල් 2 kg ක මිල කීය ද?', v: '🍚 1 kg = රු. 85.00 ➡️ 2 kg = ?', ans: 'රු. 170.00', d: ['රු. 160.00', 'රු. 85.00', 'රු. 180.00'] },
+            { q: 'කඩල 1 kg ක් රු. 260.00කි. කඩල 500 g ක මිල කීය ද?', v: '🫘 1 kg = රු. 260.00 ➡️ 500 g = ?', ans: 'රු. 130.00', d: ['රු. 260.00', 'රු. 65.00', 'රු. 120.00'] },
+            { q: 'අර්තාපල් 1 kg ක් රු. 300.00කි. අර්තාපල් 1 kg 500 g ක මිල කීය ද?', v: '🥔 300 + 150 = ?', ans: 'රු. 450.00', d: ['රු. 350.00', 'රු. 600.00', 'රු. 400.00'] },
+            { q: 'සහල් (රු. 170), කඩල (රු. 130) සහ අර්තාපල් (රු. 450) ගෙන රු. 800ක් දුන් විට ඉතුරු මුදල කීය ද?', v: '🧾 800 − (170 + 130 + 450) = ?', ans: 'රු. 50.00', d: ['රු. 150.00', 'රු. 750.00', 'රු. 100.00'] },
+            { q: 'හාල්මැස්සන් 1 kg ක් රු. 900.00කි. හාල්මැස්සන් 200 g ක මිල කීය ද?', v: '🐟 900 ÷ 5 = ?', ans: 'රු. 180.00', d: ['රු. 200.00', 'රු. 450.00', 'රු. 90.00'] },
+            { q: 'තේ කොළ 1 kg ක් රු. 920.00කි. තේ කොළ 250 g ක මිල කීය ද?', v: '🍵 920 ÷ 4 = ?', ans: 'රු. 230.00', d: ['රු. 460.00', 'රු. 220.00', 'රු. 184.00'] },
+            { q: 'මුංඇට 2 kg (රු. 440), හාල්මැස්සන් 200 g (රු. 180) සහ තේ කොළ 250 g (රු. 230) ගෙන රු. 1000ක් දුන් විට ඉතුරු මුදල කීය ද?', v: '🧾 1000 − (440 + 180 + 230) = ?', ans: 'රු. 150.00', d: ['රු. 250.00', 'රු. 850.00', 'රු. 50.00'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `ගණනය කිරීම අනුව නිවැරදි පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 21, term: 'term2', icon: '✖️', color: 'from-orange-500 to-red-500',
+        title: '21. ගුණ කිරීම - 2',
+        subtitle: 'හයෙහි සහ හතෙහි ගුණන වගු සහ 6න් හා 7න් ගුණ කිරීම',
+        generateQuestions() {
+          const mults = [
+            [42, 6], [35, 6], [69, 6], [87, 6], [423, 6],
+            [904, 6], [260, 6], [781, 6], [505, 6], [125, 6],
+            [21, 7], [34, 7], [65, 7], [89, 7], [253, 7],
+            [501, 7], [944, 7], [813, 7], [333, 7], [707, 7]
+          ];
+          return mults.map(([a, b]) => {
+            const prod = a * b;
+            const { options, answer } = makeOptions(prod, [prod + 10, Math.max(6, prod - 10), prod + b, a + b]);
+            return { prompt: `${a}, ${b}න් ගුණ කර නිවැරදි පිළිතුර තෝරන්න.`, visual: svgVerticalCalc('×', a, b), options, answer, explanation: `${a} × ${b} = ${prod} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 22, term: 'term2', icon: '⏱️', color: 'from-violet-600 to-purple-700',
+        title: '22. කාලය - 2',
+        subtitle: 'ගත වූ කාලය, ආරම්භක වේලාව සහ අවසන් වේලාව ගණනය කිරීම',
+        generateQuestions() {
+          const items = [
+            { q: 'බස් රථයක් පෙ.ව. 3.45ට ගමන් අරඹා පෙ.ව. 8.00ට ගමන අවසන් කරයි. ගත වූ කාලය කොපමණ ද?', v: '🚌 පෙ.ව. 3.45 ➡️ පෙ.ව. 8.00', ans: 'පැය 4 මිනිත්තු 15', d: ['පැය 5 මිනිත්තු 15', 'පැය 4 මිනිත්තු 45', 'පැය 3 මිනිත්තු 15'] },
+            { q: 'තාත්තා පෙ.ව. 6.45ට නිවසින් පිටත් වී පෙ.ව. 8.15ට කාර්යාලයට ගියේ ය. ගත වූ කාලය කීය ද?', v: '🚶 පෙ.ව. 6.45 ➡️ පෙ.ව. 8.15', ans: 'පැය 1 මිනිත්තු 30', d: ['පැය 2 මිනිත්තු 30', 'පැය 1 මිනිත්තු 45', 'පැය 2 මිනිත්තු 15'] },
+            { q: 'අක්කා ප.ව. 2.45ට ගවුමක් මැසීම අරඹා ප.ව. 5.30ට අවසන් කළා ය. ගත වූ කාලය කීය ද?', v: '🧵 ප.ව. 2.45 ➡️ ප.ව. 5.30', ans: 'පැය 2 මිනිත්තු 45', d: ['පැය 3 මිනිත්තු 15', 'පැය 2 මිනිත්තු 15', 'පැය 3 මිනිත්තු 45'] },
+            { q: 'දුම්රියක් පෙ.ව. 4.50ට පිටත් වී පෙ.ව. 8.35ට ළඟා වේ. ගත වූ කාලය කීය ද?', v: '🚆 පෙ.ව. 4.50 ➡️ පෙ.ව. 8.35', ans: 'පැය 3 මිනිත්තු 45', d: ['පැය 4 මිනිත්තු 15', 'පැය 3 මිනිත්තු 15', 'පැය 4 මිනිත්තු 45'] },
+            { q: 'අම්මා පෙ.ව. 11.30ට ආහාර පිසීම අරඹා ප.ව. 1.10ට (13:10) අවසන් කළා ය. ගත වූ කාලය කීය ද?', v: '🍲 11:30 ➡️ 13:10', ans: 'පැය 1 මිනිත්තු 40', d: ['පැය 2 මිනිත්තු 20', 'පැය 1 මිනිත්තු 20', 'පැය 2 මිනිත්තු 40'] },
+            { q: 'පෙ.ව. 7.30ට පාසල ආරම්භ වී ප.ව. 1.30ට (13:30) අවසන් වූයේ නම් පාසල පැවැත්වූ කාලය කීය ද?', v: '🏫 07:30 ➡️ 13:30', ans: 'පැය 6', d: ['පැය 5', 'පැය 7', 'පැය 6 මිනිත්තු 30'] },
+            { q: 'ක්‍රීඩා කණ්ඩායමක් පෙ.ව. 8.35ට පුහුණුවීම් අරඹා ප.ව. 2.15ට (14:15) අවසන් කළහ. ගත කළ කාලය කීය ද?', v: '⚽ 08:35 ➡️ 14:15', ans: 'පැය 5 මිනිත්තු 40', d: ['පැය 6 මිනිත්තු 20', 'පැය 5 මිනිත්තු 20', 'පැය 6 මිනිත්තු 40'] },
+            { q: 'ගොයම් කැපීම පෙ.ව. 8.45ට ආරම්භ වී ප.ව. 4.30ට (16:30) අවසන් විය. ගත වූ කාලය කීය ද?', v: '🌾 08:45 ➡️ 16:30', ans: 'පැය 7 මිනිත්තු 45', d: ['පැය 8 මිනිත්තු 15', 'පැය 7 මිනිත්තු 15', 'පැය 8 මිනිත්තු 45'] },
+            { q: 'ආගමික වැඩසටහනක් පෙ.ව. 9.30ට අරඹා ප.ව. 2.10ට (14:10) අවසන් විය. පැවැත්වූ කාලය කීය ද?', v: '☸️ 09:30 ➡️ 14:10', ans: 'පැය 4 මිනිත්තු 40', d: ['පැය 5 මිනිත්තු 20', 'පැය 4 මිනිත්තු 20', 'පැය 5 මිනිත්තු 40'] },
+            { q: 'පෙ.ව. 4.20ට පාඩම් කිරීමට අරඹා පැය 2 මිනිත්තු 50කට පසු අවසන් කළේ නම් අවසන් කළ වේලාව කීය ද?', v: '📖 4.20 + පැය 2 මි. 50 = ?', ans: 'පෙ.ව. 7.10', d: ['පෙ.ව. 6.70', 'පෙ.ව. 6.10', 'පෙ.ව. 7.30'] },
+            { q: 'සිඟිති පොළ පෙ.ව. 8.15ට ආරම්භ වී පැය 3 මිනිත්තු 30කින් අවසන් විය. අවසන් වූ වේලාව කීය ද?', v: '🎪 8.15 + පැය 3 මි. 30 = ?', ans: 'පෙ.ව. 11.45', d: ['පෙ.ව. 11.15', 'ප.ව. 12.45', 'පෙ.ව. 10.45'] },
+            { q: 'නාට්‍ය දර්ශනයක් පෙ.ව. 9.35ට ආරම්භ වී පැය 2 මිනිත්තු 45කින් අවසන් විය. අවසන් වූ වේලාව කීය ද?', v: '🎭 9.35 + පැය 2 මි. 45 = ?', ans: 'ප.ව. 12.20', d: ['පෙ.ව. 11.80', 'ප.ව. 12.10', 'ප.ව. 1.20'] },
+            { q: 'ප.ව. 5.32ට ආරම්භ වූ වර්ෂාව පැය 3 මිනිත්තු 45කට පසු නතර විය. වර්ෂාව නතර වූ වේලාව කීය ද?', v: '🌧️ 5.32 + පැය 3 මි. 45 = ?', ans: 'ප.ව. 9.17', d: ['ප.ව. 8.77', 'ප.ව. 9.07', 'ප.ව. 8.17'] },
+            { q: 'මිනිත්තු 26ක ගුවන් ගමනකින් පසු යානය පෙ.ව. 9.16ට ළඟා විය. ගමන ආරම්භ කළ වේලාව කීය ද?', v: '✈️ ? + මි. 26 = පෙ.ව. 9.16', ans: 'පෙ.ව. 8.50', d: ['පෙ.ව. 8.40', 'පෙ.ව. 9.42', 'පෙ.ව. 8.30'] },
+            { q: 'නයනා පොතක් කියවීමට පැය 2 මිනිත්තු 30ක් ගත කර ප.ව. 3.45ට අවසන් කළා ය. ආරම්භ කළ වේලාව කීය ද?', v: '📚 ප.ව. 3.45 − පැය 2 මි. 30', ans: 'ප.ව. 1.15', d: ['ප.ව. 1.45', 'ප.ව. 6.15', 'ප.ව. 2.15'] },
+            { q: 'පාපැදි තරගකරුවෙක් පැය 4 මිනිත්තු 15ක පුහුණුවීමකින් පසු පෙ.ව. 10.30ට අවසන් කළේ ය. ආරම්භ කළ වේලාව කීය ද?', v: '🚴 පෙ.ව. 10.30 − පැය 4 මි. 15', ans: 'පෙ.ව. 6.15', d: ['පෙ.ව. 6.45', 'පෙ.ව. 5.15', 'ප.ව. 2.45'] },
+            { q: 'ක්‍රීඩා උළෙල ප.ව. 1.30ට (13:30) අවසන් විය. එය පැය 5ක් පැවතුණි නම් ආරම්භ කළ වේලාව කීය ද?', v: '🏅 13:30 − පැය 5 = ?', ans: 'පෙ.ව. 8.30', d: ['පෙ.ව. 7.30', 'පෙ.ව. 9.30', 'ප.ව. 6.30'] },
+            { q: 'පෙ.ව. 10.30ට ආරම්භ වූ ප්‍රසංගයක් ප.ව. 1.00ට (13:00) අවසන් විය. ගත වූ කාලය කීය ද?', v: '🎶 10:30 ➡️ 13:00', ans: 'පැය 2 මිනිත්තු 30', d: ['පැය 3 මිනිත්තු 30', 'පැය 2', 'පැය 1 මිනිත්තු 30'] },
+            { q: 'පෙ.ව. 7.50ට ආරම්භ වූ ශ්‍රමදානය පැය 3 මිනිත්තු 30ක් පැවතුණි. අවසන් වූ වේලාව කීය ද?', v: '🧹 7.50 + පැය 3 මි. 30 = ?', ans: 'පෙ.ව. 11.20', d: ['පෙ.ව. 10.80', 'පෙ.ව. 11.10', 'ප.ව. 12.20'] },
+            { q: 'කාර්යාලයේ සිට දුම්රිය ස්ථානයට යාමට මිනිත්තු 24ක් ගත විය. ප.ව. 4.45ට ළඟා වූයේ නම් පිටත් වූ වේලාව කීය ද?', v: '🚶 ප.ව. 4.45 − මි. 24 = ?', ans: 'ප.ව. 4.21', d: ['ප.ව. 4.19', 'ප.ව. 5.09', 'ප.ව. 4.31'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-purple-300 font-num text-xl font-extrabold text-purple-950">${it.v}</div>`, options, answer, explanation: `පැය 1 = මිනිත්තු 60 බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 23, term: 'term2', icon: '➗', color: 'from-teal-600 to-emerald-700',
+        title: '23. බෙදීම - 2',
+        subtitle: 'ඉලක්කම් 2 හා 3 සංඛ්‍යා 6න් සහ 7න් බෙදීම',
+        generateQuestions() {
+          const exact = [
+            [84, 6], [186, 6], [516, 6], [840, 6], [96, 6],
+            [900, 6], [91, 7], [217, 7], [805, 7], [840, 7],
+            [700, 7], [714, 7], [434, 7], [728, 7]
+          ];
+          const qs = exact.map(([a, b]) => {
+            const ans = a / b;
+            const { options, answer } = makeOptions(ans, [ans + 10, Math.max(1, ans - 10), ans + 1, ans - 1]);
+            return { prompt: `${a}, ${b}න් බෙදූ විට පිළිතුර කීය ද? (${a} ÷ ${b} = ?)`, visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-teal-300 font-num text-3xl font-extrabold text-teal-800">${a} ÷ ${b} = ?</div>`, options, answer, explanation: `${a} ÷ ${b} = ${ans} වේ.` };
+          });
+          const rem = [
+            [608, 6, 101, 2], [99, 6, 16, 3], [615, 6, 102, 3],
+            [772, 7, 110, 2], [499, 7, 71, 2], [978, 7, 139, 5]
+          ];
+          rem.forEach(([a, b, q, r]) => {
+            const ans = `${q} ඉතුරු ${r}`;
+            const { options, answer } = makeOptions(ans, [`${q + 1} ඉතුරු 0`, `${q} ඉතුරු 0`, `${q - 1} ඉතුරු ${r + 1}`]);
+            qs.push({ prompt: `${a}, ${b}න් බෙදූ විට ලැබෙන පිළිතුර සහ ඉතුරු ගණන තෝරන්න.`, visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-amber-300 font-num text-3xl font-extrabold text-amber-800">${a} ÷ ${b} = ?</div>`, options, answer, explanation: `${q} × ${b} = ${q * b} වන අතර ${r}ක් ඉතුරු වේ.` });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 24, term: 'term2', isRevision: true, icon: '🌟', color: 'from-amber-500 via-orange-500 to-rose-500',
+        title: '24. පුනරීක්ෂණය - 2',
+        subtitle: 'දෙවන වාර පුනරීක්ෂණය (13 සිට 23 දක්වා ඒකක ඇසුරෙන්)',
+        generateQuestions() {
+          const items = [
+            { q: 'එකතු කරන්න: 3 l 480 ml + 6 l 124 ml', v: svgVerticalCalc('+', '3 l 480 ml', '6 l 124 ml'), ans: '9 l 604 ml', d: ['9 l 504 ml', '10 l 604 ml', '8 l 604 ml'], exp: '3 l 480 ml + 6 l 124 ml = 9 l 604 ml.' },
+            { q: 'නිල් තීන්ත 14 l 800 ml ක් සහ සුදු තීන්ත 8 l 650 ml ක් අතර වෙනස කීය ද?', v: '🎨 14 l 800 ml − 8 l 650 ml', ans: '6 l 150 ml', d: ['6 l 250 ml', '5 l 150 ml', '23 l 450 ml'], exp: '14 l 800 ml − 8 l 650 ml = 6 l 150 ml.' },
+            { q: 'බෝතල් දෙකක දොඩම් යුෂ 180 ml සහ 150 ml ඇත. 1 l ක බීමක් සෑදීමට තව ජලය කොපමණ එකතු කළ යුතු ද?', v: '🧃 1000 ml − (180 + 150) = ?', ans: '670 ml', d: ['330 ml', '770 ml', '570 ml'], exp: '180 + 150 = 330 ml; 1000 − 330 = 670 ml.' },
+            { q: 'පොහොර 12 kg 800 g ක් සහ 7 kg 250 g ක මුළු බර කීය ද?', v: '🌱 12 kg 800 g + 7 kg 250 g', ans: '20 kg 50 g', d: ['19 kg 50 g', '19 kg 1050 g', '20 kg 500 g'], exp: '12 kg 800 g + 7 kg 250 g = 20 kg 50 g.' },
+            { q: 'පිටි 56 kg කින් 25 kg 800 g ක් බනිස් සෑදීමට ගත් විට ඉතුරු පිටි බර කීය ද?', v: '🥯 56 kg − 25 kg 800 g', ans: '30 kg 200 g', d: ['31 kg 200 g', '31 kg 800 g', '30 kg 800 g'], exp: '56 kg − 25 kg 800 g = 30 kg 200 g.' },
+            { q: 'චතුස්තලයකට ඇති මුහුණත්, ශීර්ෂ සහ දාර ගණන පිළිවෙළින් තෝරන්න.', v: svgSolid('tetrahedron'), ans: 'මුහුණත් 4, ශීර්ෂ 4, දාර 6', d: ['මුහුණත් 6, ශීර්ෂ 8, දාර 12', 'මුහුණත් 4, ශීර්ෂ 6, දාර 4', 'මුහුණත් 3, ශීර්ෂ 3, දාර 6'], exp: 'චතුස්තලයකට මුහුණත් 4, ශීර්ෂ 4 සහ දාර 6ක් ඇත.' },
+            { q: 'A පාසලේ 370ක් ද B පාසලේ 260ක් ද සිටිති. C පාසලේ 820ක් සිටිති. C පාසලේ සිසුන් ගණන A හා B එකතුවට වඩා කොපමණ වැඩි ද?', v: '🏫 820 − (370 + 260) = ?', ans: '190', d: ['630', '290', '180'], exp: '370 + 260 = 630; 820 − 630 = 190.' },
+            { q: 'රූපයක 4/10 ක් පාට කර ඇත්නම්, පාට නොකළ කොටස දශම සංඛ්‍යාවක් ලෙස කීය ද?', v: svgFractionGrid(10, 4, '#38bdf8'), ans: '0.6', d: ['0.4', '0.5', '6.0'], exp: 'පාට නොකළ කොටස 6/10 = 0.6 වේ.' },
+            { q: '3/10 දශම සංඛ්‍යාවක් ලෙස ලියන්න.', v: '3 / 10 = ?', ans: '0.3', d: ['3.0', '0.03', '1.3'], exp: '3/10 = 0.3.' },
+            { q: 'කම්බි රෝල් දෙකක දිග 25 m 75 cm සහ 50 m 50 cm වේ. මුළු දිග කීය ද?', v: '🪢 25 m 75 cm + 50 m 50 cm', ans: '76 m 25 cm', d: ['75 m 25 cm', '75 m 125 cm', '76 m 75 cm'], exp: '25 m 75 cm + 50 m 50 cm = 76 m 25 cm.' },
+            { q: 'ගවුමකට 2 m 70 cm ක් බැගින් ගවුම් 5කට අවශ්‍ය මුළු රෙදි ප්‍රමාණය කීය ද?', v: '👗 2 m 70 cm × 5 = ?', ans: '13 m 50 cm', d: ['10 m 350 cm', '13 m 20 cm', '12 m 50 cm'], exp: '2 m 70 cm × 5 = 13 m 50 cm.' },
+            { q: '16 m 20 cm ක් දිග තාප්පයක් සමාන කොටස් 4කට බෙදූ විට එක් කොටසක දිග කීය ද?', v: '🧱 16 m 20 cm ÷ 4 = ?', ans: '4 m 5 cm', d: ['4 m 50 cm', '4 m 20 cm', '3 m 5 cm'], exp: '16 m 20 cm ÷ 4 = 4 m 5 cm.' },
+            { q: 'ගුණ කරන්න: 907 × 6 = ?', v: svgVerticalCalc('×', 907, 6), ans: '5442', d: ['5402', '5448', '4542'], exp: '907 × 6 = 5442.' },
+            { q: 'බේකරි හිමියෙක් දිනකට පාන් 625ක් සාදයි. දින 6ක දී සාදන මුළු පාන් ගෙඩි ගණන කීය ද?', v: '🍞 625 × 6 = ?', ans: '3750', d: ['3650', '3720', '3850'], exp: '625 × 6 = 3750.' },
+            { q: 'බෙදන්න: 654 ÷ 6 = ?', v: '➗ 654 ÷ 6 = ?', ans: '109', d: ['19', '119', '104'], exp: '654 ÷ 6 = 109.' },
+            { q: 'අඹ ගෙඩි 350කින්, අඹ ගෙඩි 7 බැගින් වූ පෙට්ටි කීයක් සැකසිය හැකි ද?', v: '🥭 350 ÷ 7 = ?', ans: '50', d: ['5', '500', '45'], exp: '350 ÷ 7 = 50.' },
+            { q: 'සහල් 1 kg ක් රු. 110 නම්, සහල් 2 kg ක මිල කීය ද?', v: '🍚 110 × 2 = ?', ans: 'රු. 220.00', d: ['රු. 110.00', 'රු. 210.00', 'රු. 330.00'], exp: '110 × 2 = රු. 220.00.' },
+            { q: 'සීනි 1 kg ක් රු. 100 නම්, සීනි 500 g ක මිල කීය ද?', v: '🍬 100 ÷ 2 = ?', ans: 'රු. 50.00', d: ['රු. 100.00', 'රු. 25.00', 'රු. 75.00'], exp: '500 g යනු 1 kg න් බාගයකි. 100 ÷ 2 = රු. 50.00.' },
+            { q: 'පෙ.ව. 10.30ට ආරම්භ වූ ප්‍රසංගය ප.ව. 1.00ට (13:00) අවසන් විය. ගත වූ කාලය කීය ද?', v: '🎭 10:30 ➡️ 13:00', ans: 'පැය 2 මිනිත්තු 30', d: ['පැය 3 මිනිත්තු 30', 'පැය 2', 'පැය 1 මිනිත්තු 30'], exp: '10:30 සිට 13:00 දක්වා පැය 2 මිනිත්තු 30කි.' },
+            { q: 'පෙ.ව. 7.50ට ආරම්භ වූ ශ්‍රමදානය පැය 3 මිනිත්තු 30ක් පැවතුණි. අවසන් වූ වේලාව කීය ද?', v: '🧹 7.50 + පැය 3 මි. 30 = ?', ans: 'පෙ.ව. 11.20', d: ['පෙ.ව. 10.80', 'පෙ.ව. 11.10', 'ප.ව. 12.20'], exp: '7.50 + පැය 3 මි. 30 = පෙ.ව. 11.20.' }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: it.exp };
+          });
+        }
+      },
+
+      // ==================== TERM 3 (Units 25 - 36) ====================
+      {
+        id: 25, term: 'term3', icon: '🧭', color: 'from-emerald-600 to-teal-700',
+        title: '25. දිශා',
+        subtitle: 'ප්‍රධාන දිශා 4 සහ අනුදිශා 4 (ඊසාන, ගිනිකොන, නිරිත, වයඹ)',
+        generateQuestions() {
+          const comp = svgCompass8();
+          const sch = svgSchoolDirections();
+          const items = [
+            { q: 'ප්‍රධාන දිශා 4ට අමතරව ඇති අනුදිශා ගණන කීය ද?', v: comp, ans: '4', d: ['2', '8', '6'] },
+            { q: 'උතුර සහ නැගෙනහිර අතර පිහිටි අනුදිශාව කුමක් ද?', v: comp, ans: 'ඊසාන', d: ['ගිනිකොන', 'නිරිත', 'වයඹ'] },
+            { q: 'නැගෙනහිර සහ දකුණ අතර පිහිටි අනුදිශාව කුමක් ද?', v: comp, ans: 'ගිනිකොන', d: ['ඊසාන', 'නිරිත', 'වයඹ'] },
+            { q: 'දකුණ සහ බස්නාහිර අතර පිහිටි අනුදිශාව කුමක් ද?', v: comp, ans: 'නිරිත', d: ['ගිනිකොන', 'ඊසාන', 'වයඹ'] },
+            { q: 'උතුර සහ බස්නාහිර අතර පිහිටි අනුදිශාව කුමක් ද?', v: comp, ans: 'වයඹ', d: ['ඊසාන', 'ගිනිකොන', 'නිරිත'] },
+            { q: 'ඊසාන දිශාවට විරුද්ධ දිශාව කුමක් ද?', v: comp, ans: 'නිරිත', d: ['වයඹ', 'ගිනිකොන', 'දකුණ'] },
+            { q: 'වයඹ දිශාවට විරුද්ධ දිශාව කුමක් ද?', v: comp, ans: 'ගිනිකොන', d: ['ඊසාන', 'නිරිත', 'නැගෙනහිර'] },
+            { q: 'පාසල් සැලැස්ම අනුව විජය ශාලාවට උතුරු දිශාවෙන් පිහිටා ඇත්තේ කුමක් ද?', v: sch, ans: 'ප්‍රධාන ශාලාව', d: ['ප්‍රධාන ගේට්ටුව', 'කාර්යාලය', 'ආපණ ශාලාව'] },
+            { q: 'විජය ශාලාවට නිරිත දිශාවෙන් පිහිටා ඇත්තේ කුමක් ද?', v: sch, ans: 'පුස්තකාලය', d: ['ගණිතාගාරය', 'අඹ ගස', 'පැරකුම් ශාලාව'] },
+            { q: 'විජය ශාලාවට ඊසාන දිශාවෙන් පිහිටා ඇත්තේ කුමක් ද?', v: sch, ans: 'අඹ ගස', d: ['ගණිතාගාරය', 'පුස්තකාලය', 'පැරකුම් ශාලාව'] },
+            { q: 'විජය ශාලාවට ගිනිකොන දිශාවෙන් පිහිටා ඇත්තේ කුමක් ද?', v: sch, ans: 'පැරකුම් ශාලාව', d: ['පුස්තකාලය', 'අඹ ගස', 'ගණිතාගාරය'] },
+            { q: 'විජය ශාලාවට වයඹ දිශාවෙන් පිහිටා ඇත්තේ කුමක් ද?', v: sch, ans: 'ගණිතාගාරය', d: ['අඹ ගස', 'පුස්තකාලය', 'පැරකුම් ශාලාව'] },
+            { q: 'ගණිතාගාරයට නැගෙනහිර දිශාවෙන් පිහිටා ඇත්තේ මොනවා ද?', v: sch, ans: 'ප්‍රධාන ශාලාව සහ අඹ ගස', d: ['පුස්තකාලය සහ ගේට්ටුව', 'කාර්යාලය පමණි', 'ආපණ ශාලාව'] },
+            { q: 'ආපණ ශාලාවට දකුණු දිශාවෙන් පිහිටා ඇත්තේ කුමක් ද?', v: sch, ans: 'පුස්තකාලය', d: ['ගණිතාගාරය', 'ප්‍රධාන ගේට්ටුව', 'විජය ශාලාව'] },
+            { q: 'පුස්තකාලයට උතුරු දිශාවෙන් පිහිටා ඇත්තේ මොනවා ද?', v: sch, ans: 'ආපණ ශාලාව සහ ගණිතාගාරය', d: ['ප්‍රධාන ශාලාව', 'කාර්යාලය', 'පැරකුම් ශාලාව'] },
+            { q: 'ඔබ උතුර බලා සිටින විට ඔබේ දකුණු අත පැත්තට ඇති දිශාව කුමක් ද?', v: comp, ans: 'නැගෙනහිර', d: ['බස්නාහිර', 'දකුණ', 'ඊසාන'] },
+            { q: 'ඔබ නැගෙනහිර බලා සිටින විට ඔබේ වම් අත පැත්තට ඇති දිශාව කුමක් ද?', v: comp, ans: 'උතුර', d: ['දකුණ', 'බස්නාහිර', 'ගිනිකොන'] },
+            { q: 'ඔබ දකුණ බලා සිටින විට ඔබේ දකුණු අත පැත්තට ඇති දිශාව කුමක් ද?', v: comp, ans: 'බස්නාහිර', d: ['නැගෙනහිර', 'උතුර', 'නිරිත'] },
+            { q: 'ගිනිකොන දිශාවට විරුද්ධ දිශාව කුමක් ද?', v: comp, ans: 'වයඹ', d: ['ඊසාන', 'නිරිත', 'උතුර'] },
+            { q: 'නිරිත දිශාවට විරුද්ධ දිශාව කුමක් ද?', v: comp, ans: 'ඊසාන', d: ['වයඹ', 'ගිනිකොන', 'බස්නාහිර'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `ප්‍රධාන දිශා 4 සහ අනුදිශා 4 අනුව නිවැරදි පිළිතුර "${it.ans}" වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 26, term: 'term3', icon: '✖️', color: 'from-orange-600 to-amber-600',
+        title: '26. ගුණ කිරීම - 3',
+        subtitle: 'අටෙහි, නවයෙහි හා දහයෙහි ගුණන වගු සහ 8, 9, 10න් ගුණ කිරීම',
+        generateQuestions() {
+          const mults = [
+            [31, 8], [62, 8], [47, 8], [548, 8], [212, 8],
+            [109, 8], [643, 8], [814, 8], [750, 8], [606, 8],
+            [21, 9], [35, 9], [64, 9], [253, 9], [407, 9],
+            [382, 9], [530, 9], [642, 9], [48, 10], [95, 10]
+          ];
+          return mults.map(([a, b]) => {
+            const prod = a * b;
+            const { options, answer } = makeOptions(prod, [prod + 10, Math.max(8, prod - 10), prod + b, a + b]);
+            return { prompt: `${a}, ${b}න් ගුණ කර නිවැරදි පිළිතුර තෝරන්න.`, visual: svgVerticalCalc('×', a, b), options, answer, explanation: `${a} × ${b} = ${prod} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 27, term: 'term3', icon: '🧪', color: 'from-cyan-500 to-blue-700',
+        title: '27. පරිමාව හා ධාරිතාව - 2',
+        subtitle: 'ලීටර (l) සහ මිලිලීටර (ml) ගුණ කිරීම සහ බෙදීම',
+        generateQuestions() {
+          const items = [
+            { q: 'දොඩම් බීම 300 ml බැගින් බෝතල් 3ක ඇති මුළු බීම ප්‍රමාණය කීය ද?', v: '🧃 300 ml × 3 = ?', ans: '900 ml', d: ['600 ml', '1 l', '90 ml'] },
+            { q: 'අඹ බීම 800 ml බැගින් බෝතල් 4ක ඇති මුළු බීම ප්‍රමාණය කීය ද?', v: '🥭 800 ml × 4 = ?', ans: '3 l 200 ml', d: ['2 l 200 ml', '3 l 400 ml', '320 ml'] },
+            { q: 'දිවුල් බීම 1 l 250 ml බැගින් බෝතල් 4ක ඇති මුළු බීම ප්‍රමාණය කීය ද?', v: svgVerticalCalc('×', '1 l 250 ml', '4'), ans: '5 l', d: ['4 l 250 ml', '4 l', '5 l 500 ml'] },
+            { q: 'අන්නාසි බීම 5 l 250 ml බැගින් භාජන 5ක ඇති මුළු ප්‍රමාණය කීය ද?', v: svgVerticalCalc('×', '5 l 250 ml', '5'), ans: '26 l 250 ml', d: ['25 l 250 ml', '25 l 1250 ml', '26 l 500 ml'] },
+            { q: 'ගුණ කරන්න: 1 l 635 ml × 2', v: svgVerticalCalc('×', '1 l 635 ml', '2'), ans: '3 l 270 ml', d: ['2 l 270 ml', '2 l 1270 ml', '3 l 370 ml'] },
+            { q: 'ගුණ කරන්න: 3 l 115 ml × 3', v: svgVerticalCalc('×', '3 l 115 ml', '3'), ans: '9 l 345 ml', d: ['9 l 335 ml', '6 l 345 ml', '9 l 445 ml'] },
+            { q: 'ගුණ කරන්න: 5 l 310 ml × 4', v: svgVerticalCalc('×', '5 l 310 ml', '4'), ans: '21 l 240 ml', d: ['20 l 240 ml', '20 l 1240 ml', '21 l 340 ml'] },
+            { q: 'ගුණ කරන්න: 11 l 700 ml × 5', v: svgVerticalCalc('×', '11 l 700 ml', '5'), ans: '58 l 500 ml', d: ['55 l 500 ml', '55 l 3500 ml', '58 l 700 ml'] },
+            { q: 'ගුණ කරන්න: 32 l 810 ml × 2', v: svgVerticalCalc('×', '32 l 810 ml', '2'), ans: '65 l 620 ml', d: ['64 l 620 ml', '64 l 1620 ml', '65 l 810 ml'] },
+            { q: 'ගුණ කරන්න: 12 l 500 ml × 4', v: svgVerticalCalc('×', '12 l 500 ml', '4'), ans: '50 l', d: ['48 l', '48 l 500 ml', '52 l'] },
+            { q: 'කිරි ගොවියෙක් දිනකට කිරි 5 l 100 ml ක් ලබා දෙයි. දින 5ක දී ලබා දෙන මුළු කිරි ප්‍රමාණය කීය ද?', v: '🥛 5 l 100 ml × 5 = ?', ans: '25 l 500 ml', d: ['25 l 100 ml', '26 l 500 ml', '10 l 100 ml'] },
+            { q: 'පන්ති කාමරයකට තීන්ත 4 l 400 ml ක් අවශ්‍ය වේ. එවැනි කාමර 3කට අවශ්‍ය තීන්ත ප්‍රමාණය කීය ද?', v: '🎨 4 l 400 ml × 3 = ?', ans: '13 l 200 ml', d: ['12 l 200 ml', '12 l 1200 ml', '13 l 400 ml'] },
+            { q: 'බෙදන්න: 6 l 462 ml ÷ 2', v: '➗ 6 l 462 ml ÷ 2 = ?', ans: '3 l 231 ml', d: ['3 l 232 ml', '2 l 231 ml', '3 l 462 ml'] },
+            { q: 'බෙදන්න: 4 l 624 ml ÷ 2', v: '➗ 4 l 624 ml ÷ 2 = ?', ans: '2 l 312 ml', d: ['2 l 324 ml', '2 l 624 ml', '4 l 312 ml'] },
+            { q: 'බෙදන්න: 9 l 510 ml ÷ 3', v: '➗ 9 l 510 ml ÷ 3 = ?', ans: '3 l 170 ml', d: ['3 l 17 ml', '3 l 510 ml', '2 l 170 ml'] },
+            { q: 'බෙදන්න: 8 l 320 ml ÷ 4', v: '➗ 8 l 320 ml ÷ 4 = ?', ans: '2 l 80 ml', d: ['2 l 800 ml', '2 l 8 ml', '4 l 80 ml'] },
+            { q: 'බෙදන්න: 25 l 450 ml ÷ 5', v: '➗ 25 l 450 ml ÷ 5 = ?', ans: '5 l 90 ml', d: ['5 l 900 ml', '5 l 9 ml', '4 l 90 ml'] },
+            { q: 'සුපුන් කිරි 4 l 960 ml ක් බෝතල් 4කට සමානව දමයි. එක් බෝතලයකට දැමූ කිරි ප්‍රමාණය කීය ද?', v: '🍼 4 l 960 ml ÷ 4 = ?', ans: '1 l 240 ml', d: ['1 l 24 ml', '1 l 490 ml', '2 l 240 ml'] },
+            { q: 'පොල් තෙල් 45 l 750 ml ක් භාජන 5කට සමානව දැමූ විට එක් භාජනයක ඇති තෙල් ප්‍රමාණය කීය ද?', v: '🥥 45 l 750 ml ÷ 5 = ?', ans: '9 l 150 ml', d: ['9 l 15 ml', '9 l 750 ml', '8 l 150 ml'] },
+            { q: 'මල් බඳුන් 4ක් පින්තාරු කිරීමට තීන්ත 24 l 600 ml ක් අවශ්‍ය වේ. එක් බඳුනකට අවශ්‍ය තීන්ත ප්‍රමාණය කීය ද?', v: '🏺 24 l 600 ml ÷ 4 = ?', ans: '6 l 150 ml', d: ['6 l 15 ml', '6 l 600 ml', '5 l 150 ml'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `1 l = 1000 ml බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 28, term: 'term3', icon: '➗', color: 'from-teal-600 to-cyan-700',
+        title: '28. බෙදීම - 3',
+        subtitle: 'ඉලක්කම් 2 හා 3 සංඛ්‍යා 8න්, 9න් සහ 10න් බෙදීම',
+        generateQuestions() {
+          const exact = [
+            [96, 8], [104, 8], [128, 8], [408, 8], [720, 8],
+            [800, 8], [872, 8], [848, 8], [189, 9], [108, 9],
+            [360, 9], [603, 9], [900, 9], [144, 9], [270, 9],
+            [580, 10], [700, 10]
+          ];
+          const qs = exact.map(([a, b]) => {
+            const ans = a / b;
+            const { options, answer } = makeOptions(ans, [ans + 10, Math.max(1, ans - 10), ans + 1, ans - 1]);
+            return { prompt: `${a}, ${b}න් බෙදූ විට පිළිතුර කීය ද? (${a} ÷ ${b} = ?)`, visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-cyan-300 font-num text-3xl font-extrabold text-cyan-800">${a} ÷ ${b} = ?</div>`, options, answer, explanation: `${a} ÷ ${b} = ${ans} වේ.` };
+          });
+          const rem = [
+            [826, 8, 103, 2], [956, 9, 106, 2], [657, 10, 65, 7]
+          ];
+          rem.forEach(([a, b, q, r]) => {
+            const ans = `${q} ඉතුරු ${r}`;
+            const { options, answer } = makeOptions(ans, [`${q + 1} ඉතුරු 0`, `${q} ඉතුරු 0`, `${q - 1} ඉතුරු ${r + 1}`]);
+            qs.push({ prompt: `${a}, ${b}න් බෙදූ විට ලැබෙන පිළිතුර සහ ඉතුරු ගණන තෝරන්න.`, visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-amber-300 font-num text-3xl font-extrabold text-amber-800">${a} ÷ ${b} = ?</div>`, options, answer, explanation: `${q} × ${b} = ${q * b} වන අතර ${r}ක් ඉතුරු වේ.` });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 29, term: 'term3', icon: '🏛️', color: 'from-amber-600 to-yellow-600',
+        title: '29. රෝම සංඛ්‍යාංක',
+        subtitle: '1 සිට 20 තෙක් රෝම සංඛ්‍යාංක (i සිට xx දක්වා)',
+        generateQuestions() {
+          const rMap = [
+            [11, 'xi'], [12, 'xii'], [13, 'xiii'], [14, 'xiv'], [15, 'xv'],
+            [16, 'xvi'], [17, 'xvii'], [18, 'xviii'], [19, 'xix'], [20, 'xx']
+          ];
+          const qs = [];
+          rMap.forEach(([num, r]) => {
+            const { options, answer } = makeOptions(r, rMap.map(x => x[1]).filter(x => x !== r).slice(0, 3));
+            qs.push({
+              prompt: `"${num}" යන හින්දු අරාබි සංඛ්‍යාංකයට ගැළපෙන රෝම සංඛ්‍යාංකය කුමක් ද?`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-amber-300 font-num text-4xl font-extrabold text-amber-800">${num} ➡️ ?</div>`,
+              options, answer,
+              explanation: `${num} රෝම සංඛ්‍යාංකයෙන් "${r}" ලෙස ලියයි.`
+            });
+          });
+          rMap.forEach(([num, r]) => {
+            const { options, answer } = makeOptions(num, [num === 20 ? 19 : num + 1, num === 11 ? 12 : num - 1, num === 15 ? 14 : 15]);
+            qs.push({
+              prompt: `"${r}" යන රෝම සංඛ්‍යාංකයට අදාළ හින්දු අරාබි සංඛ්‍යාංකය කුමක් ද?`,
+              visual: `<div class="bg-white px-8 py-4 rounded-2xl border-2 border-amber-300 font-serif text-4xl font-extrabold text-slate-900 uppercase">${r}</div>`,
+              options, answer,
+              explanation: `"${r}" යනු ${num} වේ.`
+            });
+          });
+          return qs;
+        }
+      },
+
+      {
+        id: 30, term: 'term3', icon: '🏋️', color: 'from-amber-500 to-orange-600',
+        title: '30. බර මැනීම - 2',
+        subtitle: 'කිලෝග්‍රෑම් (kg) සහ ග්රෑම් (g) ගුණ කිරීම සහ බෙදීම',
+        generateQuestions() {
+          const items = [
+            { q: 'ගුණ කරන්න: 6 kg 350 g × 5', v: svgVerticalCalc('×', '6 kg 350 g', '5'), ans: '31 kg 750 g', d: ['30 kg 750 g', '30 kg 1750 g', '31 kg 250 g'] },
+            { q: 'ගුණ කරන්න: 1 kg 150 g × 3', v: svgVerticalCalc('×', '1 kg 150 g', '3'), ans: '3 kg 450 g', d: ['3 kg 350 g', '4 kg 450 g', '3 kg 150 g'] },
+            { q: 'ගුණ කරන්න: 2 kg 100 g × 3', v: svgVerticalCalc('×', '2 kg 100 g', '3'), ans: '6 kg 300 g', d: ['6 kg 100 g', '5 kg 300 g', '6 kg 30 g'] },
+            { q: 'ගුණ කරන්න: 1 kg 500 g × 4', v: svgVerticalCalc('×', '1 kg 500 g', '4'), ans: '6 kg', d: ['4 kg 500 g', '5 kg', '6 kg 500 g'] },
+            { q: 'ගුණ කරන්න: 3 kg 225 g × 3', v: svgVerticalCalc('×', '3 kg 225 g', '3'), ans: '9 kg 675 g', d: ['9 kg 665 g', '6 kg 675 g', '9 kg 775 g'] },
+            { q: 'ගුණ කරන්න: 11 kg 620 g × 2', v: svgVerticalCalc('×', '11 kg 620 g', '2'), ans: '23 kg 240 g', d: ['22 kg 240 g', '22 kg 1240 g', '23 kg 340 g'] },
+            { q: 'ගුණ කරන්න: 4 kg 520 g × 4', v: svgVerticalCalc('×', '4 kg 520 g', '4'), ans: '18 kg 80 g', d: ['16 kg 80 g', '16 kg 2080 g', '18 kg 800 g'] },
+            { q: 'ගුණ කරන්න: 23 kg 700 g × 3', v: svgVerticalCalc('×', '23 kg 700 g', '3'), ans: '71 kg 100 g', d: ['69 kg 100 g', '69 kg 2100 g', '71 kg 300 g'] },
+            { q: 'තේ දළු ගෝනියක බර 25 kg 200 g කි. එවැනි ගෝනි 3ක මුළු බර කීය ද?', v: '🍃 25 kg 200 g × 3 = ?', ans: '75 kg 600 g', d: ['75 kg 200 g', '76 kg 600 g', '50 kg 600 g'] },
+            { q: 'දිනකට සහල් පිටි 1 kg 250 g ක් අවශ්‍ය වේ. දින 3කට අවශ්‍ය පිටි බර කීය ද?', v: '🍚 1 kg 250 g × 3 = ?', ans: '3 kg 750 g', d: ['3 kg 250 g', '4 kg 750 g', '3 kg 500 g'] },
+            { q: 'එකක බර 30 kg 500 g බැගින් වූ සහල් ගෝනි 5ක මුළු බර කීය ද?', v: '🌾 30 kg 500 g × 5 = ?', ans: '152 kg 500 g', d: ['150 kg 500 g', '150 kg 2500 g', '152 kg'] },
+            { q: 'බෙදන්න: 12 kg 250 g ÷ 2', v: '➗ 12 kg 250 g ÷ 2 = ?', ans: '6 kg 125 g', d: ['6 kg 250 g', '6 kg 25 g', '5 kg 125 g'] },
+            { q: 'බෙදන්න: 4 kg 250 g ÷ 2', v: '➗ 4 kg 250 g ÷ 2 = ?', ans: '2 kg 125 g', d: ['2 kg 250 g', '2 kg 25 g', '4 kg 125 g'] },
+            { q: 'බෙදන්න: 6 kg 345 g ÷ 3', v: '➗ 6 kg 345 g ÷ 3 = ?', ans: '2 kg 115 g', d: ['2 kg 15 g', '2 kg 345 g', '3 kg 115 g'] },
+            { q: 'බෙදන්න: 4 kg 40 g ÷ 4', v: '➗ 4 kg 40 g ÷ 4 = ?', ans: '1 kg 10 g', d: ['1 kg 100 g', '1 kg 1 g', '2 kg 10 g'] },
+            { q: 'බෙදන්න: 25 kg 625 g ÷ 5', v: '➗ 25 kg 625 g ÷ 5 = ?', ans: '5 kg 125 g', d: ['5 kg 25 g', '5 kg 625 g', '4 kg 125 g'] },
+            { q: 'බෙදන්න: 36 kg 375 g ÷ 3', v: '➗ 36 kg 375 g ÷ 3 = ?', ans: '12 kg 125 g', d: ['12 kg 25 g', '12 kg 375 g', '11 kg 125 g'] },
+            { q: 'බෙදන්න: 52 kg 204 g ÷ 4', v: '➗ 52 kg 204 g ÷ 4 = ?', ans: '13 kg 51 g', d: ['13 kg 510 g', '13 kg 5 g', '12 kg 51 g'] },
+            { q: 'කේක් 8 kg 360 g ක් පන්ති 4කට සමානව බෙදා දුන් විට එක් පන්තියකට ලැබුණු බර කීය ද?', v: '🎂 8 kg 360 g ÷ 4 = ?', ans: '2 kg 90 g', d: ['2 kg 900 g', '2 kg 9 g', '4 kg 90 g'] },
+            { q: 'පියාගේ බර පුතාගේ බර මෙන් 5 ගුණයකි. පියාගේ බර 75 kg 500 g කි. පුතාගේ බර කීය ද?', v: '👨 75 kg 500 g ÷ 5 = ?', ans: '15 kg 100 g', d: ['15 kg 10 g', '15 kg 500 g', '14 kg 100 g'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `1 kg = 1000 g බව සලකා ගණනය කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 31, term: 'term3', icon: '🚀', color: 'from-purple-500 to-indigo-600',
+        title: '31. සංඛ්‍යා රටා - 2',
+        subtitle: 'ගුණ කිරීමේ සංඛ්‍යා රටා (×2, ×3, ×4 සහ ×5)',
+        generateQuestions() {
+          const seqs = [
+            { arr: [1, 2, 4, 8, '?'], ans: 16, d: [10, 12, 14], rule: '× 2' },
+            { arr: [3, 6, 12, 24, '?'], ans: 48, d: [30, 36, 40], rule: '× 2' },
+            { arr: [5, 10, 20, '?'], ans: 40, d: [25, 30, 35], rule: '× 2' },
+            { arr: [7, 14, 28, '?'], ans: 56, d: [35, 42, 49], rule: '× 2' },
+            { arr: [8, 16, 32, '?'], ans: 64, d: [40, 48, 56], rule: '× 2' },
+            { arr: [9, 18, 36, '?'], ans: 72, d: [45, 54, 63], rule: '× 2' },
+            { arr: [4, 12, 36, '?'], ans: 108, d: [48, 72, 96], rule: '× 3' },
+            { arr: [2, 6, 18, '?'], ans: 54, d: [24, 36, 48], rule: '× 3' },
+            { arr: [1, 3, 9, 27, '?'], ans: 81, d: [36, 54, 63], rule: '× 3' },
+            { arr: [5, 15, 45, '?'], ans: 135, d: [60, 90, 125], rule: '× 3' },
+            { arr: [7, 21, 63, '?'], ans: 189, d: [84, 126, 169], rule: '× 3' },
+            { arr: [2, 8, 32, '?'], ans: 128, d: [64, 96, 112], rule: '× 4' },
+            { arr: [4, 16, 64, '?'], ans: 256, d: [128, 192, 240], rule: '× 4' },
+            { arr: [3, 12, 48, '?'], ans: 192, d: [96, 144, 180], rule: '× 4' },
+            { arr: [5, 20, 80, '?'], ans: 320, d: [160, 240, 300], rule: '× 4' },
+            { arr: [1, 5, 25, 125, '?'], ans: 625, d: [250, 500, 525], rule: '× 5' },
+            { arr: [3, 15, 75, '?'], ans: 375, d: [150, 225, 325], rule: '× 5' },
+            { arr: [4, 20, 100, '?'], ans: 500, d: [200, 300, 400], rule: '× 5' },
+            { arr: [6, 30, 150, '?'], ans: 750, d: [300, 450, 650], rule: '× 5' },
+            { arr: [2, 10, 50, '?'], ans: 250, d: [100, 150, 200], rule: '× 5' }
+          ];
+          return seqs.map(s => {
+            const { options, answer } = makeOptions(s.ans, s.d);
+            const vis = `<div class="flex flex-wrap items-center justify-center gap-2"><span class="text-3xl">🚀</span>
+              ${s.arr.map(x => `<div class="w-14 h-14 rounded-2xl border-2 ${x === '?' ? 'bg-amber-200 border-amber-500 text-amber-900 animate-bounce' : 'bg-white border-indigo-300 text-indigo-900'} flex items-center justify-center font-num text-lg font-extrabold shadow-sm">${x}</div>`).join('')}
+            </div>`;
+            return { prompt: 'සංඛ්‍යා රටාව හඳුනාගෙන හිස් තැනට ගැළපෙන සංඛ්‍යාව තෝරන්න.', visual: vis, options, answer, explanation: `පෙර සංඛ්‍යාව (${s.rule}) න් ගුණ කිරීමෙන් ඊළඟ සංඛ්‍යාව ලැබේ. පිළිතුර ${s.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 32, term: 'term3', icon: '📐', color: 'from-sky-500 to-indigo-600',
+        title: '32. කෝණ, සැලසුම් හා පරිමාණ රූප',
+        subtitle: 'ඍජුකෝණය, ඍජුකෝණයට වඩා කුඩා/විශාල කෝණ සහ පරිමාණ සැලසුම්',
+        generateQuestions() {
+          const items = [
+            { q: 'රූපයේ දැක්වෙන කෝණය කුමන වර්ගයේ කෝණයක් ද?', v: svgAngle('right'), ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'සරල රේඛාවකි'] },
+            { q: 'රූපයේ දැක්වෙන කෝණය කුමන වර්ගයේ කෝණයක් ද?', v: svgAngle('acute'), ans: 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'වෘත්තයකි'] },
+            { q: 'රූපයේ දැක්වෙන කෝණය කුමන වර්ගයේ කෝණයක් ද?', v: svgAngle('obtuse'), ans: 'ඍජුකෝණයට වඩා විශාල කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'සමචතුරස්‍රයකි'] },
+            { q: 'වෘත්තාකාර කඩදාසියක් හරි මැදින් සමානව දෙවරක් නැවූ විට සෑදෙන මුල්ල කුමන කෝණයක් ද?', v: '⭕ ➡️ 🌗 ➡️ 🍕 (ඍජුකෝණ මුල්ල)', ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'කෝණයක් නැත'] },
+            { q: 'සමචතුරස්‍රයක එක් මුල්ලක සෑදී ඇති කෝණය කුමක් ද?', v: '⬜ සමචතුරස්‍රයේ මුල්ල', ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'කෝණයක් නොවේ'] },
+            { q: 'ඍජුකෝණාස්‍රයක ඇති මුළු ඍජුකෝණ ගණන කීය ද?', v: '▭ ඍජුකෝණාස්‍රය', ans: '4', d: ['2', '3', '1'] },
+            { q: 'සමපාද ත්‍රිකෝණයක මුල්ලක ඇති කෝණය කෙබඳු ද?', v: '🔺 සමපාද ත්‍රිකෝණය', ans: 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'වක්‍රයකි'] },
+            { q: 'ඔරලෝසුවේ වේලාව හරියටම 3.00 වන විට කටු දෙක අතර සෑදෙන කෝණය කුමක් ද?', v: svgClock(3, 0), ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'කෝණයක් නැත'] },
+            { q: 'ඔරලෝසුවේ වේලාව හරියටම 1.00 වන විට කටු දෙක අතර සෑදෙන කෝණය කුමක් ද?', v: svgClock(1, 0), ans: 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'සරල කෝණයකි'] },
+            { q: 'ඔරලෝසුවේ වේලාව හරියටම 5.00 වන විට කටු දෙක අතර සෑදෙන කෝණය කුමක් ද?', v: svgClock(5, 0), ans: 'ඍජුකෝණයට වඩා විශාල කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'කෝණයක් නැත'] },
+            { q: 'ඉංග්‍රීසි "L" අකුරේ මුල්ලෙහි සෑදී ඇති කෝණය කුමක් ද?', v: '🇱 ඉංග්‍රීසි L අකුර', ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'වෘත්තයකි'] },
+            { q: 'ඉංග්‍රීසි "V" අකුරේ මුල්ලෙහි සෑදී ඇති කෝණය කුමක් ද?', v: '🇻 ඉංග්‍රීසි V අකුර', ans: 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'සමචතුරස්‍රයකි'] },
+            { q: 'අභ්‍යාස පොතේ කොටු 1කින් 1 cm නිරූපණය කරයි නම්, 5 cm දිගක් ඇඳීමට කොටු කීයක් ගත යුතු ද?', v: '📏 පරිමාණය: කොටු 1 = 1 cm', ans: 'කොටු 5ක්', d: ['කොටු 10ක්', 'කොටු 1ක්', 'කොටු 3ක්'] },
+            { q: '8 cm දිග 6 cm පළල ඍජුකෝණාස්‍රාකාර සැලැස්මක් පරිමාණයට ඇඳීමට අවශ්‍ය කොටු ගණන කීය ද?', v: '📐 8 cm × 6 cm', ans: 'කොටු 8ක් දිග, කොටු 6ක් පළල', d: ['කොටු 6ක් දිග, කොටු 6ක් පළල', 'කොටු 4ක් දිග, කොටු 3ක් පළල', 'කොටු 8ක් දිග, කොටු 8ක් පළල'] },
+            { q: 'පොතක මුල්ලක ඇති කෝණය කුමන වර්ගයේ කෝණයක් ද?', v: '📘 අභ්‍යාස පොතේ මුල්ල', ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'වක්‍රයකි'] },
+            { q: 'තරමක් පළල්ව විවෘත කළ කතුරක තල දෙක අතර සෑදෙන කෝණය කුමක් ද?', v: '✂️ පළල්ව විවෘත කළ කතුර', ans: 'ඍජුකෝණයට වඩා විශාල කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'කෝණයක් නැත'] },
+            { q: 'මදක් විවෘත කළ කතුරක තල දෙක අතර සෑදෙන කෝණය කුමක් ද?', v: '✂️ මදක් විවෘත කළ කතුර', ans: 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'වෘත්තයකි'] },
+            { q: 'සමචතුරස්‍රයක ඇති මුළු ඍජුකෝණ ගණන කීය ද?', v: '⬜ සමචතුරස්‍රය', ans: '4', d: ['2', '3', '6'] },
+            { q: 'ඝනකයක සැලැස්ම (ඉහළ පෙනුම) පරිමාණයට ඇඳි විට ලැබෙන හැඩය කුමක් ද?', v: '🧊 ඝනකයේ සැලැස්ම', ans: 'සමචතුරස්‍රය', d: ['ත්‍රිකෝණය', 'වෘත්තය', 'ඍජුකෝණාස්‍රය'] },
+            { q: 'ඔරලෝසුවේ වේලාව හරියටම 9.00 වන විට කටු දෙක අතර සෑදෙන කෝණය කුමක් ද?', v: svgClock(9, 0), ans: 'ඍජුකෝණයකි', d: ['ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'ඍජුකෝණයට වඩා විශාල කෝණයකි', 'කෝණයක් නැත'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: `ඍජුකෝණ මුල්ල සමඟ සසඳා බැලූ විට නිවැරදි පිළිතුර "${it.ans}" වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 33, term: 'term3', icon: '📋', color: 'from-indigo-500 to-blue-600',
+        title: '33. දත්ත හැසිරවීම - 2',
+        subtitle: 'දුම්රිය කාලසටහන්, පුස්තකාල දත්ත වගු සහ නගර අතර දුර වගු',
+        generateQuestions() {
+          const trainTable = `<div class="bg-white p-3 rounded-2xl border-2 border-sky-300 text-xs sm:text-sm max-w-md w-full shadow-sm">
+            <div class="font-extrabold text-sky-900 mb-1.5">🚆 කොළඹ කොටුව සිට දුම්රිය කාලසටහන</div>
+            <table class="w-full text-left font-bold border-collapse">
+              <tr class="bg-sky-50 border-b"><th class="p-1">දුම්රිය</th><th class="p-1">පිටත්වීම</th><th class="p-1">ගමනාන්තය</th><th class="p-1">ළඟාවීම</th></tr>
+              <tr class="border-b"><td class="p-1">රුහුණු කුමාරි</td><td class="p-1">16:00</td><td class="p-1">මාතර</td><td class="p-1">19:30</td></tr>
+              <tr class="border-b"><td class="p-1">යාල් දේවි</td><td class="p-1">05:45</td><td class="p-1">වවුනියාව</td><td class="p-1">11:50</td></tr>
+              <tr><td class="p-1">උඩරට මැණිකේ</td><td class="p-1">09:45</td><td class="p-1">බදුල්ල</td><td class="p-1">19:05</td></tr>
+            </table>
+          </div>`;
+
+          const libTable = `<div class="bg-white p-3 rounded-2xl border-2 border-purple-300 text-xs sm:text-sm max-w-md w-full shadow-sm">
+            <div class="font-extrabold text-purple-900 mb-1.5">📚 පුස්තකාලයේ පොත් වර්ග</div>
+            <div class="grid grid-cols-2 gap-1 font-bold text-left">
+              <div>📖 ජන කතා: 400</div><div>🗣️ භාෂා පොත්: 220</div>
+              <div>📰 සඟරා: 200</div><div>🏛️ ඉතිහාස පොත්: 500</div>
+              <div>☸️ ආගමික පොත්: 420</div><div>📕 නව කතා: 700</div>
+              <div>📗 කෙටි කතා: 250</div>
+            </div>
+          </div>`;
+
+          const distTable = `<div class="bg-white p-3 rounded-2xl border-2 border-amber-300 text-xs sm:text-sm max-w-md w-full shadow-sm font-bold">
+            <div class="font-extrabold text-amber-900 mb-1.5">🗺️ නගර අතර දුර (km)</div>
+            <div class="grid grid-cols-2 gap-1 text-left">
+              <div>• අඹේපුස්ස - අනුරාධපුරය: 154 km</div>
+              <div>• අනුරාධපුරය - බණ්ඩාරවෙල: 272 km</div>
+              <div>• බදුල්ල - බණ්ඩාරවෙල: 32 km</div>
+              <div>• බදුල්ල - ත්‍රිකුණාමලය: 167 km</div>
+              <div>• බණ්ඩාරවෙල - ත්‍රිකුණාමලය: 183 km</div>
+            </div>
+          </div>`;
+
+          const items = [
+            { q: 'යාල් දේවි දුම්රිය ගමන් ආරම්භ කරන්නේ කීයට ද?', v: trainTable, ans: '05:45', d: ['16:00', '09:45', '11:50'] },
+            { q: 'යාල් දේවි දුම්රියෙහි ගමනාන්තය කවර දුම්රිය ස්ථානය ද?', v: trainTable, ans: 'වවුනියාව', d: ['මාතර', 'බදුල්ල', 'කොළඹ කොටුව'] },
+            { q: 'ගමනාන්තය මාතර දුම්රිය ස්ථානය වන්නේ කුමන දුම්රියේ ද?', v: trainTable, ans: 'රුහුණු කුමාරි', d: ['යාල් දේවි', 'උඩරට මැණිකේ', 'පොඩි මැණිකේ'] },
+            { q: 'උඩරට මැණිකේ දුම්රිය ගමන් ආරම්භ කරන්නේ කීයට ද?', v: trainTable, ans: '09:45', d: ['19:05', '05:45', '16:00'] },
+            { q: 'බදුල්ල නගරයට යාමට ගමන් කළ යුත්තේ කුමන දුම්රියේ ද?', v: trainTable, ans: 'උඩරට මැණිකේ', d: ['රුහුණු කුමාරි', 'යාල් දේවි', 'සමුද්‍රදේවි'] },
+
+            { q: 'පුස්තකාලයේ වැඩිම පොත් ප්‍රමාණයක් ඇත්තේ කුමන පොත් වර්ගයෙන් ද?', v: libTable, ans: 'නව කතා (700)', d: ['ඉතිහාස පොත් (500)', 'ආගමික පොත් (420)', 'ජන කතා (400)'] },
+            { q: 'පුස්තකාලය තුළ 400ක් ඇත්තේ කුමන පොත් වර්ගය ද?', v: libTable, ans: 'ජන කතා පොත්', d: ['ඉතිහාස පොත්', 'භාෂා පොත්', 'කෙටි කතා පොත්'] },
+            { q: 'සඟරා (200) ගණනට වඩා භාෂා පොත් (220) කීයක් වැඩියෙන් වේ ද?', v: libTable, ans: '20', d: ['220', '200', '40'] },
+            { q: 'ජන කතා (400) සහ කෙටි කතා (250) පොත්වල එකතුව කීය ද?', v: libTable, ans: '650', d: ['600', '700', '550'] },
+            { q: 'ඉතිහාස පොත් (500) සහ ආගමික පොත් (420) වල එකතුව කීය ද?', v: libTable, ans: '920', d: ['820', '900', '940'] },
+
+            { q: 'අඹේපුස්ස සිට අනුරාධපුරයට ඇති දුර කොපමණ ද?', v: distTable, ans: '154 km', d: ['177 km', '272 km', '167 km'] },
+            { q: 'අනුරාධපුර සිට බණ්ඩාරවෙල දක්වා ඇති දුර කොපමණ ද?', v: distTable, ans: '272 km', d: ['154 km', '183 km', '32 km'] },
+            { q: 'වගුව අනුව අඩුම දුර ප්‍රමාණයක් ඇත්තේ කිනම් නගර දෙක අතර ද?', v: distTable, ans: 'බදුල්ල සහ බණ්ඩාරවෙල (32 km)', d: ['බදුල්ල සහ ත්‍රිකුණාමලය', 'අඹේපුස්ස සහ අනුරාධපුරය', 'බණ්ඩාරවෙල සහ ත්‍රිකුණාමලය'] },
+            { q: 'බදුල්ල සිට බණ්ඩාරවෙල හරහා ත්‍රිකුණාමලයට ඇති මුළු දුර කීය ද?', v: distTable, ans: '215 km (32 + 183)', d: ['167 km', '183 km', '205 km'] },
+            { q: '2018 දී A විදුහලේ 5 ශ්‍රේණියේ 250ක් ද B විදුහලේ 230ක් ද සිටියහ. A විදුහලේ කී දෙනෙක් වැඩි ද?', v: '🏫 A: 250 | B: 230', ans: '20', d: ['30', '10', '480'] },
+            { q: 'ක්‍රීඩා උත්සවයේ ආචාර පෙළපාළිය පෙ.ව. 10.30ට ද ප්‍රධාන අමුත්තාගේ කතාව පෙ.ව. 10.45ට ද පැවැත්වේ. ඒ අතර කාලය මිනිත්තු කීය ද?', v: '⏱️ 10.30 ➡️ 10.45', ans: 'මිනිත්තු 15', d: ['මිනිත්තු 30', 'මිනිත්තු 45', 'මිනිත්තු 10'] },
+            { q: 'පෙ.ව. 9.00ට ආරම්භ වූ ක්‍රීඩා උත්සවය පෙ.ව. 11.45ට අවසන් විය. එය පැවති මුළු කාලය කීය ද?', v: '🏅 9.00 ➡️ 11.45', ans: 'පැය 2 මිනිත්තු 45', d: ['පැය 3 මිනිත්තු 45', 'පැය 2 මිනිත්තු 15', 'පැය 1 මිනිත්තු 45'] },
+            { q: 'B විදුහලේ 2, 3, 4 ශ්‍රේණිවල සිසුන් ගණන පිළිවෙළින් 165, 190 සහ 210 කි. මුළු සිසුන් ගණන කීය ද?', v: '🎒 165 + 190 + 210 = ?', ans: '565', d: ['555', '575', '465'] },
+            { q: 'A විදුහලේ 1 ශ්‍රේණියේ 160ක් ද B විදුහලේ 1 ශ්‍රේණියේ 160ක් ද සිටිති. විදුහල් දෙකේම 1 ශ්‍රේණියේ මුළු සිසුන් ගණන කීය ද?', v: '🧒 160 + 160 = ?', ans: '320', d: ['160', '220', '360'] },
+            { q: 'දත්ත වගුවක් කියවීමෙන් ලැබෙන ප්‍රධාන වාසිය කුමක් ද?', v: '📊 දත්ත වගු සහ කාලසටහන්', ans: 'තොරතුරු පහසුවෙන් හා නිවැරදිව සසඳා බැලීමට හැකි වීම', d: ['චිත්‍ර ඇඳීමට පමණි', 'සංඛ්‍යා අමතක කිරීමට', 'කාලය නාස්ති කිරීමට'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: it.v, options, answer, explanation: `වගුව හා කාලසටහන අනුව නිවැරදි පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 34, term: 'term3', icon: '🧠', color: 'from-rose-500 to-purple-600',
+        title: '34. ගැටලු විසඳීම - 2',
+        subtitle: 'ගුණ කිරීම සහ බෙදීම ඇතුළත් පියවර දෙකේ ගැටලු',
+        generateQuestions() {
+          const items = [
+            { q: 'පේළියකට පොල් පැළ 8 බැගින් පේළි 50ක සිටුවීමට අවශ්‍ය පොල් පැළ ගණන කීය ද?', v: '🌴 8 × 50 = ?', ans: '400', d: ['40', '4000', '58'] },
+            { q: 'A හා B නගර අතර දුර 15 km කි. C හා D නගර අතර දුර ඒ මෙන් 7 ගුණයකි. C හා D නගර අතර දුර කීය ද?', v: '🛣️ 15 km × 7 = ?', ans: '105 km', d: ['95 km', '115 km', '22 km'] },
+            { q: 'පෙට්ටියක විදුලි බුබුළු 120ක් අසුරා ඇත. එවැනි පෙට්ටි 6ක ඇති මුළු බුබුළු ගණන කීය ද?', v: '💡 120 × 6 = ?', ans: '720', d: ['620', '700', '126'] },
+            { q: 'සේවකයෙකුගේ දිනක වැටුප රු. 975කි. ඔහු දින 5ක් තුළ ඉපයූ මුළු මුදල කීය ද?', v: '💵 රු. 975 × 5 = ?', ans: 'රු. 4875', d: ['රු. 4575', 'රු. 4825', 'රු. 4975'] },
+            { q: 'ළමයෙකු දිනකට ජලය 1 l 500 ml ක් පානය කළ යුතු ය. දින 3ක දී පානය කළ යුතු ජල ප්‍රමාණය කීය ද?', v: '💧 1 l 500 ml × 3 = ?', ans: '4 l 500 ml', d: ['3 l 500 ml', '4 l', '5 l 500 ml'] },
+            { q: 'චාරිකාවකට සහභාගි වන සිසුන් 432ක් බස් රථ 8කට සමානව වෙන් කරන ලදි. එක් බස් රථයක සිටින සිසුන් ගණන කීය ද?', v: '🚌 432 ÷ 8 = ?', ans: '54', d: ['52', '44', '64'] },
+            { q: 'කාමර 5ක බිම ඇතිරීමට පිඟන් ගඩොල් 350ක් අවශ්‍ය වේ. එක් කාමරයකට අවශ්‍ය පිඟන් ගඩොල් ගණන කීය ද?', v: '🧱 350 ÷ 5 = ?', ans: '70', d: ['7', '60', '75'] },
+            { q: 'ක්‍රීඩකයෙක් 800 m දුර දිවීමේ තරගය වට 2කින් සම්පූර්ණ කරයි. ඔහු එක් වටයක දී දුවන දුර කීය ද?', v: '🏃 800 m ÷ 2 = ?', ans: '400 m', d: ['200 m', '1600 m', '40 m'] },
+            { q: 'පරිප්පු 27 kg 450 g ක් සමාන පැකට් 9ක අසුරන ලදි. එක් පැකට්ටුවක බර කීය ද?', v: '🫘 27 kg 450 g ÷ 9 = ?', ans: '3 kg 50 g', d: ['3 kg 500 g', '3 kg 5 g', '9 kg 50 g'] },
+            { q: 'පේළියක පුටු 28 බැගින් පේළි 9ක් ඇත (252). එම පුටු සමාන පේළි 7කට සැකසූ විට එක් පේළියක පුටු කීය ද?', v: '🪑 (28 × 9) ÷ 7 = ?', ans: '36', d: ['252', '32', '28'] },
+            { q: 'පෙට්ටියක යෝගට් 50කි. එවැනි පෙට්ටි 9ක ඇති යෝගට්, නැවත පෙට්ටි 3ක ඇසුරූ විට එක් පෙට්ටියක යෝගට් කීය ද?', v: '🥛 (50 × 9) ÷ 3 = ?', ans: '150', d: ['450', '100', '90'] },
+            { q: 'බස් රථයක සිසුන් 48කි. බස් රථ 5ක සිටින සිසුන්, කණ්ඩායම් 4කට වෙන් කළ විට එක් කණ්ඩායමක සිසුන් කීය ද?', v: '🚌 (48 × 5) ÷ 4 = ?', ans: '60', d: ['240', '48', '50'] },
+            { q: 'එක් උරයක වෙරළු 45කි. උර 8ක ඇති වෙරළු යහළුවන් 6 දෙනෙකු අතර සමව බෙදූ විට එක් අයෙකුට ලැබෙන ගණන කීය ද?', v: '🫒 (45 × 8) ÷ 6 = ?', ans: '60', d: ['360', '45', '50'] },
+            { q: 'සිසුන් 6 දෙනා බැගින් කණ්ඩායම් 18කි. එම සිසුන් 4 දෙනා බැගින් නැවත කණ්ඩායම් කළ විට ලැබෙන කණ්ඩායම් ගණන කීය ද?', v: '🧒 (6 × 18) ÷ 4 = ?', ans: '27', d: ['108', '24', '36'] },
+            { q: 'පොල් ගෙඩි 210ක් ගෝනි 7කට සමානව දමන ලදි. ඉන් ගෝනි 4ක් විකුණූ විට විකුණන ලද පොල් ගෙඩි ගණන කීය ද?', v: '🥥 (210 ÷ 7) × 4 = ?', ans: '120', d: ['30', '150', '90'] },
+            { q: 'ඇසුරුමක පැන්සල් 6කි. එවැනි ඇසුරුම් 48ක ඇති පැන්සල් පන්ති 4ක් අතර සමව බෙදූ විට එක් පන්තියකට ලැබෙන ගණන කීය ද?', v: '✏️ (6 × 48) ÷ 4 = ?', ans: '72', d: ['288', '48', '64'] },
+            { q: 'අඹ ගෙඩියක් රු. 15කි. අඹ ගෙඩි 10ක් ගෙන එම මුදල යහළුවන් 5 දෙනෙකු සමව බෙදා ගත් විට එක් අයෙකුගේ කොටස කීය ද?', v: '🥭 (15 × 10) ÷ 5 = ?', ans: 'රු. 30', d: ['රු. 150', 'රු. 15', 'රු. 50'] },
+            { q: 'පෙට්ටියක සබන් කැට 6කි. පෙට්ටි 512ක ඇති සබන් කැට 3 බැගින් වූ ඇසුරුම් කීයක් සැකසිය හැකි ද?', v: '🧼 (6 × 512) ÷ 3 = ?', ans: '1024', d: ['3072', '512', '1012'] },
+            { q: 'පොකුරක මල් 7 බැගින් පොකුරු 308ක ඇති මල්, මල් 4 බැගින් වූ පොකුරු කීයකට සැකසිය හැකි ද?', v: '🌺 (7 × 308) ÷ 4 = ?', ans: '539', d: ['2156', '308', '529'] },
+            { q: 'අභ්‍යාස පොත් 9 බැගින් සිසුන් 126කට දීමට ගෙනා පොත්, සිසුවෙකුට 7 බැගින් සිසුන් කී දෙනෙකුට දිය හැකි ද?', v: '📘 (9 × 126) ÷ 7 = ?', ans: '162', d: ['1134', '126', '152'] }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="bg-white px-6 py-4 rounded-2xl border-2 border-purple-200 font-num text-xl sm:text-2xl font-extrabold text-purple-900">${it.v}</div>`, options, answer, explanation: `ගුණ කිරීම හා බෙදීම නිවැරදිව සිදු කළ විට පිළිතුර ${it.ans} වේ.` };
+          });
+        }
+      },
+
+      {
+        id: 35, term: 'term3', isRevision: true, icon: '🌟', color: 'from-amber-500 via-orange-500 to-rose-500',
+        title: '35. පුනරීක්ෂණය - 3',
+        subtitle: 'තෙවන වාර පුනරීක්ෂණය (25 සිට 34 දක්වා ඒකක ඇසුරෙන්)',
+        generateQuestions() {
+          const items = [
+            { q: 'විජය ශාලාවට උතුරින් ප්‍රධාන ශාලාව ද, නැගෙනහිරින් කාර්යාලය ද ඇත. ඒ අතර පිහිටි ඊසාන දිශාවේ ඇත්තේ කුමක් ද?', v: svgSchoolDirections(), ans: 'අඹ ගස', d: ['ගණිතාගාරය', 'පුස්තකාලය', 'පැරකුම් ශාලාව'], exp: 'උතුර හා නැගෙනහිර අතර ඊසාන දිශාවේ අඹ ගස පිහිටා ඇත.' },
+            { q: 'ගුණ කරන්න: 74 × 8 = ?', v: svgVerticalCalc('×', 74, 8), ans: '592', d: ['562', '582', '602'], exp: '74 × 8 = 592.' },
+            { q: 'ගුණ කරන්න: 197 × 9 = ?', v: svgVerticalCalc('×', 197, 9), ans: '1773', d: ['1763', '1673', '1873'], exp: '197 × 9 = 1773.' },
+            { q: 'පෙට්ටියක අඹ ගෙඩි 245ක් ඇත. එවැනි පෙට්ටි 8ක ඇති මුළු අඹ ගෙඩි ගණන කීය ද?', v: '🥭 245 × 8 = ?', ans: '1960', d: ['1860', '1920', '2060'], exp: '245 × 8 = 1960.' },
+            { q: 'ගුණ කරන්න: 6 l 125 ml × 4 = ?', v: svgVerticalCalc('×', '6 l 125 ml', '4'), ans: '24 l 500 ml', d: ['24 l 250 ml', '25 l 500 ml', '24 l 50 ml'], exp: '6 l 125 ml × 4 = 24 l 500 ml.' },
+            { q: 'බෙදන්න: 9 l 120 ml ÷ 3 = ?', v: '➗ 9 l 120 ml ÷ 3 = ?', ans: '3 l 40 ml', d: ['3 l 400 ml', '3 l 4 ml', '2 l 40 ml'], exp: '9 l 120 ml ÷ 3 = 3 l 40 ml.' },
+            { q: '900 ml අල්ලන ජෝගුවකින් 4 වරක් දැමූ විට පිරෙන බෝතලයේ ධාරිතාව කීය ද?', v: '🫗 900 ml × 4 = ?', ans: '3 l 600 ml (3600 ml)', d: ['3 l 60 ml', '4 l', '2 l 600 ml'], exp: '900 × 4 = 3600 ml = 3 l 600 ml.' },
+            { q: 'බෙදන්න: 609 ÷ 8 = ?', v: '➗ 609 ÷ 8 = ?', ans: '76 ඉතුරු 1', d: ['75 ඉතුරු 9', '76 ඉතුරු 0', '74 ඉතුරු 1'], exp: '76 × 8 = 608 වන අතර 1ක් ඉතුරු වේ.' },
+            { q: 'බෙදන්න: 702 ÷ 9 = ?', v: '➗ 702 ÷ 9 = ?', ans: '78', d: ['72', '88', '68'], exp: '702 ÷ 9 = 78.' },
+            { q: 'මව්පියන් 864 දෙනෙකුගෙන් 10 දෙනා බැගින් කණ්ඩායම් කීයක් සැකසිය හැකි ද? ඉතුරු ගණන කීය ද?', v: '👨‍👩‍👧‍👦 864 ÷ 10 = ?', ans: 'කණ්ඩායම් 86යි, ඉතුරු 4යි', d: ['කණ්ඩායම් 86යි, ඉතුරු 0යි', 'කණ්ඩායම් 80යි, ඉතුරු 64යි', 'කණ්ඩායම් 87යි, ඉතුරු 0යි'], exp: '864 ÷ 10 = 86 ඉතුරු 4.' },
+            { q: 'ගුණ කරන්න: 22 kg 420 g × 3 = ?', v: svgVerticalCalc('×', '22 kg 420 g', '3'), ans: '67 kg 260 g', d: ['66 kg 260 g', '66 kg 1260 g', '67 kg 160 g'], exp: '22 kg 420 g × 3 = 67 kg 260 g.' },
+            { q: 'බෙදන්න: 20 kg 325 g ÷ 5 = ?', v: '➗ 20 kg 325 g ÷ 5 = ?', ans: '4 kg 65 g', d: ['4 kg 650 g', '4 kg 6 g', '5 kg 65 g'], exp: '20 kg 325 g ÷ 5 = 4 kg 65 g.' },
+            { q: 'පරිප්පු 15 kg 120 g බැගින් ගෝනි 4ක මුළු බර කීය ද?', v: '🫘 15 kg 120 g × 4 = ?', ans: '60 kg 480 g', d: ['60 kg 120 g', '61 kg 480 g', '45 kg 480 g'], exp: '15 kg 120 g × 4 = 60 kg 480 g.' },
+            { q: '"13" යන සංඛ්‍යාව රෝම සංඛ්‍යාංකයෙන් ලියන්න.', v: '🏛️ 13 ➡️ ?', ans: 'xiii', d: ['xii', 'xiv', 'xviii'], exp: '10 (x) + 3 (iii) = xiii.' },
+            { q: '"xvii" යන රෝම සංඛ්‍යාංකය හින්දු අරාබි සංඛ්‍යාංකයෙන් කීය ද?', v: '🏛️ xvii ➡️ ?', ans: '17', d: ['15', '16', '18'], exp: '10 + 5 + 2 = 17.' },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 4, 12, 36, 108, [ ? ]', v: '🚀 4 ➡️ 12 ➡️ 36 ➡️ 108 ➡️ ?', ans: '324', d: ['216', '304', '432'], exp: '×3 බැගින් වැඩි වේ. 108 × 3 = 324.' },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 1, 4, 16, 64, [ ? ]', v: '🚀 1 ➡️ 4 ➡️ 16 ➡️ 64 ➡️ ?', ans: '256', d: ['128', '192', '240'], exp: '×4 බැගින් වැඩි වේ. 64 × 4 = 256.' },
+            { q: 'රූපයේ දැක්වෙන කෝණය කුමන වර්ගයේ කෝණයක් ද?', v: svgAngle('obtuse'), ans: 'ඍජුකෝණයට වඩා විශාල කෝණයකි', d: ['ඍජුකෝණයකි', 'ඍජුකෝණයට වඩා කුඩා කෝණයකි', 'සරල රේඛාවකි'], exp: 'මෙම කෝණය ඍජුකෝණයට වඩා පළල් (විශාල) වේ.' },
+            { q: 'පාසලට පයින් පැමිණෙන සිසුන්: සඳුනි (500 m) සහ මීනා (1 km). ඔවුන් දෙදෙනාගේ මුළු දුර කීය ද?', v: '🚶‍♀️ 500 m + 1 km = ?', ans: '1 km 500 m', d: ['501 m', '2 km', '1 km 50 m'], exp: '1 km + 500 m = 1 km 500 m.' },
+            { q: 'සිසුන් 6 දෙනා බැගින් කණ්ඩායම් 18ක සිටින ළමුන් 4 දෙනා බැගින් නැවත කණ්ඩායම් කළ විට කණ්ඩායම් කීයක් ලැබේ ද?', v: '🧒 (6 × 18) ÷ 4 = ?', ans: '27', d: ['108', '24', '36'], exp: '6 × 18 = 108; 108 ÷ 4 = 27.' }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: it.exp };
+          });
+        }
+      },
+
+      {
+        id: 36, term: 'term3', isRevision: true, icon: '👑', color: 'from-yellow-500 via-amber-500 to-orange-600',
+        title: '36. පුනරීක්ෂණය - 4 (වසර අවසාන)',
+        subtitle: '5 ශ්‍රේණිය සම්පූර්ණ ගණිත විෂය නිර්දේශය ආවරණය වන අවසාන පුනරීක්ෂණය',
+        generateQuestions() {
+          const items = [
+            { q: '81,563 හි "1" ඉලක්කමෙන් නිරූපිත අගය කීය ද?', v: '81,563', ans: '1000', d: ['100', '10 000', '10'], exp: '1 දහසස්ථානයේ පිහිටි බැවින් අගය 1000 වේ.' },
+            { q: '50,000 + 6,000 + 200 + 40 + 8 මගින් සෑදෙන සංඛ්‍යාව කුමක් ද?', v: '50,000 + 6,000 + 200 + 40 + 8', ans: '56 248', d: ['56 284', '50 624', '56 428'], exp: '56,248 වේ.' },
+            { q: '2, 4, 6, 0, 5 යන ඉලක්කම් පහම භාවිතයෙන් සෑදිය හැකි විශාලම සංඛ්‍යාව කුමක් ද?', v: '🃏 2, 4, 6, 0, 5', ans: '65 420', d: ['65 402', '65 240', '56 420'], exp: 'විශාලම ඉලක්කම් පිළිවෙළින් තැබූ විට 65,420 ලැබේ.' },
+            { q: 'එකතු කරන්න: 2352 + 1720 + 3108 = ?', v: '➕ 2352 + 1720 + 3108 = ?', ans: '7180', d: ['7080', '7170', '6180'], exp: '2352 + 1720 + 3108 = 7180.' },
+            { q: 'අඩු කරන්න: 8279 − 3423 = ?', v: svgVerticalCalc('−', 8279, 3423), ans: '4856', d: ['5856', '4846', '5256'], exp: '8279 − 3423 = 4856.' },
+            { q: 'රටාව සම්පූර්ණ කරන්න: 3, 9, 27, 81, [ ? ]', v: '🚀 3 ➡️ 9 ➡️ 27 ➡️ 81 ➡️ ?', ans: '243', d: ['162', '213', '324'], exp: '×3 බැගින් වැඩි වේ. 81 × 3 = 243.' },
+            { q: 'අන්නාසි ගෙඩි 24න් 3/4 ක අන්නාසි ගෙඩි කීයක් තිබේ ද?', v: '🍍 24න් 3/4 = ?', ans: '18', d: ['6', '12', '20'], exp: '24 ÷ 4 = 6; 6 × 3 = 18.' },
+            { q: 'ගුණ කරන්න: 741 × 6 = ?', v: svgVerticalCalc('×', 741, 6), ans: '4446', d: ['4246', '4440', '4346'], exp: '741 × 6 = 4446.' },
+            { q: 'බෙදන්න: 952 ÷ 8 = ?', v: '➗ 952 ÷ 8 = ?', ans: '119', d: ['109', '129', '114'], exp: '952 ÷ 8 = 119.' },
+            { q: 'ප.ව. 2.20 යන වේලාව පැය 24 ඔරලෝසු වේලාවෙන් ලියන්න.', v: '🕒 ප.ව. 2.20 ➡️ ?', ans: '14:20', d: ['02:20', '12:20', '22:20'], exp: '2 + 12 = 14; එබැවින් 14:20 වේ.' },
+            { q: 'පෙ.ව. 10.20ට පිටත් වූ බසයක් පැය 4 මිනිත්තු 45කින් පසු ගමනාන්තයට ළඟා විය. ළඟා වූ වේලාව කීය ද?', v: '🚌 10.20 + පැය 4 මි. 45 = ?', ans: 'ප.ව. 3.05 (15:05)', d: ['ප.ව. 2.65', 'ප.ව. 3.15', 'ප.ව. 2.05'], exp: '10:20 + 4:45 = 15:05 (ප.ව. 3.05).' },
+            { q: 'මේස රෙද්දක දිග 3 m 30 cm වේ. එවැනි මේස 5කට අවශ්‍ය මුළු රෙදි දිග කීය ද?', v: '🧵 3 m 30 cm × 5 = ?', ans: '16 m 50 cm', d: ['15 m 30 cm', '15 m 150 cm', '16 m 30 cm'], exp: '3 m 30 cm × 5 = 16 m 50 cm.' },
+            { q: '40 m 80 cm ක් දිග කම්බියක් සමාන කැබලි 8කට බෙදූ විට එක් කැබැල්ලක දිග කීය ද?', v: '✂️ 40 m 80 cm ÷ 8 = ?', ans: '5 m 10 cm', d: ['5 m 1 cm', '5 m 80 cm', '4 m 10 cm'], exp: '40 m 80 cm ÷ 8 = 5 m 10 cm.' },
+            { q: 'කමලිනී ළඟ රු. 325.25ක් ඇත. ඇය රු. 182.75ක් වියදම් කළ පසු ඉතුරු මුදල කීය ද?', v: '💵 රු. 325.25 − රු. 182.75', ans: 'රු. 142.50', d: ['රු. 143.50', 'රු. 142.00', 'රු. 152.50'], exp: '325.25 − 182.75 = රු. 142.50.' },
+            { q: 'එකතු කරන්න: 15 l 750 ml + 9 l 165 ml = ?', v: svgVerticalCalc('+', '15 l 750 ml', '9 l 165 ml'), ans: '24 l 915 ml', d: ['24 l 815 ml', '25 l 915 ml', '23 l 915 ml'], exp: '15 l 750 ml + 9 l 165 ml = 24 l 915 ml.' },
+            { q: 'මිරිස් කුඩු පැකට් 5ක මුළු බර 5 kg 625 g කි. එක් පැකට්ටුවක බර කීය ද?', v: '🌶️ 5 kg 625 g ÷ 5 = ?', ans: '1 kg 125 g', d: ['1 kg 25 g', '1 kg 625 g', '1 kg 15 g'], exp: '5 kg 625 g ÷ 5 = 1 kg 125 g.' },
+            { q: 'ත්‍රිකෝණාකාර මුහුණත් පමණක් ඇති ඝන වස්තුව කුමක් ද?', v: svgSolid('tetrahedron'), ans: 'චතුස්තලය', d: ['ඝනකය', 'ඝනකාභය', 'සිලින්ඩරය'], exp: 'චතුස්තලයකට ත්‍රිකෝණාකාර මුහුණත් 4ක් ඇත.' },
+            { q: 'රූපයක 7/10 ක් පාට කර ඇත්නම්, පාට නොකළ කොටස දශම සංඛ්‍යාවක් ලෙස කීය ද?', v: svgFractionGrid(10, 7, '#4ade80'), ans: '0.3', d: ['0.7', '3.0', '0.4'], exp: 'පාට නොකළ කොටස 3/10 = 0.3 වේ.' },
+            { q: '"xix" යන රෝම සංඛ්‍යාංකය හින්දු අරාබි සංඛ්‍යාංකයෙන් කීය ද?', v: '🏛️ xix ➡️ ?', ans: '19', d: ['11', '21', '14'], exp: '10 (x) + 9 (ix) = 19.' },
+            { q: 'සෙනසුරාදා නරඹන්නන් 430ක් ද ඉරිදා 475ක් ද පැමිණියහ. සඳුදා පැමිණියේ 360කි. සමාන වීමට සඳුදා තව කී දෙනෙක් පැමිණිය යුතු ද?', v: '🎭 (430 + 475) − 360 = ?', ans: '545', d: ['905', '535', '445'], exp: '430 + 475 = 905; 905 − 360 = 545.' }
+          ];
+          return items.map(it => {
+            const { options, answer } = makeOptions(it.ans, it.d);
+            return { prompt: it.q, visual: `<div class="text-xl font-bold">${it.v}</div>`, options, answer, explanation: it.exp };
+          });
+        }
+      }
+    ];
+
+    // =========================================================================
+    // 5. APPLICATION STATE & UI CONTROLLER (WITH LOCALSTORAGE PERSISTENCE)
+    // =========================================================================
+    let state = {
+      totalStars: 0,
+      lessonScores: {}, // { lessonId: bestScore }
+      currentFilter: 'all',
+      searchQuery: '',
+      activeLesson: null,
+      questions: [],
+      currentIndex: 0,
+      score: 0,
+      answeredMap: {}
+    };
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('ganithagedara_grade5_v1');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          state.lessonScores = parsed.lessonScores || {};
+          recalcTotalStars();
+        }
+      } catch (e) {}
+    }
+
+    function recalcTotalStars() {
+      let sum = 0;
+      Object.values(state.lessonScores).forEach(sc => { sum += sc; });
+      state.totalStars = sum;
+      document.getElementById('totalStarsDisplay').textContent = `${state.totalStars} / 720`;
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem('ganithagedara_grade5_v1', JSON.stringify({
+          lessonScores: state.lessonScores
+        }));
+      } catch (e) {}
+    }
+
+    function renderLessonsGrid() {
+      const grid = document.getElementById('lessonsGrid');
+      const q = state.searchQuery.trim().toLowerCase();
+      const filtered = LESSONS.filter(l => {
+        const matchesTerm =
+          state.currentFilter === 'all' ||
+          (state.currentFilter === 'revisions' ? Boolean(l.isRevision) : l.term === state.currentFilter);
+        const matchesSearch = !q || l.title.toLowerCase().includes(q) || l.subtitle.toLowerCase().includes(q);
+        return matchesTerm && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white/80 rounded-3xl border-2 border-dashed border-slate-300">
+          <div class="text-5xl mb-2">🔍</div>
+          <p class="text-lg font-bold text-slate-600">ගැළපෙන ඒකකයක් හමු නොවීය. වෙනත් වචනයක් උත්සාහ කරන්න.</p>
+        </div>`;
+        return;
+      }
+
+      const termNames = { term1: 'පළමු වාරය', term2: 'දෙවන වාරය', term3: 'තෙවන වාරය' };
+      const termColors = {
+        term1: 'bg-sky-100 text-sky-700',
+        term2: 'bg-emerald-100 text-emerald-800',
+        term3: 'bg-purple-100 text-purple-700'
+      };
+
+      grid.innerHTML = filtered.map(lesson => {
+        const best = state.lessonScores[lesson.id] || 0;
+        const pct = Math.round((best / 20) * 100);
+        const isRev = Boolean(lesson.isRevision);
+        const isDone = best === 20;
+
+        return `
+          <button onclick="startLesson(${lesson.id})" class="bubbly-card text-left ${isRev ? 'bg-gradient-to-br from-amber-50 via-white to-orange-50 border-amber-400' : 'bg-white border-slate-200'} rounded-3xl p-5 border-2 ${isDone ? 'ring-2 ring-emerald-400' : ''} flex flex-col justify-between focus:outline-none group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${lesson.color} flex items-center justify-center text-3xl text-white shadow-md group-hover:scale-110 transition">
+                  ${lesson.icon}
+                </div>
+                <span class="text-xs font-extrabold px-3 py-1 rounded-full ${isRev ? 'bg-amber-200 text-amber-900 border border-amber-400' : termColors[lesson.term]}">
+                  ${isRev ? '🌟 වාර පුනරීක්ෂණය' : termNames[lesson.term]}
+                </span>
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-slate-800 mb-1 group-hover:text-sky-600 transition">
+                ${lesson.title}
+              </h3>
+              <p class="text-sm text-slate-500 font-semibold leading-snug mb-3">
+                ${lesson.subtitle}
+              </p>
+            </div>
+
+            <div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-3">
+                <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-sm font-extrabold text-amber-600">
+                  <span>⭐</span>
+                  <span class="font-num">${best} / 20</span>
+                </div>
+                <span class="inline-flex items-center gap-1 text-sm font-extrabold text-sky-600 group-hover:translate-x-1 transition">
+                  <span>ආරම්භ කරන්න</span>
+                  <span>▶️</span>
+                </span>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function filterLessons(filter) {
+      state.currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.classList.remove('bg-sky-600', 'text-white');
+        if (btn.id === 'tab-revisions') {
+          btn.classList.add('bg-amber-100', 'text-amber-900');
+        } else {
+          btn.classList.add('bg-white', 'text-slate-700');
+        }
+      });
+      const activeBtn = document.getElementById(`tab-${filter}`);
+      activeBtn.classList.remove('bg-white', 'text-slate-700', 'bg-amber-100', 'text-amber-900');
+      activeBtn.classList.add('bg-sky-600', 'text-white');
+      renderLessonsGrid();
+    }
+
+    function handleSearch(val) {
+      state.searchQuery = val;
+      renderLessonsGrid();
+    }
+
+    function startLesson(lessonId) {
+      initAudio();
+      const lesson = LESSONS.find(l => l.id === lessonId);
+      if (!lesson) return;
+
+      state.activeLesson = lesson;
+      state.questions = lesson.generateQuestions();
+      state.currentIndex = 0;
+      state.score = 0;
+      state.answeredMap = {};
+
+      document.getElementById('homeView').classList.add('hidden');
+      document.getElementById('resultView').classList.add('hidden');
+      document.getElementById('quizView').classList.remove('hidden');
+      document.getElementById('headerHomeBtn').classList.remove('hidden');
+
+      const termNames = { term1: 'ගණිතගෙදර - පළමු වාරය', term2: 'ගණිතගෙදර - දෙවන වාරය', term3: 'ගණිතගෙදර - තෙවන වාරය' };
+      document.getElementById('quizLessonIcon').textContent = lesson.icon;
+      document.getElementById('quizLessonTerm').textContent = lesson.isRevision ? '🌟 ගණිතගෙදර - වාර පුනරීක්ෂණ ඇගයීම' : termNames[lesson.term];
+      document.getElementById('quizLessonTitle').textContent = lesson.title;
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestionDots() {
+      const dotsEl = document.getElementById('questionDots');
+      dotsEl.innerHTML = state.questions.map((_, idx) => {
+        const record = state.answeredMap[idx];
+        let cls = 'bg-slate-100 text-slate-500 border-slate-300';
+        if (idx === state.currentIndex) {
+          cls = 'bg-sky-600 text-white border-sky-700 scale-110 shadow-sm';
+        } else if (record) {
+          cls = record.isCorrect
+            ? 'bg-emerald-500 text-white border-emerald-600'
+            : 'bg-rose-400 text-white border-rose-500';
+        }
+        return `<button onclick="jumpToQuestion(${idx})" class="w-7 h-7 rounded-lg border text-xs font-num font-bold transition ${cls}">${idx + 1}</button>`;
+      }).join('');
+    }
+
+    function jumpToQuestion(idx) {
+      state.currentIndex = idx;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = state.questions[state.currentIndex];
+      const record = state.answeredMap[state.currentIndex];
+
+      document.getElementById('quizScoreDisplay').textContent = `⭐ ${state.score} / 20`;
+      document.getElementById('quizProgressBar').style.width = `${((state.currentIndex + 1) / 20) * 100}%`;
+      document.getElementById('questionCounterBadge').textContent = `ප්‍රශ්නය ${state.currentIndex + 1} / 20`;
+      document.getElementById('questionPrompt').textContent = q.prompt;
+      document.getElementById('questionVisual').innerHTML = q.visual;
+
+      renderQuestionDots();
+
+      const card = document.getElementById('questionCard');
+      card.classList.remove('animate-pop');
+      void card.offsetWidth;
+      card.classList.add('animate-pop');
+
+      const optionsEl = document.getElementById('optionsContainer');
+      const labels = ['අ', 'ආ', 'ඇ', 'ඈ'];
+
+      optionsEl.innerHTML = q.options.map((opt, idx) => {
+        let btnStyle = 'bg-white hover:bg-sky-50 border-slate-300 text-slate-800';
+        let badgeStyle = 'bg-sky-100 text-sky-700';
+
+        if (record) {
+          if (opt === q.answer) {
+            btnStyle = 'bg-emerald-500 border-emerald-600 text-white';
+            badgeStyle = 'bg-white/25 text-white';
+          } else if (opt === record.selected && !record.isCorrect) {
+            btnStyle = 'bg-rose-500 border-rose-600 text-white';
+            badgeStyle = 'bg-white/25 text-white';
+          } else {
+            btnStyle = 'bg-slate-50 border-slate-200 text-slate-400 opacity-70';
+          }
+        }
+
+        const safeOpt = opt.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return `
+          <button onclick="selectAnswer('${safeOpt}')" ${record ? 'disabled' : ''} class="bubbly-btn border-2 ${btnStyle} p-4 rounded-2xl text-left font-extrabold text-lg sm:text-xl flex items-center gap-3.5 focus:outline-none">
+            <span class="w-9 h-9 rounded-xl ${badgeStyle} flex items-center justify-center text-base shrink-0">
+              ${labels[idx]}
+            </span>
+            <span class="leading-snug">${opt}</span>
+          </button>
+        `;
+      }).join('');
+
+      const feedback = document.getElementById('feedbackBanner');
+      if (record) {
+        feedback.classList.remove('hidden');
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        nextBtn.innerHTML = state.currentIndex === 19
+          ? `<span>ප්‍රතිඵල බලන්න</span><span>🏆</span>`
+          : `<span>ඊළඟ ප්‍රශ්නය</span><span>➡️</span>`;
+
+        document.getElementById('feedbackExplanation').textContent = q.explanation ? `💡 පැහැදිලි කිරීම: ${q.explanation}` : '';
+
+        if (record.isCorrect) {
+          feedback.className = 'mt-6 p-4 rounded-2xl border-2 bg-emerald-50 border-emerald-300 text-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-3';
+          document.getElementById('feedbackEmoji').textContent = '🎉';
+          document.getElementById('feedbackTitle').textContent = 'නියමයි! ඉතා නිවැරදියි 🎉';
+          document.getElementById('feedbackText').textContent = `නිවැරදි පිළිතුර: ${q.answer}`;
+        } else {
+          feedback.className = 'mt-6 p-4 rounded-2xl border-2 bg-rose-50 border-rose-300 text-rose-900 flex flex-col sm:flex-row items-center justify-between gap-3';
+          document.getElementById('feedbackEmoji').textContent = '💡';
+          document.getElementById('feedbackTitle').textContent = 'නැවත උත්සාහ කරමු!';
+          document.getElementById('feedbackText').textContent = `නිවැරදි පිළිතුර: ${q.answer}`;
+        }
+      } else {
+        feedback.classList.add('hidden');
+      }
+    }
+
+    function selectAnswer(selected) {
+      if (state.answeredMap[state.currentIndex]) return;
+      const q = state.questions[state.currentIndex];
+      const isCorrect = selected === q.answer;
+
+      state.answeredMap[state.currentIndex] = { selected, isCorrect };
+
+      if (isCorrect) {
+        state.score++;
+        playSound('correct');
+      } else {
+        playSound('wrong');
+        const card = document.getElementById('questionCard');
+        card.classList.add('animate-shake');
+        setTimeout(() => card.classList.remove('animate-shake'), 450);
+      }
+
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (state.currentIndex < 19) {
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        finishLesson();
+      }
+    }
+
+    function finishLesson() {
+      const prevBest = state.lessonScores[state.activeLesson.id] || 0;
+      if (state.score > prevBest) {
+        state.lessonScores[state.activeLesson.id] = state.score;
+        saveProgress();
+        recalcTotalStars();
+      }
+
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.remove('hidden');
+
+      document.getElementById('resultLessonName').textContent = state.activeLesson.title;
+      document.getElementById('finalScoreText').textContent = `${state.score} / 20`;
+      document.getElementById('finalStarsText').textContent = `⭐ ${state.score} / 20`;
+
+      let msg = 'සුබ පැතුම් පුංචි දුවේ පුතේ! ඔබ ඉතාම දක්ෂ ලෙස ප්‍රශ්නවලට පිළිතුරු දුන්නා! 🌟';
+      if (state.score === 20) {
+        msg = 'විශිෂ්ටයි! ප්‍රශ්න 20ටම හරි පිළිතුරු දී ගණිතගෙදර රන් තරු 20ම දිනා ගත්තා! 🏆🎉';
+      } else if (state.score >= 15) {
+        msg = 'හරිම දක්ෂයි! ඔබ ගණිතගෙදර තරු 15කට වඩා දිනා ගත්තා! 👏';
+      } else if (state.score >= 10) {
+        msg = 'හොඳ උත්සාහයක්! තව ටිකක් පුහුණු වී තරු 20ම දිනාගමු! 💪';
+      } else {
+        msg = 'කමක් නැහැ පුංචි දුවේ පුතේ! නැවත උත්සාහ කර තවත් තරු දිනාගමු! 🎈';
+      }
+      document.getElementById('resultEncouragement').textContent = msg;
+
+      playSound('fanfare');
+      launchConfetti();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCurrentLesson() {
+      if (state.activeLesson) {
+        startLesson(state.activeLesson.id);
+      }
+    }
+
+    function goHome() {
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.add('hidden');
+      document.getElementById('headerHomeBtn').classList.add('hidden');
+      document.getElementById('homeView').classList.remove('hidden');
+      renderLessonsGrid();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function launchConfetti() {
+      const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#a855f7', '#ec4899'];
+      for (let i = 0; i < 60; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece rounded-sm';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        piece.style.animationDelay = (Math.random() * 0.5) + 's';
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4500);
+      }
+    }
+
+    window.onload = function () {
+      loadProgress();
+      renderLessonsGrid();
+    };
+  </script>
+</body>
+</html>
