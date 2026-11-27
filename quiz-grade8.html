@@ -115,7 +115,7 @@
         <div class="nav-links">
             <a href="quizzes.html">← ශ්‍රේණි ලැයිස්තුවට</a>
             <a href="index.html">🏠 මුල් පිටුවට</a>
-            <button id="headerBackToMenuBtn" onclick="closeNumPatterns()" style="display:none;">📋 පැවරුම් ලැයිස්තුවට</button>
+            <button type="button" id="headerBackToMenuBtn" onclick="closeNumPatterns()" style="display:none;">📋 පැවරුම් ලැයිස්තුවට</button>
         </div>
     </header>
 
@@ -133,8 +133,8 @@
                         <div class="quiz-info">වගු 5 (ප්‍රශ්න 100) | සරල සිට සංකීර්ණ දක්වා | සිංහල & English මාධ්‍ය | ගණිතගෙදර</div>
                     </div>
                     <div class="btn-group">
-                        <button onclick="openNumPatterns('si')" class="btn btn-gold">🚀 සිංහල මාධ්‍ය</button>
-                        <button onclick="openNumPatterns('en')" class="btn btn-blue">🌐 English Medium</button>
+                        <button type="button" onclick="openNumPatterns('si')" class="btn btn-gold">🚀 සිංහල මාධ්‍ය</button>
+                        <button type="button" onclick="openNumPatterns('en')" class="btn btn-blue">🌐 English Medium</button>
                     </div>
                 </div>
 
@@ -166,11 +166,11 @@
                     <div class="np-heading" id="quizMainTitle">🔢 1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes</div>
                     <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
                         <div class="lang-switch">
-                            <button class="lang-btn active" id="langBtnSi" onclick="setLanguage('si')">සිංහල</button>
-                            <button class="lang-btn" id="langBtnEn" onclick="setLanguage('en')">English</button>
+                            <button type="button" class="lang-btn active" id="langBtnSi" onclick="setLanguage('si')">සිංහල</button>
+                            <button type="button" class="lang-btn" id="langBtnEn" onclick="setLanguage('en')">English</button>
                         </div>
-                        <button class="np-btn np-btn-new" id="shuffleBtn" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
-                        <button class="np-btn np-btn-back" id="backBtnTop" onclick="closeNumPatterns()">🔙 පැවරුම් ලැයිස්තුවට</button>
+                        <button type="button" class="np-btn np-btn-new" id="shuffleBtn" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
+                        <button type="button" class="np-btn np-btn-back" id="backBtnTop" onclick="closeNumPatterns()">🔙 පැවරුම් ලැයිස්තුවට</button>
                     </div>
                 </div>
 
@@ -207,8 +207,8 @@
                 </table>
 
                 <div class="np-actions">
-                    <button id="checkBtn" class="np-btn np-btn-check" onclick="checkAnswers()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
-                    <button id="backBtnBottom" class="np-btn np-btn-back" onclick="closeNumPatterns()">🔙 ආපසු ලැයිස්තුවට</button>
+                    <button type="button" id="checkBtn" class="np-btn np-btn-check" onclick="checkAnswers()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
+                    <button type="button" id="backBtnBottom" class="np-btn np-btn-back" onclick="closeNumPatterns()">🔙 ආපසු ලැයිස්තුවට</button>
                 </div>
 
                 <div id="summaryBox" class="np-summary">
@@ -242,7 +242,7 @@
     </footer>
 
     <script>
-        const UI_TEXT = {
+        var UI_TEXT = {
             si: {
                 mainTitle: "🔢 1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes",
                 shuffleBtn: "🔄 නව ප්‍රශ්න",
@@ -264,9 +264,9 @@
                 statLblTotal: "මුළු ගත වූ කාලය",
                 minUnit: "මි.",
                 secUnit: "තත්.",
-                alertEmpty: (n) => `කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු ${n}ක් ඇත)`,
+                alertEmpty: function(n) { return "කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු " + n + "ක් ඇත)"; },
                 perfectMsg: "🎉 විශිෂ්ටයි! සියලුම පිළිතුරු 20 නිවැරදියි!",
-                errorMsg: (n) => `⚠️ වැරදි පිළිතුරු ${n}ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)`
+                errorMsg: function(n) { return "⚠️ වැරදි පිළිතුරු " + n + "ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)"; }
             },
             en: {
                 mainTitle: "🔢 Lesson 1: Number Patterns - Interactive Quizzes",
@@ -289,14 +289,13 @@
                 statLblTotal: "Total Time Taken",
                 minUnit: "m",
                 secUnit: "s",
-                alertEmpty: (n) => `Please answer all 20 questions before checking. (${n} blank box(es) remaining)`,
+                alertEmpty: function(n) { return "Please answer all 20 questions before checking. (" + n + " blank box(es) remaining)"; },
                 perfectMsg: "🎉 Excellent! All 20 answers are correct!",
-                errorMsg: (n) => `⚠️ You have ${n} incorrect answer(s). Fix them and check again (correction timer is running...)`
+                errorMsg: function(n) { return "⚠️ You have " + n + " incorrect answer(s). Fix them and check again (correction timer is running...)"; }
             }
         };
 
-        // 8 ශ්‍රේණිය පෙළපොතේ 1 වන පාඩම (සංඛ්‍යා රටා) සඳහා සරල සිට සංකීර්ණ දක්වා Quiz 5
-        const QUIZ_BANK = {
+        var QUIZ_BANK = {
             1: {
                 tabSi: ["1 වන Quiz එක", "සංඛ්‍යා රටා හඳුනාගැනීම (ඉතා පහසු)"],
                 tabEn: ["Quiz 1", "Identifying Patterns (Very Easy)"],
@@ -322,7 +321,7 @@
                     { si: "1 ත් 9 ත් අතර ඇති ඉරට්ට සංඛ්‍යා රටාවේ ඇති මුළු පද ගණන කීයද?", en: "How many terms are in the pattern of even numbers between 1 and 9?", a: "4" },
                     { si: "<span class='math-highlight'>1, 2, 4, 8, ...</span> රටාවේ පෙර පදය 2 න් ගුණ වේ නම් 5 වන පදය කීයද?", en: "If each term is multiplied by 2 in <span class='math-highlight'>1, 2, 4, 8, ...</span>, what is the 5th term?", a: "16" },
                     { si: "<span class='math-highlight'>10, 20, 30, 40, ...</span> රටාවේ 9 වන පදය කීයද?", en: "Find the 9th term of the pattern <span class='math-highlight'>10, 20, 30, 40, ...</span>", a: "90" },
-                    { si: "<span class='math-highlight'>2, 4, 8, 10, 20, 22, ...</span> (+2 සහ ×2 මාරුවෙන්) රටාවේ 7 වන පදය කීයද?", en: "In <span class='math-highlight'>2, 4, 8, 10, 20, 22, ...</span> (alternating +2 and ×2), what is the 7th term?", a: "44" }
+                    { si: "<span class='math-highlight'>2, 4, 8, 10, 20, 22, ...</span> (+2 සහ &times;2 මාරුවෙන්) රටාවේ 7 වන පදය කීයද?", en: "In <span class='math-highlight'>2, 4, 8, 10, 20, 22, ...</span> (alternating +2 and &times;2), what is the 7th term?", a: "44" }
                 ]
             },
             2: {
@@ -356,10 +355,10 @@
             3: {
                 tabSi: ["3 වන Quiz එක", "සමචතුරස්‍ර හා ත්‍රිකෝණ රටා (මධ්‍යම)"],
                 tabEn: ["Quiz 3", "Square & Triangular Numbers (Medium)"],
-                hintSi: "💡 <strong>3 වන Quiz එක - සමචතුරස්‍ර (n²) සහ ත්‍රිකෝණ (n(n+1)/2) සංඛ්‍යා රටා (ප්‍රශ්න 20):</strong> 1.4 අභ්‍යාසය ඇසුරෙන් සැකසූ ගැටලු විසඳන්න.",
-                hintEn: "💡 <strong>Quiz 3 - Square (n²) & Triangular (n(n+1)/2) Number Patterns (20 Questions):</strong> Solve the questions based on Textbook Section 1.4.",
+                hintSi: "💡 <strong>3 වන Quiz එක - සමචතුරස්‍ර (n<sup>2</sup>) සහ ත්‍රිකෝණ (n(n+1)/2) සංඛ්‍යා රටා (ප්‍රශ්න 20):</strong> 1.4 අභ්‍යාසය ඇසුරෙන් සැකසූ ගැටලු විසඳන්න.",
+                hintEn: "💡 <strong>Quiz 3 - Square (n<sup>2</sup>) & Triangular (n(n+1)/2) Number Patterns (20 Questions):</strong> Solve the questions based on Textbook Section 1.4.",
                 items: [
-                    { si: "1 න් පටන් ගෙන සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 4, 9, 16, ...</span>) සාධාරණ පදය කුමක්ද?", en: "What is the general term of the square number pattern (<span class='math-highlight'>1, 4, 9, 16, ...</span>)?", a: "n^2", alt: ["n2", "n²"] },
+                    { si: "1 න් පටන් ගෙන සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 4, 9, 16, ...</span>) සාධාරණ පදය කුමක්ද? (n2 ලෙස ලියන්න)", en: "What is the general term of the square number pattern (<span class='math-highlight'>1, 4, 9, 16, ...</span>)? (Write as n2)", a: "n2", alt: ["n^2"] },
                     { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 10 වන පදය කීයද?", en: "What is the 10th term of the square number pattern?", a: "100" },
                     { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 12 වන පදය කීයද?", en: "What is the 12th term of the square number pattern?", a: "144" },
                     { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 15 වන පදය කීයද?", en: "What is the 15th term of the square number pattern?", a: "225" },
@@ -399,10 +398,10 @@
                     { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ (<span class='math-highlight'>2n - 1</span>) <span class='math-highlight'>89</span> වන්නේ කීවැනි පදයද?", en: "In the odd number pattern (<span class='math-highlight'>2n - 1</span>), which term is <span class='math-highlight'>89</span>?", a: "45" },
                     { si: "100 ට අඩු විශාලම ඔත්තේ සංඛ්‍යාව (99) ඔත්තේ සංඛ්‍යා රටාවේ කීවැනි පදයද?", en: "Which term of the odd number pattern is the largest odd number less than 100 (99)?", a: "50" },
                     { si: "2 න් පටන් ගෙන ඉරට්ට සංඛ්‍යා රටාවේ 34 වන පදයත්, 1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ 34 වන පදයත් එකතුව කීයද?", en: "Find the sum of the 34th even number (from 2) and the 34th odd number (from 1).", a: "135" },
-                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>n²</span>) <span class='math-highlight'>169</span> වන්නේ කීවැනි පදයද?", en: "In the square number pattern (<span class='math-highlight'>n²</span>), which term is <span class='math-highlight'>169</span>?", a: "13" },
-                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>n²</span>) <span class='math-highlight'>625</span> වන්නේ කීවැනි පදයද?", en: "In the square number pattern (<span class='math-highlight'>n²</span>), which term is <span class='math-highlight'>625</span>?", a: "25" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>n<sup>2</sup></span>) <span class='math-highlight'>169</span> වන්නේ කීවැනි පදයද?", en: "In the square number pattern (<span class='math-highlight'>n<sup>2</sup></span>), which term is <span class='math-highlight'>169</span>?", a: "13" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>n<sup>2</sup></span>) <span class='math-highlight'>625</span> වන්නේ කීවැනි පදයද?", en: "In the square number pattern (<span class='math-highlight'>n<sup>2</sup></span>), which term is <span class='math-highlight'>625</span>?", a: "25" },
                     { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>55</span> වන්නේ කීවැනි පදයද?", en: "Which term of the triangular number pattern is <span class='math-highlight'>55</span>?", a: "10" },
-                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>171</span> වන්නේ කීවැනි පදයද? (ඉඟිය: 18 × 19 = 342)", en: "Which term of the triangular number pattern is <span class='math-highlight'>171</span>? (Hint: 18 × 19 = 342)", a: "18" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>171</span> වන්නේ කීවැනි පදයද? (ඉඟිය: 18 &times; 19 = 342)", en: "Which term of the triangular number pattern is <span class='math-highlight'>171</span>? (Hint: 18 &times; 19 = 342)", a: "18" },
                     { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>66</span> වන්නේ කීවැනි පදයද?", en: "Which term of the triangular number pattern is <span class='math-highlight'>66</span>?", a: "11" },
                     { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>91</span> වන්නේ කීවැනි පදයද?", en: "Which term of the triangular number pattern is <span class='math-highlight'>91</span>?", a: "13" },
                     { si: "<span class='math-highlight'>5, 10, 15, 20, ...</span> රටාවේ <span class='math-highlight'>245</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>5, 10, 15, 20, ...</span> is <span class='math-highlight'>245</span>?", a: "49" },
@@ -431,7 +430,7 @@
                     { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ කීවැනි පදය දක්වා මුල් පද එකතු කළ විට ඓක්‍යය <span class='math-highlight'>169</span> ලැබේද?", en: "How many consecutive odd numbers starting from 1 must be added to get a sum of <span class='math-highlight'>169</span>?", a: "13" },
                     { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ මුල් පද 12 ක ඓක්‍යය කීයද?", en: "What is the sum of the first 12 odd numbers starting from 1?", a: "144" },
                     { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ n වන පදය මෙන් දෙගුණයක් <span class='math-highlight'>132</span> නම් n හි අගය කීයද?", en: "If twice the nth term of the triangular number pattern is <span class='math-highlight'>132</span>, find n.", a: "11" },
-                    { si: "සාධාරණ පදය <span class='math-highlight'>n²</span> වන රටාවේ 11 වන පදයත් 9 වන පදයත් අතර වෙනස කීයද?", en: "Find the difference between the 11th term and 9th term of the pattern <span class='math-highlight'>n²</span>.", a: "40" },
+                    { si: "සාධාරණ පදය <span class='math-highlight'>n<sup>2</sup></span> වන රටාවේ 11 වන පදයත් 9 වන පදයත් අතර වෙනස කීයද?", en: "Find the difference between the 11th term and 9th term of the pattern <span class='math-highlight'>n<sup>2</sup></span>.", a: "40" },
                     { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 6 වන පදයත් 8 වන පදයත් එකතු කළ විට ලැබෙන සමචතුරස්‍ර සංඛ්‍යාව කීයද?", en: "What square number is obtained by adding the 6th and 8th square numbers?", a: "100" },
                     { si: "3 න් පටන් ගෙන 3 හි ගුණාකාර රටාවේ 20 වන පදයත් 2 න් පටන් ගෙන 2 හි ගුණාකාර රටාවේ 20 වන පදයත් අතර වෙනස කීයද?", en: "Find the difference between the 20th term of 3n and the 20th term of 2n.", a: "20" },
                     { si: "පළමු පද 10 ක් ඇති ත්‍රිකෝණ සංඛ්‍යා රටාවේ 10 වන පදය සහ 1 වන පදය අතර වෙනස කීයද?", en: "Find the difference between the 10th term and 1st term of the triangular number pattern.", a: "54" }
@@ -439,13 +438,13 @@
             }
         };
 
-        let currentLang = 'si';
-        let currentTable = 1;
-        let currentQuestions = [];
-        let timerInterval = null;
-        let initialSeconds = 0;
-        let correctionSeconds = 0;
-        let phase = 'idle';
+        var currentLang = 'si';
+        var currentTable = 1;
+        var currentQuestions = [];
+        var timerInterval = null;
+        var initialSeconds = 0;
+        var correctionSeconds = 0;
+        var phase = 'idle';
 
         function openNumPatterns(lang) {
             currentLang = lang || 'si';
@@ -469,10 +468,10 @@
             if (currentLang === lang) return;
             currentLang = lang;
             applyLanguageUI();
-            const savedValues = [];
-            const savedStates = [];
-            for (let i = 0; i < currentQuestions.length; i++) {
-                const inp = document.getElementById(`input-${i}`);
+            var savedValues = [];
+            var savedStates = [];
+            for (var i = 0; i < currentQuestions.length; i++) {
+                var inp = document.getElementById('input-' + i);
                 if (inp) {
                     savedValues.push(inp.value);
                     savedStates.push({
@@ -483,25 +482,25 @@
                 }
             }
             renderTable();
-            for (let i = 0; i < currentQuestions.length; i++) {
-                const inp = document.getElementById(`input-${i}`);
-                const icon = document.getElementById(`icon-${i}`);
-                if (inp && savedValues[i] !== undefined) {
-                    inp.value = savedValues[i];
-                    if (savedStates[i].isCorrect) {
-                        inp.classList.add('correct');
-                        inp.disabled = true;
-                        icon.textContent = '✅';
-                    } else if (savedStates[i].isWrong) {
-                        inp.classList.add('wrong');
-                        icon.textContent = '❌';
+            for (var j = 0; j < currentQuestions.length; j++) {
+                var inp2 = document.getElementById('input-' + j);
+                var icon2 = document.getElementById('icon-' + j);
+                if (inp2 && savedValues[j] !== undefined) {
+                    inp2.value = savedValues[j];
+                    if (savedStates[j].isCorrect) {
+                        inp2.classList.add('correct');
+                        inp2.disabled = true;
+                        icon2.textContent = '✅';
+                    } else if (savedStates[j].isWrong) {
+                        inp2.classList.add('wrong');
+                        icon2.textContent = '❌';
                     }
                 }
             }
         }
 
         function applyLanguageUI() {
-            const t = UI_TEXT[currentLang];
+            var t = UI_TEXT[currentLang];
             document.getElementById('langBtnSi').classList.toggle('active', currentLang === 'si');
             document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
 
@@ -521,21 +520,22 @@
             document.getElementById('statLblCorr').textContent = t.statLblCorr;
             document.getElementById('statLblTotal').textContent = t.statLblTotal;
 
-            const tabsHTML = [1, 2, 3, 4, 5].map(num => {
-                const tabInfo = currentLang === 'si' ? QUIZ_BANK[num].tabSi : QUIZ_BANK[num].tabEn;
-                const activeCls = num === currentTable ? 'active' : '';
-                return `<button class="np-tab-btn ${activeCls}" onclick="switchTable(${num})">${tabInfo[0]}<span class="np-tab-sub">${tabInfo[1]}</span></button>`;
-            }).join('');
+            var tabsHTML = '';
+            for (var num = 1; num <= 5; num++) {
+                var tabInfo = currentLang === 'si' ? QUIZ_BANK[num].tabSi : QUIZ_BANK[num].tabEn;
+                var activeCls = (num === currentTable) ? 'active' : '';
+                tabsHTML += '<button type="button" class="np-tab-btn ' + activeCls + '" onclick="switchTable(' + num + ')">' + tabInfo[0] + '<span class="np-tab-sub">' + tabInfo[1] + '</span></button>';
+            }
             document.getElementById('quizTabsContainer').innerHTML = tabsHTML;
 
             document.getElementById('tableSubtitleHint').innerHTML =
                 currentLang === 'si' ? QUIZ_BANK[currentTable].hintSi : QUIZ_BANK[currentTable].hintEn;
 
-            const checkBtn = document.getElementById('checkBtn');
-            const summaryMsg = document.getElementById('summaryMessage');
-            let correctCount = 0;
-            for (let i = 0; i < 20; i++) {
-                const el = document.getElementById(`input-${i}`);
+            var checkBtn = document.getElementById('checkBtn');
+            var summaryMsg = document.getElementById('summaryMessage');
+            var correctCount = 0;
+            for (var i = 0; i < 20; i++) {
+                var el = document.getElementById('input-' + i);
                 if (el && el.classList.contains('correct')) correctCount++;
             }
 
@@ -552,11 +552,15 @@
             updateTimerUI();
         }
 
+        function padZero(num) {
+            return num < 10 ? '0' + num : '' + num;
+        }
+
         function formatTime(totalSec) {
-            const t = UI_TEXT[currentLang];
-            const mins = Math.floor(totalSec / 60);
-            const secs = totalSec % 60;
-            return `${String(mins).padStart(2, '0')} ${t.minUnit} ${String(secs).padStart(2, '0')} ${t.secUnit}`;
+            var t = UI_TEXT[currentLang];
+            var mins = Math.floor(totalSec / 60);
+            var secs = totalSec % 60;
+            return padZero(mins) + ' ' + t.minUnit + ' ' + padZero(secs) + ' ' + t.secUnit;
         }
 
         function updateTimerUI() {
@@ -570,7 +574,7 @@
         function startTimerIfNeeded() {
             if (phase === 'idle') phase = 'initial';
             if (!timerInterval && (phase === 'initial' || phase === 'correction')) {
-                timerInterval = setInterval(() => {
+                timerInterval = setInterval(function() {
                     if (phase === 'initial') initialSeconds++;
                     else if (phase === 'correction') correctionSeconds++;
                     updateTimerUI();
@@ -602,20 +606,22 @@
             phase = 'idle';
             updateTimerUI();
 
-            const t = UI_TEXT[currentLang];
+            var t = UI_TEXT[currentLang];
             document.getElementById('correctionPill').style.display = 'none';
             document.getElementById('summaryBox').style.display = 'none';
             document.getElementById('scoreDisplay').textContent = '0 / 20';
 
-            const checkBtn = document.getElementById('checkBtn');
+            var checkBtn = document.getElementById('checkBtn');
             checkBtn.textContent = t.checkBtn;
             checkBtn.className = 'np-btn np-btn-check';
 
-            let list = [...QUIZ_BANK[currentTable].items];
+            var list = QUIZ_BANK[currentTable].items.slice();
             if (shuffle) {
-                for (let i = list.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [list[i], list[j]] = [list[j], list[i]];
+                for (var i = list.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = list[i];
+                    list[i] = list[j];
+                    list[j] = temp;
                 }
             }
             currentQuestions = list;
@@ -623,20 +629,24 @@
         }
 
         function renderTable() {
-            const t = UI_TEXT[currentLang];
-            const tbody = document.getElementById('quizTableBody');
-            tbody.innerHTML = currentQuestions.map((item, idx) => `
-                <tr>
-                    <td><span class="q-no">${idx + 1}</span></td>
-                    <td>${currentLang === 'si' ? item.si : item.en}</td>
-                    <td>
-                        <input type="text" class="ans-input" id="input-${idx}"
-                            oninput="handleInput(${idx}, this)" onkeydown="handleKeyNav(event, ${idx})"
-                            placeholder="${t.placeholder}" autocomplete="off" />
-                        <span class="status-icon" id="icon-${idx}"></span>
-                    </td>
-                </tr>
-            `).join('');
+            var t = UI_TEXT[currentLang];
+            var tbody = document.getElementById('quizTableBody');
+            var html = '';
+            for (var idx = 0; idx < currentQuestions.length; idx++) {
+                var item = currentQuestions[idx];
+                var qText = (currentLang === 'si') ? item.si : item.en;
+                html += '<tr>' +
+                    '<td><span class="q-no">' + (idx + 1) + '</span></td>' +
+                    '<td>' + qText + '</td>' +
+                    '<td>' +
+                        '<input type="text" class="ans-input" id="input-' + idx + '" ' +
+                        'oninput="handleInput(' + idx + ', this)" onkeydown="handleKeyNav(event, ' + idx + ')" ' +
+                        'placeholder="' + t.placeholder + '" autocomplete="off" />' +
+                        '<span class="status-icon" id="icon-' + idx + '"></span>' +
+                    '</td>' +
+                '</tr>';
+            }
+            tbody.innerHTML = html;
         }
 
         function handleInput(idx, el) {
@@ -644,7 +654,7 @@
                 startTimerIfNeeded();
                 if (el.classList.contains('wrong')) {
                     el.classList.remove('wrong');
-                    document.getElementById(`icon-${idx}`).textContent = '';
+                    document.getElementById('icon-' + idx).textContent = '';
                 }
             }
         }
@@ -652,13 +662,13 @@
         function handleKeyNav(e, idx) {
             if (e.key === 'ArrowDown' && idx < 19) {
                 e.preventDefault();
-                document.getElementById(`input-${idx + 1}`).focus();
+                document.getElementById('input-' + (idx + 1)).focus();
             } else if (e.key === 'ArrowUp' && idx > 0) {
                 e.preventDefault();
-                document.getElementById(`input-${idx - 1}`).focus();
+                document.getElementById('input-' + (idx - 1)).focus();
             } else if (e.key === 'Enter') {
                 e.preventDefault();
-                if (idx < 19) document.getElementById(`input-${idx + 1}`).focus();
+                if (idx < 19) document.getElementById('input-' + (idx + 1)).focus();
                 else checkAnswers();
             }
         }
@@ -668,35 +678,37 @@
         }
 
         function checkAnswers() {
-            const t = UI_TEXT[currentLang];
-            let emptyCount = 0;
-            for (let i = 0; i < 20; i++) {
-                if (!document.getElementById(`input-${i}`).value.trim()) emptyCount++;
+            var t = UI_TEXT[currentLang];
+            var emptyCount = 0;
+            for (var i = 0; i < 20; i++) {
+                if (!document.getElementById('input-' + i).value.trim()) emptyCount++;
             }
             if (emptyCount > 0) {
                 alert(t.alertEmpty(emptyCount));
-                for (let i = 0; i < 20; i++) {
-                    if (!document.getElementById(`input-${i}`).value.trim()) {
-                        document.getElementById(`input-${i}`).focus();
+                for (var k = 0; k < 20; k++) {
+                    if (!document.getElementById('input-' + k).value.trim()) {
+                        document.getElementById('input-' + k).focus();
                         break;
                     }
                 }
                 return;
             }
 
-            let correctCount = 0;
-            for (let i = 0; i < 20; i++) {
-                const inputEl = document.getElementById(`input-${i}`);
-                const iconEl = document.getElementById(`icon-${i}`);
-                const userAns = normalizeAns(inputEl.value);
-                const item = currentQuestions[i];
+            var correctCount = 0;
+            for (var j = 0; j < 20; j++) {
+                var inputEl = document.getElementById('input-' + j);
+                var iconEl = document.getElementById('icon-' + j);
+                var userAns = normalizeAns(inputEl.value);
+                var item = currentQuestions[j];
 
-                const validAnswers = [normalizeAns(item.a)];
+                var validAnswers = [normalizeAns(item.a)];
                 if (item.alt) {
-                    item.alt.forEach(a => validAnswers.push(normalizeAns(a)));
+                    for (var m = 0; m < item.alt.length; m++) {
+                        validAnswers.push(normalizeAns(item.alt[m]));
+                    }
                 }
 
-                if (validAnswers.includes(userAns)) {
+                if (validAnswers.indexOf(userAns) !== -1) {
                     correctCount++;
                     inputEl.classList.remove('wrong');
                     inputEl.classList.add('correct');
@@ -709,11 +721,11 @@
                 }
             }
 
-            document.getElementById('scoreDisplay').textContent = `${correctCount} / 20`;
+            document.getElementById('scoreDisplay').textContent = correctCount + ' / 20';
 
-            const summaryBox = document.getElementById('summaryBox');
-            const summaryMsg = document.getElementById('summaryMessage');
-            const checkBtn = document.getElementById('checkBtn');
+            var summaryBox = document.getElementById('summaryBox');
+            var summaryMsg = document.getElementById('summaryMessage');
+            var checkBtn = document.getElementById('checkBtn');
 
             if (correctCount === 20) {
                 stopTimer();
@@ -735,8 +747,8 @@
                 checkBtn.textContent = t.recheckBtn;
                 checkBtn.className = 'np-btn np-btn-recheck';
 
-                for (let i = 0; i < 20; i++) {
-                    const el = document.getElementById(`input-${i}`);
+                for (var n = 0; n < 20; n++) {
+                    var el = document.getElementById('input-' + n);
                     if (el.classList.contains('wrong')) {
                         el.focus();
                         el.select();
@@ -745,7 +757,7 @@
                 }
             }
 
-            document.getElementById('statScore').textContent = `${correctCount} / 20`;
+            document.getElementById('statScore').textContent = correctCount + ' / 20';
             updateTimerUI();
         }
     </script>
