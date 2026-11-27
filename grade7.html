@@ -8,7 +8,7 @@
     <style>
         :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
-        body { background:var(--light); color:#1e293b; }
+        body { background:var(--light); color:#1e293b; line-height:1.6; }
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2.2rem 1rem; border-bottom:4px solid var(--accent); }
         header h1 { font-size:1.65rem; }
         .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
@@ -23,11 +23,15 @@
         .b-blue { border-left-color:#2563eb; }
         .b-green { border-left-color:#16a34a; }
         .b-red { border-left-color:#991b1b; }
-        .b-gold { border-left-color:#d97706; }
         .pdf-name { font-weight:700; font-size:1rem; color:var(--dark); }
         .pdf-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .dl-btn { background:var(--secondary); color:white; text-decoration:none; padding:0.5rem 1.1rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:0.2s; }
+        .btn-group { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
+        .dl-btn { background:var(--secondary); color:white; text-decoration:none; padding:0.52rem 1.05rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:0.2s; display:inline-flex; align-items:center; gap:0.35rem; }
         .dl-btn:hover { background:var(--primary); }
+        .dl-btn-blue { background:#1d4ed8; }
+        .dl-btn-blue:hover { background:#1e3a8a; }
+        footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:1.75rem 1rem; font-size:0.9rem; margin-top:2rem; }
+        footer strong { color:white; }
     </style>
 </head>
 <body>
@@ -38,91 +42,50 @@
             <a href="index.html">🏠 මුල් පිටුවට</a>
         </div>
     </header>
+
     <div class="container">
-
-
-
-
-
-        <!-- ********************************************************************* -->
-        <!-- 1. පෙළපොත් (Textbooks) කාඩ්පත ආරම්භය -->
+        <!-- 1. පෙළපොත් (Textbooks) -->
         <div class="cat-box">
             <div class="cat-title">📘 පෙළපොත් (Textbooks)</div>
 
-
-
-
-
-            <!-- ========================================================= -->
-            <!-- ★ පෙළපොත 01 (Copy කරන්නේ නම් මෙතැන සිට පහළ රේඛාව තෙක් ගන්න) ★ -->
             <div class="pdf-row b-blue">
                 <div>
-                    <div class="pdf-name">7 ශ්‍රේණිය ගණිතය පෙළපොත - I සහ II කොටස් (සිංහල මාධ්‍ය)</div>
-                    <div class="pdf-info">PDF ගොනුව | Google Drive</div>
+                    <div class="pdf-name">7 ශ්‍රේණිය - ගණිතය පෙළපොත (I කොටස)</div>
+                    <div class="pdf-info">PDF ගොනුව | Google Drive (සිංහල මාධ්‍ය / English Medium)</div>
                 </div>
-                <a href="https://drive.google.com/file/d/1ykch7EBqj7T7HhUR7r3soxKNwpVGqyN6/view?usp=drive_link" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+                <div class="btn-group">
+                    <a href="සිංහල_මාධ්‍ය_I_GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 සිංහල මාධ්‍ය</a>
+                    <a href="ENGLISH_MEDIUM_I_GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn dl-btn-blue">📥 English Medium</a>
+                </div>
             </div>
-            <!-- ========================================================= -->
 
-
-
-
-
-            <!-- 🔽 අලුත් පෙළපොත් PDF මෙතැනට Paste කරන්න (පහළ </div> ටැගයට ඉහළින්) 🔽 -->
-
+            <div class="pdf-row b-blue">
+                <div>
+                    <div class="pdf-name">7 ශ්‍රේණිය - ගණිතය පෙළපොත (II කොටස)</div>
+                    <div class="pdf-info">PDF ගොනුව | Google Drive (සිංහල මාධ්‍ය / English Medium)</div>
+                </div>
+                <div class="btn-group">
+                    <a href="සිංහල_මාධ්‍ය_II_GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 සිංහල මාධ්‍ය</a>
+                    <a href="ENGLISH_MEDIUM_II_GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn dl-btn-blue">📥 English Medium</a>
+                </div>
+            </div>
         </div>
-        <!-- 1. පෙළපොත් (Textbooks) කාඩ්පත අවසානය -->
-        <!-- ********************************************************************* -->
 
-
-
-
-
-        <!-- ********************************************************************* -->
-        <!-- 2. වැඩපොත් (Workbooks) කාඩ්පත ආරම්භය -->
+        <!-- 2. වැඩපොත් (Workbooks) -->
         <div class="cat-box">
             <div class="cat-title">📙 වැඩපොත් (Workbooks)</div>
-
-
-
-
-
-            <!-- ========================================================= -->
-            <!-- ★ වැඩපොත 01 (මෙතැනට ඔබේ වැඩපොතේ Google Drive Link එක යොදන්න) ★ -->
             <div class="pdf-row b-green">
                 <div>
                     <div class="pdf-name">7 ශ්‍රේණිය ගණිතය අභ්‍යාස වැඩපොත - 01</div>
                     <div class="pdf-info">PDF ගොනුව | ගණිතගෙදර ප්‍රකාශන</div>
                 </div>
-                <a href="ඔබේ_වැඩපොතේ_GOOGLE_DRIVE_LINK_එක_මෙතැනට_PASTE_කරන්න" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
             </div>
-            <!-- ========================================================= -->
-
-
-
-
-
-            <!-- 🔽 අලුත් වැඩපොත් PDF මෙතැනට Paste කරන්න (පහළ </div> ටැගයට ඉහළින්) 🔽 -->
-
         </div>
-        <!-- 2. වැඩපොත් (Workbooks) කාඩ්පත අවසානය -->
-        <!-- ********************************************************************* -->
 
-
-
-
-
-        <!-- ********************************************************************* -->
-        <!-- 3. වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers) කාඩ්පත ආරම්භය -->
+        <!-- 3. වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers) -->
         <div class="cat-box">
             <div class="cat-title">📝 වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers)</div>
-
-
-
-
-
-            <!-- ========================================================= -->
-            <!-- ★ ප්‍රශ්න පත්‍රය 01 ★ -->
             <div class="pdf-row b-red">
                 <div>
                     <div class="pdf-name">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
@@ -130,57 +93,12 @@
                 </div>
                 <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
             </div>
-            <!-- ========================================================= -->
-
-
-
-
-
-            <!-- 🔽 අලුත් ප්‍රශ්න පත්‍ර PDF මෙතැනට Paste කරන්න (පහළ </div> ටැගයට ඉහළින්) 🔽 -->
-
         </div>
-        <!-- 3. වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers) කාඩ්පත අවසානය -->
-        <!-- ********************************************************************* -->
-
-
-
-
-
-        <!-- ********************************************************************* -->
-        <!-- 4. විශේෂ නිබන්ධන (Special Tutorials) කාඩ්පත ආරම්භය -->
-        <div class="cat-box">
-            <div class="cat-title">📑 විශේෂ නිබන්ධන (Special Tutorials)</div>
-
-
-
-
-
-            <!-- ========================================================= -->
-            <!-- ★ නිබන්ධනය 01 ★ -->
-            <div class="pdf-row b-gold">
-                <div>
-                    <div class="pdf-name">සදිශ සංඛ්‍යා සහ වීජීය ප්‍රකාශන නිබන්ධනය</div>
-                    <div class="pdf-info">විශේෂ පුනරීක්ෂණ PDF</div>
-                </div>
-                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
-            </div>
-            <!-- ========================================================= -->
-
-
-
-
-
-            <!-- 🔽 අලුත් නිබන්ධන PDF මෙතැනට Paste කරන්න (පහළ </div> ටැගයට ඉහළින්) 🔽 -->
-
-        </div>
-        <!-- 4. විශේෂ නිබන්ධන (Special Tutorials) කාඩ්පත අවසානය -->
-        <!-- ********************************************************************* -->
-
-
-
-
-
     </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>ගණිතගෙදර (Ganitha Gedara)</strong> - රොෂාන් මාරඹගේ. සියලුම හිමිකම් ඇවිරිණි.</p>
+    </footer>
     <script src="news.js"></script>
 </body>
 </html>
