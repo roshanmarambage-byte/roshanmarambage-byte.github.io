@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8 ශ්‍රේණිය - Interactive Quizzes & Google Forms | ගණිත ගෙදර</title>
+    <title>8 ශ්‍රේණිය - ගණිතය PDF සම්පත් | ගණිතගෙදර</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
-        body { background:var(--light); color:#1e293b; }
+        body { background:var(--light); color:#1e293b; line-height:1.6; }
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2.2rem 1rem; border-bottom:4px solid var(--accent); }
         header h1 { font-size:1.65rem; }
         .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
@@ -17,50 +17,77 @@
         .container { max-width:900px; margin:2rem auto; padding:0 1.25rem; }
         .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); }
         .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; }
-        .quiz-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; transition:transform 0.15s; }
-        .quiz-row:last-child { margin-bottom:0; }
-        .quiz-row:hover { transform:translateX(4px); background:#f1f5f9; }
-        .b-gold { border-left:4px solid #d97706; }
-        .b-purple { border-left:4px solid #6d28d9; }
-        .quiz-name { font-weight:700; font-size:1rem; color:var(--dark); }
-        .quiz-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .btn { color:white; text-decoration:none; padding:0.5rem 1.1rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:opacity 0.2s; }
-        .btn:hover { opacity:0.9; }
-        .btn-gold { background:#d97706; }
-        .btn-purple { background:#6d28d9; }
+        .pdf-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; border-left:4px solid var(--secondary); transition:transform 0.15s; }
+        .pdf-row:last-child { margin-bottom:0; }
+        .pdf-row:hover { transform:translateX(4px); background:#f1f5f9; }
+        .b-blue { border-left-color:#2563eb; }
+        .b-green { border-left-color:#16a34a; }
+        .b-red { border-left-color:#991b1b; }
+        .pdf-name { font-weight:700; font-size:1rem; color:var(--dark); }
+        .pdf-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
+        .btn-group { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
+        .dl-btn { background:var(--secondary); color:white; text-decoration:none; padding:0.52rem 1.05rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:0.2s; display:inline-flex; align-items:center; gap:0.35rem; }
+        .dl-btn:hover { background:var(--primary); }
+        .dl-btn-blue { background:#1d4ed8; }
+        .dl-btn-blue:hover { background:#1e3a8a; }
+        footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:1.75rem 1rem; font-size:0.9rem; margin-top:2rem; }
+        footer strong { color:white; }
     </style>
 </head>
 <body>
     <header>
-        <h1>📝 8 ශ්‍රේණිය - Interactive Quizzes & Google Forms</h1>
+        <h1>📚 8 ශ්‍රේණිය - ගණිතය PDF සම්පත් | ගණිතගෙදර</h1>
         <div class="nav-links">
-            <a href="quizzes.html">← ශ්‍රේණි ලැයිස්තුවට</a>
+            <a href="papers.html">← ශ්‍රේණි ලැයිස්තුවට</a>
             <a href="index.html">🏠 මුල් පිටුවට</a>
         </div>
     </header>
+
     <div class="container">
+        <!-- 1. පෙළපොත් (Textbooks) -->
         <div class="cat-box">
-            <div class="cat-title">🎮 Interactive HTML Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</div>
-            <div class="quiz-row b-gold">
+            <div class="cat-title">📘 පෙළපොත් (Textbooks)</div>
+
+            <div class="pdf-row b-blue">
                 <div>
-                    <div class="quiz-name">සාධක සෙවීම සහ ප්‍රතිශත - Interactive Quiz</div>
-                    <div class="quiz-info">පිළිතුරු සහ ලකුණු එසැණින් ලැබේ</div>
+                    <div class="pdf-name">8 ශ්‍රේණිය - ගණිතය පෙළපොත</div>
+                    <div class="pdf-info">සම්පූර්ණ PDF ගොනුව | Google Drive (සිංහල මාධ්‍ය / English Medium)</div>
                 </div>
-                <a href="INTERACTIVE_LINK_HERE" target="_blank" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</a>
+                <div class="btn-group">
+                    <a href="සිංහල_මාධ්‍ය_GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 සිංහල මාධ්‍ය</a>
+                    <a href="ENGLISH_MEDIUM_GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn dl-btn-blue">📥 English Medium</a>
+                </div>
             </div>
         </div>
 
+        <!-- 2. වැඩපොත් (Workbooks) -->
         <div class="cat-box">
-            <div class="cat-title">📋 Google Forms (මාර්ගගත ඇගයීම්)</div>
-            <div class="quiz-row b-purple">
+            <div class="cat-title">📙 වැඩපොත් (Workbooks)</div>
+            <div class="pdf-row b-green">
                 <div>
-                    <div class="quiz-name">සරල රේඛීය තල රූප සහ කෝණ ඇගයීම</div>
-                    <div class="quiz-info">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
+                    <div class="pdf-name">8 ශ්‍රේණිය ගණිතය අභ්‍යාස වැඩපොත - 01</div>
+                    <div class="pdf-info">PDF ගොනුව | ගණිතගෙදර ප්‍රකාශන</div>
                 </div>
-                <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-purple">✍️ Form එකට පිවිසෙන්න</a>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+            </div>
+        </div>
+
+        <!-- 3. වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers) -->
+        <div class="cat-box">
+            <div class="cat-title">📝 වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers)</div>
+            <div class="pdf-row b-red">
+                <div>
+                    <div class="pdf-name">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
+                    <div class="pdf-info">I සහ II පත්‍රය | පිළිතුරු පත්‍රය සහිතයි</div>
+                </div>
+                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>ගණිතගෙදර (Ganitha Gedara)</strong> - රොෂාන් මාරඹගේ. සියලුම හිමිකම් ඇවිරිණි.</p>
+    </footer>
     <script src="news.js"></script>
 </body>
 </html>
