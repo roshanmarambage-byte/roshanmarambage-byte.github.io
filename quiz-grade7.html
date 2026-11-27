@@ -20,7 +20,7 @@
         .nav-links a, .nav-links button { background:transparent; color:#fcd34d; text-decoration:none; font-size:0.9rem; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; cursor:pointer; }
         .nav-links a:hover, .nav-links button:hover { background:var(--accent); color:var(--dark); }
 
-        .container { max-width:920px; margin:2rem auto; padding:0 1.25rem; }
+        .container { max-width:940px; margin:2rem auto; padding:0 1.25rem; }
 
         /* Menu View Cards */
         .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #e2e8f0; }
@@ -32,16 +32,23 @@
         .b-purple { border-left:4px solid #6d28d9; }
         .quiz-name { font-weight:700; font-size:1rem; color:var(--dark); }
         .quiz-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .btn { border:none; color:white; text-decoration:none; padding:0.55rem 1.15rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:opacity 0.2s; display:inline-block; cursor:pointer; }
+        .btn-group { display:flex; gap:0.5rem; flex-wrap:wrap; }
+        .btn { border:none; color:white; text-decoration:none; padding:0.55rem 1.05rem; border-radius:6px; font-weight:700; font-size:0.86rem; white-space:nowrap; transition:opacity 0.2s; display:inline-block; cursor:pointer; }
         .btn:hover { opacity:0.9; }
         .btn-gold { background:#d97706; }
+        .btn-blue { background:#1d4ed8; }
         .btn-purple { background:#6d28d9; }
 
         /* Digital Root Interactive Section (Hidden Initially) */
         #digitalRootView { display:none; }
         .dr-card { background:white; border-radius:14px; padding:1.5rem; box-shadow:0 4px 20px rgba(0,0,0,0.06); border:1px solid #e2e8f0; }
         .dr-header-bar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:2px solid #e2e8f0; }
-        .dr-heading { font-size:1.25rem; font-weight:800; color:var(--primary); }
+        .dr-heading { font-size:1.22rem; font-weight:800; color:var(--primary); }
+
+        /* Language Switcher Inside Quiz */
+        .lang-switch { display:inline-flex; background:#f1f5f9; padding:3px; border-radius:8px; border:1px solid #cbd5e1; }
+        .lang-btn { border:none; background:transparent; padding:0.35rem 0.85rem; border-radius:6px; font-size:0.84rem; font-weight:700; color:#475569; cursor:pointer; transition:0.2s; }
+        .lang-btn.active { background:var(--dark); color:white; }
         
         .dr-status-bar { position:sticky; top:10px; z-index:40; background:white; border:2px solid #cbd5e1; border-left:5px solid var(--primary); border-radius:10px; padding:0.8rem 1rem; margin-bottom:1.25rem; box-shadow:0 6px 18px rgba(15,23,42,0.08); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; }
         .dr-timers { display:flex; flex-wrap:wrap; gap:0.6rem; }
@@ -54,9 +61,9 @@
         .dr-tab-btn { background:white; border:2px solid #cbd5e1; border-radius:8px; padding:0.6rem 0.5rem; font-weight:700; font-size:0.88rem; color:#334155; cursor:pointer; transition:0.2s; text-align:center; }
         .dr-tab-btn:hover { border-color:var(--primary); background:#fef2f2; }
         .dr-tab-btn.active { background:var(--primary); border-color:var(--primary); color:white; }
-        .dr-tab-sub { display:block; font-size:0.73rem; font-weight:600; opacity:0.9; }
+        .dr-tab-sub { display:block; font-size:0.73rem; font-weight:600; opacity:0.9; margin-top:2px; }
 
-        .dr-hint { background:#eff6ff; border-left:4px solid #2563eb; padding:0.7rem 1rem; border-radius:6px; font-size:0.86rem; color:#1e3a8a; margin-bottom:1.25rem; font-weight:600; }
+        .dr-hint { background:#eff6ff; border-left:4px solid #2563eb; padding:0.75rem 1rem; border-radius:6px; font-size:0.86rem; color:#1e3a8a; margin-bottom:1.25rem; font-weight:600; }
 
         .dr-table { width:100%; border-collapse:collapse; background:white; margin-bottom:1.25rem; }
         .dr-table th { background:var(--dark); color:white; padding:0.8rem 0.5rem; font-size:0.95rem; text-align:center; border:1px solid #334155; }
@@ -79,8 +86,8 @@
         .dr-btn:hover { opacity:0.92; }
         .dr-btn-check { background:#16a34a; }
         .dr-btn-recheck { background:#d97706; }
-        .dr-btn-new { background:#2563eb; font-size:0.85rem; padding:0.5rem 1rem; }
-        .dr-btn-back { background:#475569; font-size:0.85rem; padding:0.5rem 1rem; }
+        .dr-btn-new { background:#2563eb; font-size:0.85rem; padding:0.45rem 0.9rem; }
+        .dr-btn-back { background:#475569; font-size:0.85rem; padding:0.45rem 0.9rem; }
 
         .dr-summary { display:none; margin-top:1.25rem; background:#f0fdf4; border:2px solid #16a34a; border-radius:10px; padding:1.15rem; text-align:center; }
         .dr-summary.has-errors { background:#fffbeb; border-color:#f59e0b; }
@@ -120,9 +127,12 @@
                 <div class="quiz-row b-gold">
                     <div>
                         <div class="quiz-name">ඉලක්කම් දර්ශකය සොයමු (Let's find Digital Root)</div>
-                        <div class="quiz-info">වගු 5 (ප්‍රශ්න 100) | කාලය මැනීම සහ වැරදි නිවැරදි කිරීමේ කාලය සමඟ | ගණිතගෙදර</div>
+                        <div class="quiz-info">වගු 5 (ප්‍රශ්න 100) | සිංහල & English මාධ්‍ය | කාලය මැනීම සහ වැරදි නිවැරදි කිරීමේ කාලය සමඟ | ගණිතගෙදර</div>
                     </div>
-                    <button onclick="openDigitalRoot()" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</button>
+                    <div class="btn-group">
+                        <button onclick="openDigitalRoot('si')" class="btn btn-gold">🚀 සිංහල මාධ්‍ය</button>
+                        <button onclick="openDigitalRoot('en')" class="btn btn-blue">🌐 English Medium</button>
+                    </div>
                 </div>
 
                 <div class="quiz-row b-gold">
@@ -150,48 +160,44 @@
         <div id="digitalRootView">
             <div class="dr-card">
                 <div class="dr-header-bar">
-                    <div class="dr-heading">🔢 ඉලක්කම් දර්ශකය සොයමු (Let's find Digital Root)</div>
-                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                        <button class="dr-btn dr-btn-new" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
-                        <button class="dr-btn dr-btn-back" onclick="closeDigitalRoot()">🔙 පැවරුම් ලැයිස්තුවට</button>
+                    <div class="dr-heading" id="quizMainTitle">🔢 ඉලක්කම් දර්ශකය සොයමු (Let's find Digital Root)</div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                        <div class="lang-switch">
+                            <button class="lang-btn active" id="langBtnSi" onclick="setLanguage('si')">සිංහල</button>
+                            <button class="lang-btn" id="langBtnEn" onclick="setLanguage('en')">English</button>
+                        </div>
+                        <button class="dr-btn dr-btn-new" id="newSetBtn" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
+                        <button class="dr-btn dr-btn-back" id="backBtnTop" onclick="closeDigitalRoot()">🔙 පැවරුම් ලැයිස්තුවට</button>
                     </div>
                 </div>
 
                 <div class="dr-status-bar">
                     <div class="dr-timers">
                         <div class="dr-pill">
-                            <span>⏱️ මූලික කාලය:</span>
+                            <span id="lblInitialTime">⏱️ මූලික කාලය:</span>
                             <span id="initialTimeDisplay" class="dr-val">00 මි. 00 තත්.</span>
                         </div>
                         <div class="dr-pill corr" id="correctionPill" style="display:none;">
-                            <span>🔄 නිවැරදි කිරීමේ අතිරේක කාලය:</span>
+                            <span id="lblCorrectionTime">🔄 නිවැරදි කිරීමේ අතිරේක කාලය:</span>
                             <span id="correctionTimeDisplay" class="dr-val">00 මි. 00 තත්.</span>
                         </div>
                     </div>
                     <div class="dr-pill" style="background:#fef2f2; border:1px solid #fecaca;">
-                        <span>🎯 ලකුණු:</span>
+                        <span id="lblScore">🎯 ලකුණු:</span>
                         <span id="scoreDisplay" class="dr-val">0 / 20</span>
                     </div>
                 </div>
 
-                <div class="dr-tabs">
-                    <button class="dr-tab-btn active" onclick="switchTable(1)">1 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 2 සංඛ්‍යා</span></button>
-                    <button class="dr-tab-btn" onclick="switchTable(2)">2 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 3, 4 සංඛ්‍යා</span></button>
-                    <button class="dr-tab-btn" onclick="switchTable(3)">3 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 5 සංඛ්‍යා</span></button>
-                    <button class="dr-tab-btn" onclick="switchTable(4)">4 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 6, 7 සංඛ්‍යා</span></button>
-                    <button class="dr-tab-btn" onclick="switchTable(5)">5 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 8, 9 සංඛ්‍යා</span></button>
-                </div>
+                <div class="dr-tabs" id="quizTabsContainer"></div>
 
-                <div class="dr-hint" id="tableSubtitleHint">
-                    💡 <strong>1 වන වගුව - ඉලක්කම් 2 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.
-                </div>
+                <div class="dr-hint" id="tableSubtitleHint"></div>
 
                 <table class="dr-table">
                     <thead>
                         <tr>
-                            <th>අංකය</th>
-                            <th>සංඛ්‍යාව (Number)</th>
-                            <th>ඉලක්කම් දර්ශකය (Digital Root)</th>
+                            <th id="thNo">අංකය</th>
+                            <th id="thNumber">සංඛ්‍යාව (Number)</th>
+                            <th id="thRoot">ඉලක්කම් දර්ශකය (Digital Root)</th>
                         </tr>
                     </thead>
                     <tbody id="quizTableBody"></tbody>
@@ -199,26 +205,26 @@
 
                 <div class="dr-actions">
                     <button id="checkBtn" class="dr-btn dr-btn-check" onclick="checkAnswers()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
-                    <button class="dr-btn dr-btn-back" onclick="closeDigitalRoot()">🔙 ආපසු ලැයිස්තුවට</button>
+                    <button id="backBtnBottom" class="dr-btn dr-btn-back" onclick="closeDigitalRoot()">🔙 ආපසු ලැයිස්තුවට</button>
                 </div>
 
                 <div id="summaryBox" class="dr-summary">
                     <div class="dr-summary-title" id="summaryMessage">ප්‍රතිඵල වාර්තාව</div>
                     <div class="dr-summary-grid">
                         <div class="dr-stat">
-                            <div class="dr-stat-lbl">ලබාගත් ලකුණු</div>
+                            <div class="dr-stat-lbl" id="statLblScore">ලබාගත් ලකුණු</div>
                             <div class="dr-stat-val" id="statScore">0 / 20</div>
                         </div>
                         <div class="dr-stat">
-                            <div class="dr-stat-lbl">මූලික පිරවීමේ කාලය</div>
+                            <div class="dr-stat-lbl" id="statLblInit">මූලික පිරවීමේ කාලය</div>
                             <div class="dr-stat-val" id="statInitialTime">00 මි. 00 තත්.</div>
                         </div>
                         <div class="dr-stat">
-                            <div class="dr-stat-lbl">වැරදි නිවැරදි කිරීමේ කාලය</div>
+                            <div class="dr-stat-lbl" id="statLblCorr">වැරදි නිවැරදි කිරීමේ කාලය</div>
                             <div class="dr-stat-val" id="statCorrectionTime">00 මි. 00 තත්.</div>
                         </div>
                         <div class="dr-stat">
-                            <div class="dr-stat-lbl">මුළු ගත වූ කාලය</div>
+                            <div class="dr-stat-lbl" id="statLblTotal">මුළු ගත වූ කාලය</div>
                             <div class="dr-stat-val" id="statTotalTime">00 මි. 00 තත්.</div>
                         </div>
                     </div>
@@ -235,14 +241,96 @@
     <script src="news.js"></script>
 
     <script>
-        const TABLE_CONFIG = {
-            1: { title: "1 වන වගුව - ඉලක්කම් 2 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [2] },
-            2: { title: "2 වන වගුව - ඉලක්කම් 3 සහ 4 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [3, 4] },
-            3: { title: "3 වන වගුව - ඉලක්කම් 5 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [5] },
-            4: { title: "4 වන වගුව - ඉලක්කම් 6 සහ 7 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [6, 7] },
-            5: { title: "5 වන වගුව - ඉලක්කම් 8 සහ 9 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [8, 9] }
+        const UI_TEXT = {
+            si: {
+                mainTitle: "🔢 ඉලක්කම් දර්ශකය සොයමු (Let's find Digital Root)",
+                newSetBtn: "🔄 නව ප්‍රශ්න",
+                backBtnTop: "🔙 පැවරුම් ලැයිස්තුවට",
+                backBtnBottom: "🔙 ආපසු ලැයිස්තුවට",
+                lblInitialTime: "⏱️ මූලික කාලය:",
+                lblCorrectionTime: "🔄 නිවැරදි කිරීමේ අතිරේක කාලය:",
+                lblScore: "🎯 ලකුණු:",
+                thNo: "අංකය",
+                thNumber: "සංඛ්‍යාව (Number)",
+                thRoot: "ඉලක්කම් දර්ශකය (Digital Root)",
+                checkBtn: "✅ පිළිතුරු පරීක්ෂා කරන්න",
+                recheckBtn: "🔄 නිවැරදි කළ පිළිතුරු නැවත පරීක්ෂා කරන්න",
+                completedBtn: "🏆 සම්පූර්ණයි!",
+                statLblScore: "ලබාගත් ලකුණු",
+                statLblInit: "මූලික පිරවීමේ කාලය",
+                statLblCorr: "වැරදි නිවැරදි කිරීමේ කාලය",
+                statLblTotal: "මුළු ගත වූ කාලය",
+                minUnit: "මි.",
+                secUnit: "තත්.",
+                alertEmpty: (n) => `කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු ${n}ක් ඇත)`,
+                perfectMsg: "🎉 විශිෂ්ටයි! සියලුම පිළිතුරු 20 නිවැරදියි!",
+                errorMsg: (n) => `⚠️ වැරදි පිළිතුරු ${n}ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)`
+            },
+            en: {
+                mainTitle: "🔢 Let's Find the Digital Root - Interactive Quizzes",
+                newSetBtn: "🔄 New Questions",
+                backBtnTop: "🔙 Back to Menu",
+                backBtnBottom: "🔙 Back to Menu",
+                lblInitialTime: "⏱️ Initial Time:",
+                lblCorrectionTime: "🔄 Correction Time:",
+                lblScore: "🎯 Score:",
+                thNo: "No.",
+                thNumber: "Number",
+                thRoot: "Digital Root",
+                checkBtn: "✅ Check Answers",
+                recheckBtn: "🔄 Re-check Corrected Answers",
+                completedBtn: "🏆 Completed!",
+                statLblScore: "Score Obtained",
+                statLblInit: "Initial Completion Time",
+                statLblCorr: "Error Correction Time",
+                statLblTotal: "Total Time Taken",
+                minUnit: "m",
+                secUnit: "s",
+                alertEmpty: (n) => `Please enter answers for all 20 questions. (${n} blank box(es) remaining)`,
+                perfectMsg: "🎉 Excellent! All 20 answers are correct!",
+                errorMsg: (n) => `⚠️ You have ${n} incorrect answer(s). Fix them and check again (correction timer is running...)`
+            }
         };
 
+        const TABLE_CONFIG = {
+            1: {
+                tabSi: ["1 වන වගුව", "ඉලක්කම් 2 සංඛ්‍යා"],
+                tabEn: ["Table 1", "2-Digit Numbers"],
+                hintSi: "💡 <strong>1 වන වගුව - ඉලක්කම් 2 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Table 1 - 2-Digit Numbers (20 Questions):</strong> Add the digits of the number repeatedly until you get a single-digit number (1 to 9), then enter the Digital Root.",
+                digits: [2]
+            },
+            2: {
+                tabSi: ["2 වන වගුව", "ඉලක්කම් 3, 4 සංඛ්‍යා"],
+                tabEn: ["Table 2", "3 & 4-Digit Numbers"],
+                hintSi: "💡 <strong>2 වන වගුව - ඉලක්කම් 3 සහ 4 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Table 2 - 3 & 4-Digit Numbers (20 Questions):</strong> Add the digits of the number repeatedly until you get a single-digit number (1 to 9), then enter the Digital Root.",
+                digits: [3, 4]
+            },
+            3: {
+                tabSi: ["3 වන වගුව", "ඉලක්කම් 5 සංඛ්‍යා"],
+                tabEn: ["Table 3", "5-Digit Numbers"],
+                hintSi: "💡 <strong>3 වන වගුව - ඉලක්කම් 5 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Table 3 - 5-Digit Numbers (20 Questions):</strong> Add the digits of the number repeatedly until you get a single-digit number (1 to 9), then enter the Digital Root.",
+                digits: [5]
+            },
+            4: {
+                tabSi: ["4 වන වගුව", "ඉලක්කම් 6, 7 සංඛ්‍යා"],
+                tabEn: ["Table 4", "6 & 7-Digit Numbers"],
+                hintSi: "💡 <strong>4 වන වගුව - ඉලක්කම් 6 සහ 7 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Table 4 - 6 & 7-Digit Numbers (20 Questions):</strong> Add the digits of the number repeatedly until you get a single-digit number (1 to 9), then enter the Digital Root.",
+                digits: [6, 7]
+            },
+            5: {
+                tabSi: ["5 වන වගුව", "ඉලක්කම් 8, 9 සංඛ්‍යා"],
+                tabEn: ["Table 5", "8 & 9-Digit Numbers"],
+                hintSi: "💡 <strong>5 වන වගුව - ඉලක්කම් 8 සහ 9 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Table 5 - 8 & 9-Digit Numbers (20 Questions):</strong> Add the digits of the number repeatedly until you get a single-digit number (1 to 9), then enter the Digital Root.",
+                digits: [8, 9]
+            }
+        };
+
+        let currentLang = 'si';
         let currentTable = 1;
         let questions = [];
         let timerInterval = null;
@@ -250,10 +338,12 @@
         let correctionSeconds = 0;
         let phase = 'idle';
 
-        function openDigitalRoot() {
+        function openDigitalRoot(lang) {
+            currentLang = lang || 'si';
             document.getElementById('menuView').style.display = 'none';
             document.getElementById('digitalRootView').style.display = 'block';
             document.getElementById('headerBackToMenuBtn').style.display = 'inline-block';
+            applyLanguageUI();
             generateNewSet();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -266,15 +356,78 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function setLanguage(lang) {
+            if (currentLang === lang) return;
+            currentLang = lang;
+            applyLanguageUI();
+        }
+
+        function applyLanguageUI() {
+            const t = UI_TEXT[currentLang];
+            document.getElementById('langBtnSi').classList.toggle('active', currentLang === 'si');
+            document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
+
+            document.getElementById('quizMainTitle').textContent = t.mainTitle;
+            document.getElementById('newSetBtn').textContent = t.newSetBtn;
+            document.getElementById('backBtnTop').textContent = t.backBtnTop;
+            document.getElementById('backBtnBottom').textContent = t.backBtnBottom;
+            document.getElementById('lblInitialTime').textContent = t.lblInitialTime;
+            document.getElementById('lblCorrectionTime').textContent = t.lblCorrectionTime;
+            document.getElementById('lblScore').textContent = t.lblScore;
+            document.getElementById('thNo').textContent = t.thNo;
+            document.getElementById('thNumber').textContent = t.thNumber;
+            document.getElementById('thRoot').textContent = t.thRoot;
+
+            document.getElementById('statLblScore').textContent = t.statLblScore;
+            document.getElementById('statLblInit').textContent = t.statLblInit;
+            document.getElementById('statLblCorr').textContent = t.statLblCorr;
+            document.getElementById('statLblTotal').textContent = t.statLblTotal;
+
+            // Tabs යාවත්කාලීන කිරීම
+            const tabsHTML = [1, 2, 3, 4, 5].map(num => {
+                const tabInfo = currentLang === 'si' ? TABLE_CONFIG[num].tabSi : TABLE_CONFIG[num].tabEn;
+                const activeCls = num === currentTable ? 'active' : '';
+                return `<button class="dr-tab-btn ${activeCls}" onclick="switchTable(${num})">${tabInfo[0]}<span class="dr-tab-sub">${tabInfo[1]}</span></button>`;
+            }).join('');
+            document.getElementById('quizTabsContainer').innerHTML = tabsHTML;
+
+            document.getElementById('tableSubtitleHint').innerHTML =
+                currentLang === 'si' ? TABLE_CONFIG[currentTable].hintSi : TABLE_CONFIG[currentTable].hintEn;
+
+            const checkBtn = document.getElementById('checkBtn');
+            const summaryMsg = document.getElementById('summaryMessage');
+            let correctCount = 0;
+            for (let i = 0; i < 20; i++) {
+                const el = document.getElementById(`input-${i}`);
+                if (el && el.classList.contains('correct')) correctCount++;
+            }
+
+            if (phase === 'completed') {
+                checkBtn.textContent = t.completedBtn;
+                summaryMsg.textContent = t.perfectMsg;
+            } else if (phase === 'correction') {
+                checkBtn.textContent = t.recheckBtn;
+                summaryMsg.textContent = t.errorMsg(20 - correctCount);
+            } else {
+                checkBtn.textContent = t.checkBtn;
+            }
+
+            updateTimerUI();
+        }
+
         function formatTime(totalSec) {
+            const t = UI_TEXT[currentLang];
             const mins = Math.floor(totalSec / 60);
             const secs = totalSec % 60;
-            return `${String(mins).padStart(2, '0')} මි. ${String(secs).padStart(2, '0')} තත්.`;
+            return `${String(mins).padStart(2, '0')} ${t.minUnit} ${String(secs).padStart(2, '0')} ${t.secUnit}`;
         }
 
         function updateTimerUI() {
             document.getElementById('initialTimeDisplay').textContent = formatTime(initialSeconds);
             document.getElementById('correctionTimeDisplay').textContent = formatTime(correctionSeconds);
+            document.getElementById('statInitialTime').textContent = formatTime(initialSeconds);
+            document.getElementById('statCorrectionTime').textContent = formatTime(correctionSeconds);
+            document.getElementById('statTotalTime').textContent = formatTime(initialSeconds + correctionSeconds);
         }
 
         function startTimerIfNeeded() {
@@ -320,11 +473,7 @@
 
         function switchTable(tableNum) {
             currentTable = tableNum;
-            document.querySelectorAll('.dr-tab-btn').forEach((btn, idx) => {
-                btn.classList.toggle('active', idx + 1 === tableNum);
-            });
-            document.getElementById('tableSubtitleHint').innerHTML =
-                `💡 <strong>${TABLE_CONFIG[tableNum].title}:</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.`;
+            applyLanguageUI();
             generateNewSet();
         }
 
@@ -335,12 +484,13 @@
             phase = 'idle';
             updateTimerUI();
 
+            const t = UI_TEXT[currentLang];
             document.getElementById('correctionPill').style.display = 'none';
             document.getElementById('summaryBox').style.display = 'none';
             document.getElementById('scoreDisplay').textContent = '0 / 20';
 
             const checkBtn = document.getElementById('checkBtn');
-            checkBtn.textContent = '✅ පිළිතුරු පරීක්ෂා කරන්න';
+            checkBtn.textContent = t.checkBtn;
             checkBtn.className = 'dr-btn dr-btn-check';
 
             const cfg = TABLE_CONFIG[currentTable];
@@ -411,12 +561,13 @@
         }
 
         function checkAnswers() {
+            const t = UI_TEXT[currentLang];
             let emptyCount = 0;
             for (let i = 0; i < 20; i++) {
                 if (!document.getElementById(`input-${i}`).value.trim()) emptyCount++;
             }
             if (emptyCount > 0) {
-                alert(`කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු ${emptyCount}ක් ඇත)`);
+                alert(t.alertEmpty(emptyCount));
                 for (let i = 0; i < 20; i++) {
                     if (!document.getElementById(`input-${i}`).value.trim()) {
                         document.getElementById(`input-${i}`).focus();
@@ -456,8 +607,8 @@
                 phase = 'completed';
                 summaryBox.style.display = 'block';
                 summaryBox.classList.remove('has-errors');
-                summaryMsg.textContent = '🎉 විශිෂ්ටයි! සියලුම පිළිතුරු 20 නිවැරදියි!';
-                checkBtn.textContent = '🏆 සම්පූර්ණයි!';
+                summaryMsg.textContent = t.perfectMsg;
+                checkBtn.textContent = t.completedBtn;
                 checkBtn.className = 'dr-btn dr-btn-check';
             } else {
                 if (phase === 'initial' || phase === 'idle') {
@@ -467,8 +618,8 @@
                 }
                 summaryBox.style.display = 'block';
                 summaryBox.classList.add('has-errors');
-                summaryMsg.textContent = `⚠️ වැරදි පිළිතුරු ${20 - correctCount}ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)`;
-                checkBtn.textContent = '🔄 නිවැරදි කළ පිළිතුරු නැවත පරීක්ෂා කරන්න';
+                summaryMsg.textContent = t.errorMsg(20 - correctCount);
+                checkBtn.textContent = t.recheckBtn;
                 checkBtn.className = 'dr-btn dr-btn-recheck';
 
                 for (let i = 0; i < 20; i++) {
@@ -482,9 +633,7 @@
             }
 
             document.getElementById('statScore').textContent = `${correctCount} / 20`;
-            document.getElementById('statInitialTime').textContent = formatTime(initialSeconds);
-            document.getElementById('statCorrectionTime').textContent = formatTime(correctionSeconds);
-            document.getElementById('statTotalTime').textContent = formatTime(initialSeconds + correctionSeconds);
+            updateTimerUI();
         }
     </script>
 </body>
