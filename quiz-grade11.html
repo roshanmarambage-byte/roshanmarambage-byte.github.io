@@ -3,64 +3,1376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>11 ශ්‍රේණිය (O/L) - Interactive Quizzes & Google Forms | ගණිත ගෙදර</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>11 ශ්‍රේණිය - හීන වන ශේෂය | වල්ගම - ගණිතගෙදර</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
-        body { background:var(--light); color:#1e293b; }
-        header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2.2rem 1rem; border-bottom:4px solid var(--accent); }
-        header h1 { font-size:1.65rem; }
-        .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
-        .nav-links a { color:#fcd34d; text-decoration:none; font-size:0.9rem; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; }
-        .nav-links a:hover { background:var(--accent); color:var(--dark); }
-        .container { max-width:900px; margin:2rem auto; padding:0 1.25rem; }
-        .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); }
-        .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; }
-        .quiz-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; transition:transform 0.15s; }
-        .quiz-row:last-child { margin-bottom:0; }
-        .quiz-row:hover { transform:translateX(4px); background:#f1f5f9; }
-        .b-gold { border-left:4px solid #d97706; }
-        .b-purple { border-left:4px solid #6d28d9; }
-        .quiz-name { font-weight:700; font-size:1rem; color:var(--dark); }
-        .quiz-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .btn { color:white; text-decoration:none; padding:0.5rem 1.1rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:opacity 0.2s; }
-        .btn:hover { opacity:0.9; }
-        .btn-gold { background:#d97706; }
-        .btn-purple { background:#6d28d9; }
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent-color: #dc2626;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --success-bg: #dcfce7;
+            --success-border: #16a34a;
+            --success-text: #15803d;
+            --error-bg: #fee2e2;
+            --error-border: #dc2626;
+            --error-text: #b91c1c;
+            --hint-bg: #fffbeb;
+            --hint-border: #f59e0b;
+            --hint-text: #92400e;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.7;
+            padding: 20px 15px;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        /* Header Styling */
+        .quiz-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 26px 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
+            margin-bottom: 20px;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        .quiz-header .author {
+            font-size: 1.02rem;
+            font-weight: 600;
+            color: #93c5fd;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .quiz-header .institute {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .quiz-header .grade-subject {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 4px 18px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header .share-note {
+            font-size: 0.92rem;
+            color: #e2e8f0;
+            font-style: italic;
+        }
+
+        /* Problem Selector Grid */
+        .selector-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .medium-group-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .tabs-grid:last-child {
+            margin-bottom: 0;
+        }
+
+        .prob-tab {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .prob-tab:hover {
+            border-color: var(--primary-light);
+            background: #eff6ff;
+        }
+
+        .prob-tab.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
+        }
+
+        .prob-tab.en-tab.active {
+            background: #0f766e;
+            border-color: #0f766e;
+        }
+
+        .prob-tab-num {
+            font-size: 0.8rem;
+            font-weight: 800;
+            opacity: 0.85;
+            display: block;
+        }
+
+        .prob-tab-name {
+            font-size: 0.92rem;
+            font-weight: 700;
+            display: block;
+            line-height: 1.35;
+        }
+
+        /* Sticky Timer & Score Bar */
+        .status-bar {
+            position: sticky;
+            top: 10px;
+            z-index: 50;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-left: 6px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .status-pill {
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-val {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .btn-random-top {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .btn-random-top:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+
+        /* Problem Statement Card */
+        .problem-card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--primary-color);
+        }
+
+        .problem-header-flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .problem-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .problem-text {
+            font-size: 1.08rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            background-color: #f8fafc;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 3px;
+            line-height: 1.1;
+            font-size: 0.92em;
+            font-weight: 700;
+        }
+
+        .fraction .num {
+            border-bottom: 1.5px solid var(--text-dark);
+            padding: 0 3px;
+        }
+
+        .fraction .den {
+            padding: 0 3px;
+        }
+
+        .instruction-note {
+            margin-top: 12px;
+            font-size: 0.94rem;
+            color: #1e40af;
+            background-color: #eff6ff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+            font-weight: 600;
+        }
+
+        /* Question Card */
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .question-card.active-q {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .q-header-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .question-text {
+            font-size: 1.06rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex: 1;
+        }
+
+        .q-timer-badge {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .q-timer-badge.running {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+        }
+
+        .q-timer-badge.done {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #15803d;
+        }
+
+        /* Short Answer Input Field */
+        .short-answer-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 360px;
+        }
+
+        .currency-prefix, .unit-suffix {
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            background-color: #eff6ff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid #bfdbfe;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .short-answer-input {
+            width: 100%;
+            font-family: inherit;
+            font-size: 1.08rem;
+            font-weight: 600;
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-dark);
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .short-answer-input:focus {
+            background-color: #ffffff;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .short-answer-input.input-correct {
+            border-color: var(--success-border) !important;
+            background-color: var(--success-bg) !important;
+            color: var(--success-text) !important;
+        }
+
+        .short-answer-input.input-wrong {
+            border-color: var(--error-border) !important;
+            background-color: var(--error-bg) !important;
+            color: var(--error-text) !important;
+        }
+
+        /* Feedback, Hint & Explanation Box */
+        .explanation-box {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 0.96rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .explanation-box.show {
+            display: block;
+        }
+
+        .explanation-box.is-correct {
+            background-color: #f0fdf4;
+            border-left: 5px solid var(--success-border);
+        }
+
+        .explanation-box.is-hint {
+            background-color: var(--hint-bg);
+            border-left: 5px solid var(--hint-border);
+            color: var(--hint-text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-weight: 800;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .status-badge.correct {
+            color: var(--success-text);
+        }
+
+        .status-badge.wrong {
+            color: var(--error-text);
+        }
+
+        .hint-title {
+            font-weight: 700;
+            color: #b45309;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* Buttons */
+        .actions-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 26px 0;
+        }
+
+        .btn {
+            font-family: inherit;
+            font-size: 1.02rem;
+            font-weight: 700;
+            padding: 13px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-submit {
+            background-color: #16a34a;
+            color: #ffffff;
+        }
+
+        .btn-submit:hover {
+            background-color: #15803d;
+            transform: translateY(-2px);
+        }
+
+        .btn-recheck {
+            background-color: #d97706;
+            color: #ffffff;
+        }
+
+        .btn-recheck:hover {
+            background-color: #b45309;
+            transform: translateY(-2px);
+        }
+
+        .btn-random {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-random:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background-color: #475569;
+            color: #ffffff;
+        }
+
+        .btn-reset:hover {
+            background-color: #334155;
+            transform: translateY(-2px);
+        }
+
+        /* Score Card */
+        .score-card {
+            display: none;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 2px solid var(--success-border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 20px -5px rgba(22, 163, 74, 0.15);
+        }
+
+        .score-card.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .score-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--success-text);
+            margin-bottom: 6px;
+        }
+
+        .score-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .score-message {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .alert-msg {
+            display: none;
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .quiz-header .institute { font-size: 1.5rem; }
+            .short-answer-group { max-width: 100%; }
+            .btn { width: 100%; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>📝 11 ශ්‍රේණිය (O/L) - Interactive Quizzes & Google Forms</h1>
-        <div class="nav-links">
-            <a href="quizzes.html">← ශ්‍රේණි ලැයිස්තුවට</a>
-            <a href="index.html">🏠 මුල් පිටුවට</a>
-        </div>
-    </header>
-    <div class="container">
-        <div class="cat-box">
-            <div class="cat-title">🎮 Interactive HTML Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</div>
-            <div class="quiz-row b-gold">
-                <div>
-                    <div class="quiz-name">පරාවලයික ප්‍රස්තාර සහ ත්‍රිකෝණමිතිය - Interactive Quiz</div>
-                    <div class="quiz-info">පිළිතුරු සහ ලකුණු එසැණින් ලැබේ</div>
-                </div>
-                <a href="INTERACTIVE_LINK_HERE" target="_blank" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</a>
-            </div>
-        </div>
 
-        <div class="cat-box">
-            <div class="cat-title">📋 Google Forms (මාර්ගගත ඇගයීම්)</div>
-            <div class="quiz-row b-purple">
-                <div>
-                    <div class="quiz-name">O/L I පත්‍රය - කෙටි ප්‍රශ්න 25 ඇගයීම</div>
-                    <div class="quiz-info">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
-                </div>
-                <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-purple">✍️ Form එකට පිවිසෙන්න</a>
+<div class="container">
+    <!-- Header -->
+    <header class="quiz-header">
+        <div class="author">සැකසුම: රොෂාන් මාරඹගේ | Prepared by: Roshan Marambage</div>
+        <div class="institute">වල්ගම - ගණිතගෙදර (Walgama - Ganithagedara)</div>
+        <div class="grade-subject">11 ශ්‍රේණිය - ගණිතය | Grade 11 - Mathematics</div>
+        <div class="share-note">(ඔබේ මිතුරන් අතර මෙම ප්‍රශ්නාවලීන් බෙදාහරිමින් ඔවුන්ටද අත්වැලක් වන්න.)</div>
+    </header>
+
+    <!-- Problem Selector -->
+    <div class="selector-card">
+        <div class="medium-group-title">🇱🇰 සිංහල මාධ්‍ය ගැටළු (1 - 4)</div>
+        <div class="tabs-grid" id="siTabs"></div>
+
+        <div class="medium-group-title" style="color:#0f766e; margin-top:12px;">🌐 English Medium Problems (5 - 8)</div>
+        <div class="tabs-grid" id="enTabs"></div>
+    </div>
+
+    <!-- Sticky Timer & Score Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <div class="status-pill">
+                <span id="lblTotalTime">⏱️ මුළු ගත වූ කාලය:</span>
+                <span class="status-val" id="totalTimeDisplay">00 මි. 00 තත්.</span>
+            </div>
+            <div class="status-pill" style="background:#fef2f2; border:1px solid #fecaca;">
+                <span id="lblScore">🎯 ලකුණු:</span>
+                <span class="status-val" id="liveScoreDisplay">0 / 5</span>
             </div>
         </div>
+        <button type="button" class="btn-random-top" id="topRandomBtn" onclick="randomizeCurrentProblem()">🎲 සංඛ්‍යා වෙනස් කරන්න</button>
     </div>
-    <script src="news.js"></script>
+
+    <!-- Problem Statement -->
+    <section class="problem-card">
+        <div class="problem-header-flex">
+            <div class="problem-title" id="problemTitle"></div>
+        </div>
+        <div class="problem-text" id="problemText"></div>
+        <div class="instruction-note" id="instructionNote"></div>
+    </section>
+
+    <!-- Score Summary Box -->
+    <div id="scoreCard" class="score-card">
+        <div class="score-title" id="scoreTitle"></div>
+        <div id="scoreValue" class="score-value"></div>
+        <div id="scoreMessage" class="score-message"></div>
+    </div>
+
+    <!-- Alert Message for Empty Inputs -->
+    <div id="alertMsg" class="alert-msg"></div>
+
+    <!-- Quiz Form -->
+    <form id="quizForm" onsubmit="return false;">
+        <div id="questionsContainer"></div>
+
+        <!-- Action Buttons -->
+        <div class="actions-bar">
+            <button type="button" class="btn btn-submit" id="submitBtn" onclick="checkAnswers()"></button>
+            <button type="button" class="btn btn-random" id="bottomRandomBtn" onclick="randomizeCurrentProblem()"></button>
+            <button type="button" class="btn btn-reset" id="resetBtn" onclick="resetCurrentAnswers()"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function fmtNum(n) {
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    function pick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // සෑම ගැටළුවක් සඳහාම 100% පූර්ණ සංඛ්‍යාමය පිළිතුරු ලැබෙන පරිදි සසම්භාවී (Random) දත්ත ජනනය කිරීම
+    function generateProblemData(probIndex, useDefault) {
+        // 0: Sinhala Prob 1 (Teacher Loan - Instalment), 4: English Prob 5
+        if (probIndex === 0 || probIndex === 4) {
+            const isEn = (probIndex === 4);
+            let salary, mult, years, rate;
+            if (useDefault) {
+                salary = 48000; mult = 8; years = 4; rate = 6;
+            } else {
+                // මාස ගණන = years * 12. ණය මුදල = salary * mult.
+                // මාසික ණය කොටස (P_m) සහ මාස 1 පොලිය = P_m * rate / 1200 පූර්ණ සංඛ්‍යා වීමට:
+                years = pick([2, 3, 4, 5]);
+                const months = years * 12;
+                rate = pick([6, 8, 9, 10, 12, 15]);
+                mult = pick([6, 8, 10]);
+                // salary * mult යනු months * 1200 හි සාධක සමග බෙදෙන පරිදි salary තෝරා ගැනීම
+                const baseUnit = pick([3000, 4500, 6000, 7500, 9000, 12000]);
+                salary = baseUnit * (years === 5 ? 5 : years);
+            }
+
+            const loan = salary * mult;
+            const months = years * 12;
+            const monthlyLoan = loan / months;
+            const interestPerUnit = (monthlyLoan * rate) / 1200;
+            const monthUnits = (months * (months + 1)) / 2;
+            const totalInterest = interestPerUnit * monthUnits;
+            const totalPayable = loan + totalInterest;
+            const instalment = totalPayable / months;
+
+            const multWordSi = { 6: "හය", 8: "අට", 10: "දහ" }[mult] || mult;
+            const multWordEn = { 6: "six", 8: "eight", 10: "ten" }[mult] || mult;
+
+            return {
+                title: isEn
+                    ? "📘 Problem 05 (Calculating Loan Instalment under the Reducing Balance Method)"
+                    : "📘 ගැටළුව 01 (හීන වන ශේෂ ක්‍රමය යටතේ ණය පොලිය සහ වාරිකය ගණනය කිරීම)",
+                text: isEn
+                    ? `A teacher can obtain a loan from a state bank equal to ${multWordEn} times his monthly salary at an annual interest rate of ${rate}%, and the loan must be repaid in equal monthly instalments within ${years} years. Kamal's monthly salary is Rs. ${fmtNum(salary)}.`
+                    : `රාජ්‍ය බැංකුවකින් ගුරුවරයෙකුට තම මාසික වැටුප මෙන් ${multWordSi} ගුණයක මුදලක් ${rate}% ක වාර්ෂික පොලී අනුපාතිකයක් යටතේ ණය මුදලක් ලෙස ලබාගත හැකි අතර, එම ණය මුදල සමාන මාසික වාරික ලෙස වසර ${years}ක් තුළ ගෙවා නිම කළ යුතු ය. කමල්ගේ මාසික වැටුප රුපියල් ${fmtNum(salary)} ක් වේ.`,
+                questions: [
+                    {
+                        text: isEn ? "(i) What is the loan amount that Kamal can obtain?" : "(i) කමල්ට ලබා ගත හැකි ණය මුදල කොපමණ ද?",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: loan,
+                        hint: isEn
+                            ? `💡 Hint: Multiply Kamal's monthly salary (Rs. ${fmtNum(salary)}) by ${mult}.`
+                            : `💡 ඉඟිය: කමල්ගේ මාසික වැටුප (රු. ${fmtNum(salary)}) ${mult} න් ගුණ කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Loan amount = Rs. ${fmtNum(salary)} × ${mult} = <strong>Rs. ${fmtNum(loan)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>ණය මුදල = රු. ${fmtNum(salary)} × ${mult} = <strong>රු. ${fmtNum(loan)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(ii) In how many months must the loan be repaid?" : "(ii) ණය මුදල ගෙවීමට දී ඇති කාලය මාස කීය ද?",
+                        prefix: "", suffix: "",
+                        correctValue: months,
+                        hint: isEn
+                            ? `💡 Hint: Multiply ${years} years by 12 months per year (${years} × 12).`
+                            : `💡 ඉඟිය: වසරකට මාස 12 ක් බැගින් වසර ${years} කට ඇති මාස ගණන සොයන්න (${years} × 12).`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Number of months = ${years} × 12 = <strong>${months} months</strong>`
+                            : `<strong>විසඳුම:</strong><br>මාස ගණන = වසර ${years} × 12 = <strong>මාස ${months}</strong>`
+                    },
+                    {
+                        text: isEn ? "(iii) If interest on the loan is charged under the reducing balance method, calculate the total interest payable." : "(iii) ණය සඳහා පොලිය අය කරනු ලබන්නේ හීන වන ශේෂ ක්‍රමයට නම් ගෙවිය යුතු මුළු පොලිය ගණනය කරන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: totalInterest,
+                        hint: isEn
+                            ? `💡 Hint: Monthly loan portion = ${fmtNum(loan)} ÷ ${months} = Rs. ${fmtNum(monthlyLoan)}. Interest for 1 month unit = ${fmtNum(monthlyLoan)} × (${rate}/100) × (1/12) = Rs. ${fmtNum(interestPerUnit)}. Multiply by month units (${months} × ${months + 1} ÷ 2 = ${fmtNum(monthUnits)}).`
+                            : `💡 ඉඟිය: මාසික ණය කොටස = ${fmtNum(loan)} ÷ ${months} = රු. ${fmtNum(monthlyLoan)}. මාස 1ක පොලිය = ${fmtNum(monthlyLoan)} × (${rate}/100) × (1/12) = රු. ${fmtNum(interestPerUnit)}. එය මාස ඒකක ගණනින් (${months} × ${months + 1} ÷ 2 = ${fmtNum(monthUnits)}) ගුණ කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>• Monthly loan portion = ${fmtNum(loan)} ÷ ${months} = Rs. ${fmtNum(monthlyLoan)}<br>• Interest per month unit = ${fmtNum(monthlyLoan)} × (${rate}/100) × (1/12) = Rs. ${fmtNum(interestPerUnit)}<br>• Month units = ${months} × ${months + 1} ÷ 2 = ${fmtNum(monthUnits)}<br>• Total interest = Rs. ${fmtNum(interestPerUnit)} × ${fmtNum(monthUnits)} = <strong>Rs. ${fmtNum(totalInterest)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>• මාසික ණය කොටස = ${fmtNum(loan)} ÷ ${months} = රු. ${fmtNum(monthlyLoan)}<br>• මාස ඒකකයකට පොලිය = ${fmtNum(monthlyLoan)} × (${rate}/100) × (1/12) = රු. ${fmtNum(interestPerUnit)}<br>• මාස ඒකක ගණන = ${months} × ${months + 1} ÷ 2 = ${fmtNum(monthUnits)}<br>• මුළු පොලිය = රු. ${fmtNum(interestPerUnit)} × ${fmtNum(monthUnits)} = <strong>රු. ${fmtNum(totalInterest)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(iv) Find the total amount to be paid to settle the loan under the reducing balance method." : "(iv) හීන වන ශේෂ ක්‍රමය යටතේ ණය පියවීම සඳහා ගෙවිය යුතු මුළු මුදල සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: totalPayable,
+                        hint: isEn
+                            ? `💡 Hint: Add the loan amount (Rs. ${fmtNum(loan)}) and the total interest (Rs. ${fmtNum(totalInterest)}).`
+                            : `💡 ඉඟිය: ණය මුදලට (රු. ${fmtNum(loan)}) මුළු පොලිය (රු. ${fmtNum(totalInterest)}) එකතු කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Total payable = Rs. ${fmtNum(loan)} + Rs. ${fmtNum(totalInterest)} = <strong>Rs. ${fmtNum(totalPayable)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>ගෙවිය යුතු මුළු මුදල = රු. ${fmtNum(loan)} + රු. ${fmtNum(totalInterest)} = <strong>රු. ${fmtNum(totalPayable)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(v) Find the value of a monthly instalment." : "(v) මාසික වාරිකයක අගය සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: instalment,
+                        hint: isEn
+                            ? `💡 Hint: Divide the total amount payable (Rs. ${fmtNum(totalPayable)}) by ${months} months.`
+                            : `💡 ඉඟිය: ගෙවිය යුතු මුළු මුදල (රු. ${fmtNum(totalPayable)}) මාස ${months} න් බෙදන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Monthly instalment = Rs. ${fmtNum(totalPayable)} ÷ ${months} = <strong>Rs. ${fmtNum(instalment)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>මාසික වාරිකය = රු. ${fmtNum(totalPayable)} ÷ ${months} = <strong>රු. ${fmtNum(instalment)}</strong>`
+                    }
+                ]
+            };
+        }
+
+        // 1: Sinhala Prob 2 (Motorcycle with down payment), 5: English Prob 6
+        if (probIndex === 1 || probIndex === 5) {
+            const isEn = (probIndex === 5);
+            let price, denom, years, rate;
+            if (useDefault) {
+                price = 840000; denom = 7; years = 3; rate = 9;
+            } else {
+                denom = pick([4, 5, 6, 7, 8]);
+                years = pick([2, 3, 4]);
+                rate = pick([6, 9, 12, 15]);
+                // remaining = price * (denom - 1) / denom.
+                // monthlyLoan = remaining / (years * 12) must be divisible by 400 (so * rate / 1200 is integer)
+                const monthlyLoan = pick([12000, 15000, 18000, 20000, 24000, 30000]);
+                const remaining = monthlyLoan * (years * 12);
+                // Ensure remaining is divisible by (denom - 1)
+                const remAdjusted = remaining * (denom - 1);
+                price = (remAdjusted / (denom - 1)) * denom;
+            }
+
+            const downPayment = price / denom;
+            const remaining = price - downPayment;
+            const months = years * 12;
+            const monthlyLoan = remaining / months;
+            const interestPerUnit = (monthlyLoan * rate) / 1200;
+            const monthUnits = (months * (months + 1)) / 2;
+            const totalInterest = interestPerUnit * monthUnits;
+            const totalPayable = remaining + totalInterest;
+            const instalment = totalPayable / months;
+
+            return {
+                title: isEn
+                    ? "📘 Problem 06 (Loan Instalment with a Down Payment under the Reducing Balance Method)"
+                    : "📘 ගැටළුව 02 (මූලික ගෙවීමක් සහිතව හීන වන ශේෂ ක්‍රමය යටතේ වාරිකය සෙවීම)",
+                text: isEn
+                    ? `When purchasing a motorcycle worth Rs. ${fmtNum(price)}, Sunil agreed to pay <span class='fraction'><span class='num'>1</span><span class='den'>${denom}</span></span> of its value as a down payment and repay the remaining balance in equal monthly instalments over ${years} years at an annual interest rate of ${rate}%.`
+                    : `රුපියල් ${fmtNum(price)} ක් වටිනා යතුරුපැදියක් මිලදී ගැනීමේදී, එහි වටිනාකමෙන් <span class='fraction'><span class='num'>1</span><span class='den'>${denom}</span></span> ක මුදලක් මූලික ගෙවීමක් ලෙස ගෙවා ඉතිරි මුදල ${rate}% ක වාර්ෂික පොලී අනුපාතිකයක් යටතේ සමාන මාසික වාරික ලෙස වසර ${years}ක් තුළ ගෙවා නිම කිරීමට සුනිල් එකඟ විය.`,
+                questions: [
+                    {
+                        text: isEn ? "(i) What is the down payment made by Sunil?" : "(i) සුනිල් ගෙවූ මූලික මුදල කොපමණ ද?",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: downPayment,
+                        hint: isEn
+                            ? `💡 Hint: Divide the total price (Rs. ${fmtNum(price)}) by ${denom}.`
+                            : `💡 ඉඟිය: මුළු වටිනාකම වන රු. ${fmtNum(price)}, ${denom} න් බෙදන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Down payment = Rs. ${fmtNum(price)} × (1/${denom}) = <strong>Rs. ${fmtNum(downPayment)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>මූලික ගෙවීම = රු. ${fmtNum(price)} × (1/${denom}) = <strong>රු. ${fmtNum(downPayment)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(ii) Find the remaining loan balance to be paid in instalments." : "(ii) වාරික වශයෙන් ගෙවීමට ඉතිරි වී ඇති ණය මුදල සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: remaining,
+                        hint: isEn
+                            ? `💡 Hint: Subtract the down payment (Rs. ${fmtNum(downPayment)}) from Rs. ${fmtNum(price)}.`
+                            : `💡 ඉඟිය: මුළු වටිනාකමින් (රු. ${fmtNum(price)}) මූලික ගෙවීම (රු. ${fmtNum(downPayment)}) අඩු කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Remaining loan balance = Rs. ${fmtNum(price)} − Rs. ${fmtNum(downPayment)} = <strong>Rs. ${fmtNum(remaining)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>ඉතිරි ණය මුදල = රු. ${fmtNum(price)} − රු. ${fmtNum(downPayment)} = <strong>රු. ${fmtNum(remaining)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(iii) In how many months must the loan be repaid?" : "(iii) ණය මුදල ගෙවීමට දී ඇති කාලය මාස කීය ද?",
+                        prefix: "", suffix: "",
+                        correctValue: months,
+                        hint: isEn
+                            ? `💡 Hint: Multiply ${years} years by 12 months (${years} × 12).`
+                            : `💡 ඉඟිය: වසර ${years} කට ඇති මාස ගණන සොයන්න (${years} × 12).`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Number of months = ${years} × 12 = <strong>${months} months</strong>`
+                            : `<strong>විසඳුම:</strong><br>මාස ගණන = වසර ${years} × 12 = <strong>මාස ${months}</strong>`
+                    },
+                    {
+                        text: isEn ? "(iv) If interest on the loan is charged under the reducing balance method, calculate the total interest payable." : "(iv) ණය සඳහා පොලිය අය කරනු ලබන්නේ හීන වන ශේෂ ක්‍රමයට නම් ගෙවිය යුතු මුළු පොලිය ගණනය කරන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: totalInterest,
+                        hint: isEn
+                            ? `💡 Hint: Monthly loan portion = ${fmtNum(remaining)} ÷ ${months} = Rs. ${fmtNum(monthlyLoan)}. Interest per month unit = ${fmtNum(monthlyLoan)} × (${rate}/100) × (1/12) = Rs. ${fmtNum(interestPerUnit)}. Multiply by month units (${fmtNum(monthUnits)}).`
+                            : `💡 ඉඟිය: මාසික ණය කොටස = ${fmtNum(remaining)} ÷ ${months} = රු. ${fmtNum(monthlyLoan)}. මාස ඒකකයක පොලිය = ${fmtNum(monthlyLoan)} × (${rate}/100) × (1/12) = රු. ${fmtNum(interestPerUnit)}. එය මාස ඒකක ගණනින් (${fmtNum(monthUnits)}) ගුණ කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>• Monthly loan portion = Rs. ${fmtNum(monthlyLoan)}<br>• Interest per month unit = Rs. ${fmtNum(interestPerUnit)}<br>• Month units = ${months} × ${months + 1} ÷ 2 = ${fmtNum(monthUnits)}<br>• Total interest = Rs. ${fmtNum(interestPerUnit)} × ${fmtNum(monthUnits)} = <strong>Rs. ${fmtNum(totalInterest)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>• මාසික ණය කොටස = රු. ${fmtNum(monthlyLoan)}<br>• මාස ඒකකයකට පොලිය = රු. ${fmtNum(interestPerUnit)}<br>• මාස ඒකක ගණන = ${months} × ${months + 1} ÷ 2 = ${fmtNum(monthUnits)}<br>• මුළු පොලිය = රු. ${fmtNum(interestPerUnit)} × ${fmtNum(monthUnits)} = <strong>රු. ${fmtNum(totalInterest)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(v) Find the value of a monthly instalment under the reducing balance method." : "(v) හීන වන ශේෂ ක්‍රමය යටතේ මාසික වාරිකයක අගය සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: instalment,
+                        hint: isEn
+                            ? `💡 Hint: Add remaining balance (Rs. ${fmtNum(remaining)}) and total interest (Rs. ${fmtNum(totalInterest)}), then divide by ${months}.`
+                            : `💡 ඉඟිය: ඉතිරි ණය මුදලට (රු. ${fmtNum(remaining)}) මුළු පොලිය (රු. ${fmtNum(totalInterest)}) එකතු කර මාස ${months} න් බෙදන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>• Total payable = Rs. ${fmtNum(remaining)} + Rs. ${fmtNum(totalInterest)} = Rs. ${fmtNum(totalPayable)}<br>• Monthly instalment = Rs. ${fmtNum(totalPayable)} ÷ ${months} = <strong>Rs. ${fmtNum(instalment)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>• ගෙවිය යුතු මුළු මුදල = රු. ${fmtNum(remaining)} + රු. ${fmtNum(totalInterest)} = රු. ${fmtNum(totalPayable)}<br>• මාසික වාරිකය = රු. ${fmtNum(totalPayable)} ÷ ${months} = <strong>රු. ${fmtNum(instalment)}</strong>`
+                    }
+                ]
+            };
+        }
+
+        // 2: Sinhala Prob 3 (Annual Interest Rate - Mr. Nimal), 6: English Prob 7
+        if (probIndex === 2 || probIndex === 6) {
+            const isEn = (probIndex === 6);
+            let loan, months, rate;
+            if (useDefault) {
+                loan = 48000; months = 8; rate = 16;
+            } else {
+                months = pick([6, 8, 9, 10, 12, 15, 16, 18, 20, 24]);
+                rate = pick([6, 8, 9, 10, 12, 14, 15, 16, 18]);
+                const monthlyLoan = pick([4800, 6000, 7200, 8400, 9600, 12000]);
+                loan = monthlyLoan * months;
+            }
+
+            const monthlyLoan = loan / months;
+            const monthUnits = (months * (months + 1)) / 2;
+            const interestPerUnit = (monthlyLoan * rate) / 1200;
+            const totalInterest = interestPerUnit * monthUnits;
+            const totalPaid = loan + totalInterest;
+            const instalment = totalPaid / months;
+
+            return {
+                title: isEn
+                    ? "📘 Problem 07 (Finding the Annual Interest Rate under the Reducing Balance Method)"
+                    : "📘 ගැටළුව 03 (හීන වන ශේෂ ක්‍රමය යටතේ වාර්ෂික පොලී අනුපාතිකය සෙවීම)",
+                text: isEn
+                    ? `Mr. Nimal obtained a loan of Rs. ${fmtNum(loan)} to be repaid in ${months} equal monthly instalments. The value of a monthly instalment is Rs. ${fmtNum(instalment)}.`
+                    : `නිමල් මහතා රුපියල් ${fmtNum(loan)} ක ණය මුදලක් සමාන මාසික වාරික ${months} කින් ගෙවා නිම කිරීමට ලබා ගෙන ඇත. මාසික වාරිකයක වටිනාකම රුපියල් ${fmtNum(instalment)} කි.`,
+                questions: [
+                    {
+                        text: isEn ? "(i) Find the portion of the loan amount to be paid monthly." : "(i) මාසික ව ගෙවිය යුතු ණය මුදලේ කොටස සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: monthlyLoan,
+                        hint: isEn
+                            ? `💡 Hint: Divide the loan amount (Rs. ${fmtNum(loan)}) by ${months} instalments.`
+                            : `💡 ඉඟිය: මුළු ණය මුදල (රු. ${fmtNum(loan)}) වාරික ගණන වන ${months} න් බෙදන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Monthly loan portion = Rs. ${fmtNum(loan)} ÷ ${months} = <strong>Rs. ${fmtNum(monthlyLoan)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>මාසික ණය කොටස = රු. ${fmtNum(loan)} ÷ ${months} = <strong>රු. ${fmtNum(monthlyLoan)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(ii) Find the total amount to be paid as instalments." : "(ii) වාරික ලෙස ගෙවිය යුතු මුළු මුදල සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: totalPaid,
+                        hint: isEn
+                            ? `💡 Hint: Multiply the monthly instalment (Rs. ${fmtNum(instalment)}) by ${months}.`
+                            : `💡 ඉඟිය: මාසික වාරිකය (රු. ${fmtNum(instalment)}) වාරික ගණන වන ${months} න් ගුණ කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Total amount paid = Rs. ${fmtNum(instalment)} × ${months} = <strong>Rs. ${fmtNum(totalPaid)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>වාරික ලෙස ගෙවූ මුළු මුදල = රු. ${fmtNum(instalment)} × ${months} = <strong>රු. ${fmtNum(totalPaid)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(iii) Find the total interest payable." : "(iii) ගෙවිය යුතු මුළු පොලිය සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: totalInterest,
+                        hint: isEn
+                            ? `💡 Hint: Subtract the loan amount (Rs. ${fmtNum(loan)}) from the total paid (Rs. ${fmtNum(totalPaid)}).`
+                            : `💡 ඉඟිය: වාරික ලෙස ගෙවූ මුළු මුදලින් (රු. ${fmtNum(totalPaid)}) මුල් ණය මුදල (රු. ${fmtNum(loan)}) අඩු කරන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Total interest = Rs. ${fmtNum(totalPaid)} − Rs. ${fmtNum(loan)} = <strong>Rs. ${fmtNum(totalInterest)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>මුළු පොලිය = රු. ${fmtNum(totalPaid)} − රු. ${fmtNum(loan)} = <strong>රු. ${fmtNum(totalInterest)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(iv) Find the number of month units." : "(iv) මාස ඒකක ගණන සොයන්න.",
+                        prefix: "", suffix: "",
+                        correctValue: monthUnits,
+                        hint: isEn
+                            ? `💡 Hint: Use n(n + 1) ÷ 2 with n = ${months} (${months} × ${months + 1} ÷ 2).`
+                            : `💡 ඉඟිය: මාස ඒකක ගණන = n(n + 1) ÷ 2 සූත්‍රයට n = ${months} ආදේශ කරන්න (${months} × ${months + 1} ÷ 2).`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Month units = ${months} × (${months} + 1) ÷ 2 = <strong>${fmtNum(monthUnits)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>මාස ඒකක ගණන = ${months} × (${months} + 1) ÷ 2 = <strong>${fmtNum(monthUnits)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(v) Find the interest per month unit." : "(v) මාස ඒකකයකට පොලිය සොයන්න.",
+                        prefix: isEn ? "Rs." : "රු.", suffix: "",
+                        correctValue: interestPerUnit,
+                        hint: isEn
+                            ? `💡 Hint: Divide total interest (Rs. ${fmtNum(totalInterest)}) by month units (${fmtNum(monthUnits)}).`
+                            : `💡 ඉඟිය: මුළු පොලිය (රු. ${fmtNum(totalInterest)}) මාස ඒකක ගණන වන ${fmtNum(monthUnits)} න් බෙදන්න.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>Interest per month unit = Rs. ${fmtNum(totalInterest)} ÷ ${fmtNum(monthUnits)} = <strong>Rs. ${fmtNum(interestPerUnit)}</strong>`
+                            : `<strong>විසඳුම:</strong><br>මාස ඒකකයකට පොලිය = රු. ${fmtNum(totalInterest)} ÷ ${fmtNum(monthUnits)} = <strong>රු. ${fmtNum(interestPerUnit)}</strong>`
+                    },
+                    {
+                        text: isEn ? "(vi) Find the annual interest rate." : "(vi) වාර්ෂික පොලී අනුපාතිකය සොයන්න.",
+                        prefix: "", suffix: "%",
+                        correctValue: rate,
+                        hint: isEn
+                            ? `💡 Hint: Interest on Rs. ${fmtNum(monthlyLoan)} for 1 year (12 months) = Rs. ${fmtNum(interestPerUnit)} × 12 = Rs. ${fmtNum(interestPerUnit * 12)}. Calculate (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100%.`
+                            : `💡 ඉඟිය: රු. ${fmtNum(monthlyLoan)} කට වසරක (මාස 12ක) පොලිය = රු. ${fmtNum(interestPerUnit)} × 12 = රු. ${fmtNum(interestPerUnit * 12)}. වාර්ෂික පොලී අනුපාතිකය = (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100%.`,
+                        explanation: isEn
+                            ? `<strong>Solution:</strong><br>• Annual interest on Rs. ${fmtNum(monthlyLoan)} = Rs. ${fmtNum(interestPerUnit)} × 12 = Rs. ${fmtNum(interestPerUnit * 12)}<br>• Annual interest rate = (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100% = <strong>${rate}%</strong>`
+                            : `<strong>විසඳුම:</strong><br>• රු. ${fmtNum(monthlyLoan)} කට වසරක පොලිය = රු. ${fmtNum(interestPerUnit)} × 12 = රු. ${fmtNum(interestPerUnit * 12)}<br>• වාර්ෂික පොලී අනුපාතිකය = (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100% = <strong>${rate}%</strong>`
+                    }
+                ]
+            };
+        }
+
+        // 3: Sinhala Prob 4 (Annual Interest Rate with Down Payment), 7: English Prob 8
+        const isEn = (probIndex === 7);
+        let price, downPayment, months, rate;
+        if (useDefault) {
+            price = 150000; downPayment = 30000; months = 15; rate = 12;
+        } else {
+            months = pick([10, 12, 15, 16, 18, 20, 24]);
+            rate = pick([6, 8, 9, 10, 12, 15, 16]);
+            const monthlyLoan = pick([6000, 7200, 8400, 9600, 12000]);
+            const rem = monthlyLoan * months;
+            downPayment = pick([20000, 25000, 30000, 40000, 50000]);
+            price = rem + downPayment;
+        }
+
+        const remaining = price - downPayment;
+        const monthlyLoan = remaining / months;
+        const monthUnits = (months * (months + 1)) / 2;
+        const interestPerUnit = (monthlyLoan * rate) / 1200;
+        const totalInterest = interestPerUnit * monthUnits;
+        const totalPaid = remaining + totalInterest;
+        const instalment = totalPaid / months;
+
+        return {
+            title: isEn
+                ? "📘 Problem 08 (Finding Annual Interest Rate with a Down Payment)"
+                : "📘 ගැටළුව 04 (මූලික ගෙවීමක් සහිතව වාර්ෂික පොලී අනුපාතිකය සෙවීම)",
+            text: isEn
+                ? `When purchasing a television worth Rs. ${fmtNum(price)}, Kamal agreed to make a down payment of Rs. ${fmtNum(downPayment)} and repay the remaining balance in ${months} equal monthly instalments. The value of a monthly instalment is Rs. ${fmtNum(instalment)}.`
+                : `රුපියල් ${fmtNum(price)} ක් වටිනා රූපවාහිනී යන්ත්‍රයක් මිලදී ගැනීමේදී, රුපියල් ${fmtNum(downPayment)} ක මූලික ගෙවීමක් සිදු කර ඉතිරි මුදල සමාන මාසික වාරික ${months} කින් ගෙවා නිම කිරීමට කමල් එකඟ විය. මාසික වාරිකයක වටිනාකම රුපියල් ${fmtNum(instalment)} කි.`,
+            questions: [
+                {
+                    text: isEn ? "(i) Find the remaining loan balance to be paid in instalments." : "(i) වාරික වශයෙන් ගෙවීමට ඉතිරි වී ඇති ණය මුදල සොයන්න.",
+                    prefix: isEn ? "Rs." : "රු.", suffix: "",
+                    correctValue: remaining,
+                    hint: isEn
+                        ? `💡 Hint: Subtract the down payment (Rs. ${fmtNum(downPayment)}) from Rs. ${fmtNum(price)}.`
+                        : `💡 ඉඟිය: රූපවාහිනියේ මුළු මිලෙන් (රු. ${fmtNum(price)}) මූලික ගෙවීම (රු. ${fmtNum(downPayment)}) අඩු කරන්න.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>Remaining balance = Rs. ${fmtNum(price)} − Rs. ${fmtNum(downPayment)} = <strong>Rs. ${fmtNum(remaining)}</strong>`
+                        : `<strong>විසඳුම:</strong><br>ඉතිරි ණය මුදල = රු. ${fmtNum(price)} − රු. ${fmtNum(downPayment)} = <strong>රු. ${fmtNum(remaining)}</strong>`
+                },
+                {
+                    text: isEn ? "(ii) Find the portion of the loan amount to be paid monthly." : "(ii) මාසික ව ගෙවිය යුතු ණය මුදලේ කොටස සොයන්න.",
+                    prefix: isEn ? "Rs." : "රු.", suffix: "",
+                    correctValue: monthlyLoan,
+                    hint: isEn
+                        ? `💡 Hint: Divide the remaining loan balance (Rs. ${fmtNum(remaining)}) by ${months}.`
+                        : `💡 ඉඟිය: ඉතිරි ණය මුදල (රු. ${fmtNum(remaining)}) වාරික ගණන වන ${months} න් බෙදන්න.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>Monthly loan portion = Rs. ${fmtNum(remaining)} ÷ ${months} = <strong>Rs. ${fmtNum(monthlyLoan)}</strong>`
+                        : `<strong>විසඳුම:</strong><br>මාසික ණය කොටස = රු. ${fmtNum(remaining)} ÷ ${months} = <strong>රු. ${fmtNum(monthlyLoan)}</strong>`
+                },
+                {
+                    text: isEn ? "(iii) Find the total amount to be paid as instalments." : "(iii) වාරික ලෙස ගෙවිය යුතු මුළු මුදල සොයන්න.",
+                    prefix: isEn ? "Rs." : "රු.", suffix: "",
+                    correctValue: totalPaid,
+                    hint: isEn
+                        ? `💡 Hint: Multiply the monthly instalment (Rs. ${fmtNum(instalment)}) by ${months}.`
+                        : `💡 ඉඟිය: මාසික වාරිකය (රු. ${fmtNum(instalment)}) වාරික ගණන වන ${months} න් ගුණ කරන්න.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>Total paid as instalments = Rs. ${fmtNum(instalment)} × ${months} = <strong>Rs. ${fmtNum(totalPaid)}</strong>`
+                        : `<strong>විසඳුම:</strong><br>වාරික ලෙස ගෙවූ මුළු මුදල = රු. ${fmtNum(instalment)} × ${months} = <strong>රු. ${fmtNum(totalPaid)}</strong>`
+                },
+                {
+                    text: isEn ? "(iv) Find the total interest payable." : "(iv) ගෙවිය යුතු මුළු පොලිය සොයන්න.",
+                    prefix: isEn ? "Rs." : "රු.", suffix: "",
+                    correctValue: totalInterest,
+                    hint: isEn
+                        ? `💡 Hint: Subtract the remaining loan balance (Rs. ${fmtNum(remaining)}) from total paid (Rs. ${fmtNum(totalPaid)}).`
+                        : `💡 ඉඟිය: වාරික ලෙස ගෙවූ මුළු මුදලින් (රු. ${fmtNum(totalPaid)}) ඉතිරි ණය මුදල (රු. ${fmtNum(remaining)}) අඩු කරන්න.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>Total interest = Rs. ${fmtNum(totalPaid)} − Rs. ${fmtNum(remaining)} = <strong>Rs. ${fmtNum(totalInterest)}</strong>`
+                        : `<strong>විසඳුම:</strong><br>මුළු පොලිය = රු. ${fmtNum(totalPaid)} − රු. ${fmtNum(remaining)} = <strong>රු. ${fmtNum(totalInterest)}</strong>`
+                },
+                {
+                    text: isEn ? "(v) Find the number of month units." : "(v) මාස ඒකක ගණන සොයන්න.",
+                    prefix: "", suffix: "",
+                    correctValue: monthUnits,
+                    hint: isEn
+                        ? `💡 Hint: Calculate ${months} × (${months} + 1) ÷ 2.`
+                        : `💡 ඉඟිය: මාස ඒකක ගණන = ${months} × (${months} + 1) ÷ 2 ගණනය කරන්න.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>Month units = ${months} × (${months} + 1) ÷ 2 = <strong>${fmtNum(monthUnits)}</strong>`
+                        : `<strong>විසඳුම:</strong><br>මාස ඒකක ගණන = ${months} × (${months} + 1) ÷ 2 = <strong>${fmtNum(monthUnits)}</strong>`
+                },
+                {
+                    text: isEn ? "(vi) Find the interest per month unit." : "(vi) මාස ඒකකයකට පොලිය සොයන්න.",
+                    prefix: isEn ? "Rs." : "රු.", suffix: "",
+                    correctValue: interestPerUnit,
+                    hint: isEn
+                        ? `💡 Hint: Divide total interest (Rs. ${fmtNum(totalInterest)}) by month units (${fmtNum(monthUnits)}).`
+                        : `💡 ඉඟිය: මුළු පොලිය (රු. ${fmtNum(totalInterest)}) මාස ඒකක ගණන වන ${fmtNum(monthUnits)} න් බෙදන්න.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>Interest per month unit = Rs. ${fmtNum(totalInterest)} ÷ ${fmtNum(monthUnits)} = <strong>Rs. ${fmtNum(interestPerUnit)}</strong>`
+                        : `<strong>විසඳුම:</strong><br>මාස ඒකකයකට පොලිය = රු. ${fmtNum(totalInterest)} ÷ ${fmtNum(monthUnits)} = <strong>රු. ${fmtNum(interestPerUnit)}</strong>`
+                },
+                {
+                    text: isEn ? "(vii) Find the annual interest rate." : "(vii) වාර්ෂික පොලී අනුපාතිකය සොයන්න.",
+                    prefix: "", suffix: "%",
+                    correctValue: rate,
+                    hint: isEn
+                        ? `💡 Hint: Annual interest on Rs. ${fmtNum(monthlyLoan)} = Rs. ${fmtNum(interestPerUnit)} × 12 = Rs. ${fmtNum(interestPerUnit * 12)}. Calculate (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100%.`
+                        : `💡 ඉඟිය: රු. ${fmtNum(monthlyLoan)} කට වසරක පොලිය = රු. ${fmtNum(interestPerUnit)} × 12 = රු. ${fmtNum(interestPerUnit * 12)}. වාර්ෂික පොලී අනුපාතිකය = (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100%.`,
+                    explanation: isEn
+                        ? `<strong>Solution:</strong><br>• Annual interest on Rs. ${fmtNum(monthlyLoan)} = Rs. ${fmtNum(interestPerUnit)} × 12 = Rs. ${fmtNum(interestPerUnit * 12)}<br>• Annual interest rate = (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100% = <strong>${rate}%</strong>`
+                        : `<strong>විසඳුම:</strong><br>• රු. ${fmtNum(monthlyLoan)} කට වසරක පොලිය = රු. ${fmtNum(interestPerUnit)} × 12 = රු. ${fmtNum(interestPerUnit * 12)}<br>• වාර්ෂික පොලී අනුපාතිකය = (${fmtNum(interestPerUnit * 12)} ÷ ${fmtNum(monthlyLoan)}) × 100% = <strong>${rate}%</strong>`
+                }
+            ]
+        };
+    }
+
+    const TAB_META = [
+        { lang: "si", tabNum: "ගැටළුව 01 (සිංහල)", tabName: "වාරිකය ගණනය - 01 (ගුරු ණය)" },
+        { lang: "si", tabNum: "ගැටළුව 02 (සිංහල)", tabName: "වාරිකය ගණනය - 02 (යතුරුපැදිය)" },
+        { lang: "si", tabNum: "ගැටළුව 03 (සිංහල)", tabName: "පොලී අනුපාතිකය - 01 (නිමල්)" },
+        { lang: "si", tabNum: "ගැටළුව 04 (සිංහල)", tabName: "පොලී අනුපාතිකය - 02 (රූපවාහිනිය)" },
+        { lang: "en", tabNum: "Problem 05 (English)", tabName: "Instalment Calc - 01 (Teacher Loan)" },
+        { lang: "en", tabNum: "Problem 06 (English)", tabName: "Instalment Calc - 02 (Motorcycle)" },
+        { lang: "en", tabNum: "Problem 07 (English)", tabName: "Interest Rate - 01 (Mr. Nimal)" },
+        { lang: "en", tabNum: "Problem 08 (English)", tabName: "Interest Rate - 02 (Television)" }
+    ];
+
+    let currentProbIdx = 0;
+    let activeProbData = null;
+    let qSeconds = [];
+    let qSolved = [];
+    let activeQIndex = -1;
+    let masterTimer = null;
+
+    function buildTabs() {
+        const siContainer = document.getElementById('siTabs');
+        const enContainer = document.getElementById('enTabs');
+        siContainer.innerHTML = '';
+        enContainer.innerHTML = '';
+
+        TAB_META.forEach((p, idx) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'prob-tab' + (p.lang === 'en' ? ' en-tab' : '') + (idx === currentProbIdx ? ' active' : '');
+            btn.innerHTML = `<span class="prob-tab-num">${p.tabNum}</span><span class="prob-tab-name">${p.tabName}</span>`;
+            btn.onclick = () => selectProblem(idx, true);
+            if (p.lang === 'si') siContainer.appendChild(btn);
+            else enContainer.appendChild(btn);
+        });
+    }
+
+    function padZero(n) {
+        return n < 10 ? '0' + n : '' + n;
+    }
+
+    function formatTime(sec, lang) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        if (lang === 'en') return `${padZero(m)}m ${padZero(s)}s`;
+        return `${padZero(m)} මි. ${padZero(s)} තත්.`;
+    }
+
+    function startMasterTimer() {
+        if (masterTimer) return;
+        masterTimer = setInterval(() => {
+            if (activeQIndex !== -1 && !qSolved[activeQIndex]) {
+                qSeconds[activeQIndex]++;
+                updateTimersUI();
+            }
+        }, 1000);
+    }
+
+    function stopMasterTimer() {
+        if (masterTimer) {
+            clearInterval(masterTimer);
+            masterTimer = null;
+        }
+    }
+
+    function updateTimersUI() {
+        const lang = TAB_META[currentProbIdx].lang;
+        let total = 0;
+        for (let i = 0; i < qSeconds.length; i++) {
+            total += qSeconds[i];
+            const badge = document.getElementById(`qTimer-${i}`);
+            if (badge) {
+                badge.textContent = '⏱️ ' + formatTime(qSeconds[i], lang);
+                badge.classList.remove('running', 'done');
+                if (qSolved[i]) badge.classList.add('done');
+                else if (i === activeQIndex) badge.classList.add('running');
+            }
+        }
+        document.getElementById('totalTimeDisplay').textContent = formatTime(total, lang);
+    }
+
+    function setActiveQuestion(idx) {
+        if (qSolved[idx]) return;
+        activeQIndex = idx;
+        document.querySelectorAll('.question-card').forEach((card, i) => {
+            card.classList.toggle('active-q', i === idx && !qSolved[i]);
+        });
+        startMasterTimer();
+        updateTimersUI();
+    }
+
+    function renderProblemUI() {
+        stopMasterTimer();
+        const lang = TAB_META[currentProbIdx].lang;
+        const isEn = (lang === 'en');
+        const prob = activeProbData;
+
+        qSeconds = new Array(prob.questions.length).fill(0);
+        qSolved = new Array(prob.questions.length).fill(false);
+        activeQIndex = -1;
+
+        buildTabs();
+
+        document.getElementById('lblTotalTime').textContent = isEn ? '⏱️ Total Time:' : '⏱️ මුළු ගත වූ කාලය:';
+        document.getElementById('lblScore').textContent = isEn ? '🎯 Score:' : '🎯 ලකුණු:';
+        document.getElementById('liveScoreDisplay').textContent = `0 / ${prob.questions.length}`;
+        document.getElementById('topRandomBtn').textContent = isEn ? '🎲 New Random Numbers' : '🎲 සංඛ්‍යා වෙනස් කරන්න';
+        document.getElementById('bottomRandomBtn').textContent = isEn ? '🎲 New Random Numbers' : '🎲 සංඛ්‍යා වෙනස් කරන්න';
+
+        document.getElementById('problemTitle').innerHTML = prob.title;
+        document.getElementById('problemText').innerHTML = prob.text;
+        document.getElementById('instructionNote').innerHTML = isEn
+            ? '✍️ Instructions: Click a box to start its timer and type your whole-number answer. If an answer is incorrect, a step-by-step hint will appear so you can correct it!'
+            : '✍️ උපදෙස්: එක් එක් ප්‍රශ්නයේ කොටුව මත ක්ලික් කළ විට එම ප්‍රශ්නයට ගතවන කාලය ගණනය වීම ඇරඹේ. පිළිතුරක් වැරදුණහොත් නිවැරදි කරගැනීමට උපදෙස් (Hint) ලැබේ.';
+
+        document.getElementById('scoreCard').classList.remove('show');
+        document.getElementById('alertMsg').style.display = 'none';
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.textContent = isEn ? '✅ Check Answers' : '✅ පිළිතුරු පරීක්ෂා කරන්න';
+        submitBtn.className = 'btn btn-submit';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+
+        document.getElementById('resetBtn').textContent = isEn ? '🔄 Clear Answers' : '🔄 පිළිතුරු මකන්න';
+
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = prob.questions.map((q, i) => `
+            <div class="question-card" id="qCard-${i}">
+                <div class="q-header-row">
+                    <div class="question-text">${q.text}</div>
+                    <div class="q-timer-badge" id="qTimer-${i}">⏱️ ${formatTime(0, lang)}</div>
+                </div>
+                <div class="short-answer-group">
+                    ${q.prefix ? `<span class="currency-prefix">${q.prefix}</span>` : ''}
+                    <input type="text" class="short-answer-input" id="qInput-${i}"
+                        placeholder="${isEn ? 'Type whole number' : 'පූර්ණ සංඛ්‍යාව ටයිප් කරන්න'}"
+                        onfocus="setActiveQuestion(${i})"
+                        oninput="onInputTyping(${i})"
+                        onkeydown="handleKey(event, ${i})"
+                        autocomplete="off">
+                    ${q.suffix ? `<span class="unit-suffix">${q.suffix}</span>` : ''}
+                </div>
+                <div class="explanation-box" id="exp-${i}"></div>
+            </div>
+        `).join('');
+
+        updateTimersUI();
+    }
+
+    function selectProblem(idx, useDefault) {
+        currentProbIdx = idx;
+        activeProbData = generateProblemData(idx, useDefault);
+        renderProblemUI();
+    }
+
+    function randomizeCurrentProblem() {
+        let prevText = activeProbData ? activeProbData.text : "";
+        let nextData = generateProblemData(currentProbIdx, false);
+        // Ensure new numbers are actually different from current ones
+        let tries = 0;
+        while (nextData.text === prevText && tries < 10) {
+            nextData = generateProblemData(currentProbIdx, false);
+            tries++;
+        }
+        activeProbData = nextData;
+        renderProblemUI();
+    }
+
+    function resetCurrentAnswers() {
+        renderProblemUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function onInputTyping(i) {
+        document.getElementById('alertMsg').style.display = 'none';
+        setActiveQuestion(i);
+        const inp = document.getElementById(`qInput-${i}`);
+        if (inp.classList.contains('input-wrong')) {
+            inp.classList.remove('input-wrong');
+        }
+    }
+
+    function handleKey(e, i) {
+        const totalQ = activeProbData.questions.length;
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            for (let next = i + 1; next < totalQ; next++) {
+                if (!qSolved[next]) {
+                    document.getElementById(`qInput-${next}`).focus();
+                    return;
+                }
+            }
+            checkAnswers();
+        }
+    }
+
+    function parseShortAnswer(rawStr) {
+        if (!rawStr) return NaN;
+        let cleaned = rawStr
+            .replace(/රුපියල්/g, '')
+            .replace(/රු\.?/g, '')
+            .replace(/rupees/gi, '')
+            .replace(/Rs\.?/gi, '')
+            .replace(/LKR/gi, '')
+            .replace(/මාස ඒකක/g, '')
+            .replace(/ඒකක/g, '')
+            .replace(/මාස/g, '')
+            .replace(/month\s*units?/gi, '')
+            .replace(/units?/gi, '')
+            .replace(/months?/gi, '')
+            .replace(/%/g, '')
+            .replace(/\/=/g, '')
+            .replace(/\/-/g, '')
+            .replace(/[\s,]/g, '')
+            .trim();
+
+        cleaned = cleaned.replace(/\.$/, '');
+        if (cleaned === '' || !/^-?\d+(\.\d+)?$/.test(cleaned)) return NaN;
+        return Number(cleaned);
+    }
+
+    function checkAnswers() {
+        const lang = TAB_META[currentProbIdx].lang;
+        const isEn = (lang === 'en');
+        const prob = activeProbData;
+        const totalQ = prob.questions.length;
+
+        for (let i = 0; i < totalQ; i++) {
+            const inp = document.getElementById(`qInput-${i}`);
+            if (!qSolved[i] && inp.value.trim() === '') {
+                const alertBox = document.getElementById('alertMsg');
+                alertBox.textContent = isEn
+                    ? `Please enter your answer for question (${i + 1}) before checking!`
+                    : `කරුණාකර පිළිතුරු පරීක්ෂා කිරීමට පෙර (${i + 1}) වන ප්‍රශ්නය සඳහා පිළිතුර ඇතුළත් කරන්න!`;
+                alertBox.style.display = 'block';
+                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                inp.focus();
+                return;
+            }
+        }
+
+        let score = 0;
+        let firstWrongIdx = -1;
+
+        prob.questions.forEach((q, i) => {
+            const inp = document.getElementById(`qInput-${i}`);
+            const expBox = document.getElementById(`exp-${i}`);
+            const card = document.getElementById(`qCard-${i}`);
+
+            if (qSolved[i]) {
+                score++;
+                return;
+            }
+
+            const userVal = parseShortAnswer(inp.value);
+            if (!isNaN(userVal) && Math.abs(userVal - q.correctValue) < 0.001) {
+                score++;
+                qSolved[i] = true;
+                inp.disabled = true;
+                inp.classList.remove('input-wrong');
+                inp.classList.add('input-correct');
+                card.classList.remove('active-q');
+                expBox.className = 'explanation-box show is-correct';
+                expBox.innerHTML = `<div class="status-badge correct">${isEn ? '✔ Correct!' : '✔ නිවැරදියි!'} (${formatTime(qSeconds[i], lang)})</div><div>${q.explanation}</div>`;
+            } else {
+                if (firstWrongIdx === -1) firstWrongIdx = i;
+                inp.classList.remove('input-correct');
+                inp.classList.add('input-wrong');
+                expBox.className = 'explanation-box show is-hint';
+                expBox.innerHTML = `
+                    <div class="status-badge wrong">${isEn ? '✘ Incorrect — Try correcting this step!' : '✘ වැරදියි — පහත උපදෙස් අනුව නිවැරදි කරන්න!'}</div>
+                    <span class="hint-title">${q.hint}</span>
+                `;
+            }
+        });
+
+        document.getElementById('liveScoreDisplay').textContent = `${score} / ${totalQ}`;
+
+        const submitBtn = document.getElementById('submitBtn');
+        const scoreCard = document.getElementById('scoreCard');
+
+        if (score === totalQ) {
+            stopMasterTimer();
+            activeQIndex = -1;
+            updateTimersUI();
+
+            const totalTimeStr = document.getElementById('totalTimeDisplay').textContent;
+            document.getElementById('scoreTitle').textContent = isEn ? '🎉 Congratulations! Problem Completed' : '🎉 විශිෂ්ටයි! ගැටළුව සම්පූර්ණයි';
+            document.getElementById('scoreValue').textContent = `${score} / ${totalQ}`;
+            document.getElementById('scoreMessage').textContent = isEn
+                ? `You solved all steps correctly in ${totalTimeStr}. Click "New Random Numbers" to practise another set!`
+                : `ඔබ සියලුම පියවර නිවැරදිව විසඳීමට ගත කළ මුළු කාලය: ${totalTimeStr} ("සංඛ්‍යා වෙනස් කරන්න" ඔබා නව ගැටළුවක් උත්සාහ කරන්න!)`;
+            scoreCard.classList.add('show');
+            scoreCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            submitBtn.textContent = isEn ? '🏆 Completed!' : '🏆 සම්පූර්ණයි!';
+            submitBtn.className = 'btn btn-submit';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.65';
+            submitBtn.style.cursor = 'not-allowed';
+        } else {
+            submitBtn.textContent = isEn ? '🔄 Re-check Corrected Answers' : '🔄 නිවැරදි කළ පිළිතුරු නැවත පරීක්ෂා කරන්න';
+            submitBtn.className = 'btn btn-recheck';
+            if (firstWrongIdx !== -1) {
+                const wrongInp = document.getElementById(`qInput-${firstWrongIdx}`);
+                wrongInp.focus();
+                wrongInp.select();
+                setActiveQuestion(firstWrongIdx);
+            }
+        }
+
+        updateTimersUI();
+    }
+
+    // Initialize first problem with default textbook values on load
+    selectProblem(0, true);
+</script>
+
 </body>
 </html>
