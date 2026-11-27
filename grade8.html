@@ -3,91 +3,751 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8 ශ්‍රේණිය - ගණිතය PDF සම්පත් | ගණිතගෙදර</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>8 ශ්‍රේණිය - Interactive Quizzes & Google Forms | ගණිතගෙදර</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+Sinhala:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
         body { background:var(--light); color:#1e293b; line-height:1.6; }
+        
+        /* Header Styles */
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2.2rem 1rem; border-bottom:4px solid var(--accent); }
-        header h1 { font-size:1.65rem; }
+        header h1 { font-size:1.75rem; font-weight:800; }
+        header .sub-meta { color:#fcd34d; font-size:0.98rem; font-weight:700; margin-top:0.35rem; }
         .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
-        .nav-links a { color:#fcd34d; text-decoration:none; font-size:0.9rem; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; }
-        .nav-links a:hover { background:var(--accent); color:var(--dark); }
-        .container { max-width:900px; margin:2rem auto; padding:0 1.25rem; }
-        .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); }
-        .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; }
-        .pdf-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; border-left:4px solid var(--secondary); transition:transform 0.15s; }
-        .pdf-row:last-child { margin-bottom:0; }
-        .pdf-row:hover { transform:translateX(4px); background:#f1f5f9; }
-        .b-blue { border-left-color:#2563eb; }
-        .b-green { border-left-color:#16a34a; }
-        .b-red { border-left-color:#991b1b; }
-        .pdf-name { font-weight:700; font-size:1rem; color:var(--dark); }
-        .pdf-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .btn-group { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
-        .dl-btn { background:var(--secondary); color:white; text-decoration:none; padding:0.52rem 1.05rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:0.2s; display:inline-flex; align-items:center; gap:0.35rem; }
-        .dl-btn:hover { background:var(--primary); }
-        .dl-btn-blue { background:#1d4ed8; }
-        .dl-btn-blue:hover { background:#1e3a8a; }
+        .nav-links a, .nav-links button { background:transparent; color:#fcd34d; text-decoration:none; font-size:0.9rem; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; cursor:pointer; }
+        .nav-links a:hover, .nav-links button:hover { background:var(--accent); color:var(--dark); }
+
+        .container { max-width:960px; margin:2rem auto; padding:0 1.25rem; }
+
+        /* Menu View Cards */
+        .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #e2e8f0; }
+        .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; line-height:1.45; }
+        .quiz-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; transition:transform 0.15s; }
+        .quiz-row:last-child { margin-bottom:0; }
+        .quiz-row:hover { transform:translateX(4px); background:#f1f5f9; }
+        .b-gold { border-left:4px solid #d97706; }
+        .b-purple { border-left:4px solid #6d28d9; }
+        .quiz-name { font-weight:700; font-size:1rem; color:var(--dark); }
+        .quiz-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
+        .btn-group { display:flex; gap:0.5rem; flex-wrap:wrap; }
+        .btn { border:none; color:white; text-decoration:none; padding:0.55rem 1.05rem; border-radius:6px; font-weight:700; font-size:0.86rem; white-space:nowrap; transition:opacity 0.2s; display:inline-block; cursor:pointer; }
+        .btn:hover { opacity:0.9; }
+        .btn-gold { background:#d97706; }
+        .btn-blue { background:#1d4ed8; }
+        .btn-purple { background:#6d28d9; }
+
+        /* Number Patterns Interactive Section */
+        #numPatternsView { display:none; }
+        .np-card { background:white; border-radius:14px; padding:1.5rem; box-shadow:0 4px 20px rgba(0,0,0,0.06); border:1px solid #e2e8f0; }
+        .np-header-bar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:2px solid #e2e8f0; }
+        .np-heading { font-size:1.22rem; font-weight:800; color:var(--primary); }
+        
+        /* Language Switcher Inside Quiz */
+        .lang-switch { display:inline-flex; background:#f1f5f9; padding:3px; border-radius:8px; border:1px solid #cbd5e1; }
+        .lang-btn { border:none; background:transparent; padding:0.35rem 0.85rem; border-radius:6px; font-size:0.84rem; font-weight:700; color:#475569; cursor:pointer; transition:0.2s; }
+        .lang-btn.active { background:var(--dark); color:white; }
+
+        .np-status-bar { position:sticky; top:10px; z-index:40; background:white; border:2px solid #cbd5e1; border-left:5px solid var(--primary); border-radius:10px; padding:0.8rem 1rem; margin-bottom:1.25rem; box-shadow:0 6px 18px rgba(15,23,42,0.08); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; }
+        .np-timers { display:flex; flex-wrap:wrap; gap:0.6rem; }
+        .np-pill { background:#f1f5f9; padding:0.4rem 0.8rem; border-radius:8px; font-size:0.88rem; font-weight:700; color:var(--dark); display:flex; align-items:center; gap:0.35rem; }
+        .np-pill.corr { background:#fef3c7; border:1px solid #f59e0b; color:#92400e; }
+        .np-val { font-family:'Fredoka', sans-serif; font-size:1.05rem; color:var(--primary); }
+        .np-pill.corr .np-val { color:#b45309; }
+
+        .np-tabs { display:grid; grid-template-columns:repeat(auto-fit, minmax(155px, 1fr)); gap:0.55rem; margin-bottom:1.25rem; }
+        .np-tab-btn { background:white; border:2px solid #cbd5e1; border-radius:8px; padding:0.6rem 0.5rem; font-weight:700; font-size:0.88rem; color:#334155; cursor:pointer; transition:0.2s; text-align:center; }
+        .np-tab-btn:hover { border-color:var(--primary); background:#fef2f2; }
+        .np-tab-btn.active { background:var(--primary); border-color:var(--primary); color:white; }
+        .np-tab-sub { display:block; font-size:0.73rem; font-weight:600; opacity:0.9; margin-top:2px; }
+
+        .np-hint { background:#eff6ff; border-left:4px solid #2563eb; padding:0.75rem 1rem; border-radius:6px; font-size:0.88rem; color:#1e3a8a; margin-bottom:1.25rem; font-weight:600; }
+
+        .np-table { width:100%; border-collapse:collapse; background:white; margin-bottom:1.25rem; }
+        .np-table th { background:var(--dark); color:white; padding:0.8rem 0.6rem; font-size:0.95rem; text-align:center; border:1px solid #334155; }
+        .np-table th:nth-child(1) { width:65px; }
+        .np-table th:nth-child(2) { width:62%; text-align:left; padding-left:1rem; }
+        .np-table th:nth-child(3) { width:30%; }
+        .np-table td { padding:0.75rem 0.6rem; border:1px solid #cbd5e1; text-align:center; vertical-align:middle; }
+        .np-table td:nth-child(2) { text-align:left; padding-left:1rem; font-size:0.98rem; font-weight:600; color:#0f172a; }
+        .np-table tr:nth-child(even) { background:#f8fafc; }
+
+        .q-no { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:#e2e8f0; color:var(--dark); font-family:'Fredoka', sans-serif; font-weight:700; font-size:0.9rem; }
+        .math-highlight { font-family:'Fredoka', sans-serif; color:#1d4ed8; font-weight:600; background:#eff6ff; padding:2px 6px; border-radius:4px; }
+        
+        .ans-input { width:125px; height:40px; text-align:center; font-family:'Fredoka', sans-serif; font-size:1.05rem; font-weight:700; border:2px solid #94a3b8; border-radius:8px; outline:none; transition:0.2s; background:white; }
+        .ans-input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
+        .ans-input.correct { border-color:#16a34a; background:#dcfce7; color:#14532d; }
+        .ans-input.wrong { border-color:#dc2626; background:#fee2e2; color:#7f1d1d; }
+        .status-icon { display:inline-block; margin-left:6px; font-size:1.1rem; vertical-align:middle; }
+
+        .np-actions { display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:center; }
+        .np-btn { border:none; padding:0.7rem 1.35rem; border-radius:8px; font-size:0.95rem; font-weight:700; cursor:pointer; color:white; display:inline-flex; align-items:center; gap:0.4rem; transition:0.2s; }
+        .np-btn:hover { opacity:0.92; }
+        .np-btn-check { background:#16a34a; }
+        .np-btn-recheck { background:#d97706; }
+        .np-btn-new { background:#2563eb; font-size:0.85rem; padding:0.45rem 0.9rem; }
+        .np-btn-back { background:#475569; font-size:0.85rem; padding:0.45rem 0.9rem; }
+
+        .np-summary { display:none; margin-top:1.25rem; background:#f0fdf4; border:2px solid #16a34a; border-radius:10px; padding:1.15rem; text-align:center; }
+        .np-summary.has-errors { background:#fffbeb; border-color:#f59e0b; }
+        .np-summary-title { font-size:1.1rem; font-weight:800; color:var(--dark); margin-bottom:0.75rem; }
+        .np-summary-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:0.65rem; }
+        .np-stat { background:white; padding:0.65rem; border-radius:8px; border:1px solid #cbd5e1; }
+        .np-stat-lbl { font-size:0.78rem; color:#64748b; font-weight:700; }
+        .np-stat-val { font-size:1.1rem; font-weight:800; color:var(--primary); margin-top:0.2rem; }
+
         footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:1.75rem 1rem; font-size:0.9rem; margin-top:2rem; }
         footer strong { color:white; }
+
+        @media (max-width:600px) {
+            .ans-input { width:98px; height:36px; font-size:0.98rem; }
+            .np-table td:nth-child(2) { font-size:0.9rem; }
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>📚 8 ශ්‍රේණිය - ගණිතය PDF සම්පත් | ගණිතගෙදර</h1>
+        <h1>📝 8 ශ්‍රේණිය - Interactive Quizzes & Google Forms</h1>
+        <div class="sub-meta">සැකසුම - රොෂාන් මාරඹගේ | වල්ගම - ගණිතගෙදර</div>
         <div class="nav-links">
-            <a href="papers.html">← ශ්‍රේණි ලැයිස්තුවට</a>
+            <a href="quizzes.html">← ශ්‍රේණි ලැයිස්තුවට</a>
             <a href="index.html">🏠 මුල් පිටුවට</a>
+            <button id="headerBackToMenuBtn" onclick="closeNumPatterns()" style="display:none;">📋 පැවරුම් ලැයිස්තුවට</button>
         </div>
     </header>
 
     <div class="container">
-        <!-- 1. පෙළපොත් (Textbooks) -->
-        <div class="cat-box">
-            <div class="cat-title">📘 පෙළපොත් (Textbooks)</div>
 
-            <div class="pdf-row b-blue">
-                <div>
-                    <div class="pdf-name">8 ශ්‍රේණිය - ගණිතය පෙළපොත</div>
-                    <div class="pdf-info">සම්පූර්ණ PDF ගොනුව | Google Drive (සිංහල මාධ්‍ය / English Medium)</div>
+        <!-- 1. පැවරුම් ලැයිස්තුව -->
+        <div id="menuView">
+            <div class="cat-box">
+                <div class="cat-title">🎮 Interactive HTML Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</div>
+
+                <!-- 1 වන පාඩම: සංඛ්‍යා රටා (සිංහල සහ English බොත්තම් සමඟ) -->
+                <div class="quiz-row b-gold">
+                    <div>
+                        <div class="quiz-name">1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes</div>
+                        <div class="quiz-info">වගු 5 (ප්‍රශ්න 100) | සරල සිට සංකීර්ණ දක්වා | සිංහල & English මාධ්‍ය | ගණිතගෙදර</div>
+                    </div>
+                    <div class="btn-group">
+                        <button onclick="openNumPatterns('si')" class="btn btn-gold">🚀 සිංහල මාධ්‍ය</button>
+                        <button onclick="openNumPatterns('en')" class="btn btn-blue">🌐 English Medium</button>
+                    </div>
                 </div>
-                <div class="btn-group">
-                    <a href="https://drive.google.com/file/d/161fjIhudmshr0sUwSUM2y1DsrjeEJcWg/view?usp=drive_link" target="_blank" class="dl-btn">📥 සිංහල මාධ්‍ය</a>
-                    <a href="https://drive.google.com/file/d/161fjIhudmshr0sUwSUM2y1DsrjeEJcWg/view?usp=drive_link" target="_blank" class="dl-btn dl-btn-blue">📥 English Medium</a>
+
+                <div class="quiz-row b-gold">
+                    <div>
+                        <div class="quiz-name">සදිශ සංඛ්‍යා (Directed Numbers) - Interactive Quiz</div>
+                        <div class="quiz-info">පිළිතුරු සහ ලකුණු එසැණින් ලැබේ | ගණිතගෙදර</div>
+                    </div>
+                    <a href="g8-directed.html" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</a>
+                </div>
+            </div>
+
+            <div class="cat-box">
+                <div class="cat-title">📋 Google Forms (මාර්ගගත ඇගයීම්)</div>
+                <div class="quiz-row b-purple">
+                    <div>
+                        <div class="quiz-name">පරිමිතිය සහ කෝණ පාඩම් ඇගයීම</div>
+                        <div class="quiz-info">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
+                    </div>
+                    <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-purple">✍️ Form එකට පිවිසෙන්න</a>
                 </div>
             </div>
         </div>
 
-        <!-- 2. වැඩපොත් (Workbooks) -->
-        <div class="cat-box">
-            <div class="cat-title">📙 වැඩපොත් (Workbooks)</div>
-            <div class="pdf-row b-green">
-                <div>
-                    <div class="pdf-name">8 ශ්‍රේණිය ගණිතය අභ්‍යාස වැඩපොත - 01</div>
-                    <div class="pdf-info">PDF ගොනුව | ගණිතගෙදර ප්‍රකාශන</div>
+        <!-- 2. සංඛ්‍යා රටා Interactive Quiz වගු 5 -->
+        <div id="numPatternsView">
+            <div class="np-card">
+                <div class="np-header-bar">
+                    <div class="np-heading" id="quizMainTitle">🔢 1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes</div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                        <div class="lang-switch">
+                            <button class="lang-btn active" id="langBtnSi" onclick="setLanguage('si')">සිංහල</button>
+                            <button class="lang-btn" id="langBtnEn" onclick="setLanguage('en')">English</button>
+                        </div>
+                        <button class="np-btn np-btn-new" id="shuffleBtn" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
+                        <button class="np-btn np-btn-back" id="backBtnTop" onclick="closeNumPatterns()">🔙 පැවරුම් ලැයිස්තුවට</button>
+                    </div>
                 </div>
-                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
+
+                <div class="np-status-bar">
+                    <div class="np-timers">
+                        <div class="np-pill">
+                            <span id="lblInitialTime">⏱️ මූලික කාලය:</span>
+                            <span id="initialTimeDisplay" class="np-val">00 මි. 00 තත්.</span>
+                        </div>
+                        <div class="np-pill corr" id="correctionPill" style="display:none;">
+                            <span id="lblCorrectionTime">🔄 නිවැරදි කිරීමේ අතිරේක කාලය:</span>
+                            <span id="correctionTimeDisplay" class="np-val">00 මි. 00 තත්.</span>
+                        </div>
+                    </div>
+                    <div class="np-pill" style="background:#fef2f2; border:1px solid #fecaca;">
+                        <span id="lblScore">🎯 ලකුණු:</span>
+                        <span id="scoreDisplay" class="np-val">0 / 20</span>
+                    </div>
+                </div>
+
+                <div class="np-tabs" id="quizTabsContainer"></div>
+
+                <div class="np-hint" id="tableSubtitleHint"></div>
+
+                <table class="np-table">
+                    <thead>
+                        <tr>
+                            <th id="thNo">අංකය</th>
+                            <th id="thQuestion">ගැටලුව (Question)</th>
+                            <th id="thAnswer">ඔබේ පිළිතුර</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quizTableBody"></tbody>
+                </table>
+
+                <div class="np-actions">
+                    <button id="checkBtn" class="np-btn np-btn-check" onclick="checkAnswers()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
+                    <button id="backBtnBottom" class="np-btn np-btn-back" onclick="closeNumPatterns()">🔙 ආපසු ලැයිස්තුවට</button>
+                </div>
+
+                <div id="summaryBox" class="np-summary">
+                    <div class="np-summary-title" id="summaryMessage">ප්‍රතිඵල වාර්තාව</div>
+                    <div class="np-summary-grid">
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblScore">ලබාගත් ලකුණු</div>
+                            <div class="np-stat-val" id="statScore">0 / 20</div>
+                        </div>
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblInit">මූලික පිරවීමේ කාලය</div>
+                            <div class="np-stat-val" id="statInitialTime">00 මි. 00 තත්.</div>
+                        </div>
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblCorr">වැරදි නිවැරදි කිරීමේ කාලය</div>
+                            <div class="np-stat-val" id="statCorrectionTime">00 මි. 00 තත්.</div>
+                        </div>
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblTotal">මුළු ගත වූ කාලය</div>
+                            <div class="np-stat-val" id="statTotalTime">00 මි. 00 තත්.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 3. වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers) -->
-        <div class="cat-box">
-            <div class="cat-title">📝 වාර විභාග ප්‍රශ්න පත්‍ර (Term Test Papers)</div>
-            <div class="pdf-row b-red">
-                <div>
-                    <div class="pdf-name">පළමු වාර විභාග ආදර්ශ ප්‍රශ්න පත්‍රය - 01</div>
-                    <div class="pdf-info">I සහ II පත්‍රය | පිළිතුරු පත්‍රය සහිතයි</div>
-                </div>
-                <a href="GOOGLE_DRIVE_LINK_HERE" target="_blank" class="dl-btn">📥 PDF බාගත කරන්න</a>
-            </div>
-        </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 <strong>ගණිතගෙදර (Ganitha Gedara)</strong> - රොෂාන් මාරඹගේ. සියලුම හිමිකම් ඇවිරිණි.</p>
+        <p>&copy; 2026 <strong>වල්ගම - ගණිතගෙදර</strong> | සැකසුම: <strong>රොෂාන් මාරඹගේ</strong>. සියලුම හිමිකම් ඇවිරිණි.</p>
     </footer>
-    <script src="news.js"></script>
+
+    <script>
+        const UI_TEXT = {
+            si: {
+                mainTitle: "🔢 1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes",
+                shuffleBtn: "🔄 නව ප්‍රශ්න",
+                backBtnTop: "🔙 පැවරුම් ලැයිස්තුවට",
+                backBtnBottom: "🔙 ආපසු ලැයිස්තුවට",
+                lblInitialTime: "⏱️ මූලික කාලය:",
+                lblCorrectionTime: "🔄 නිවැරදි කිරීමේ අතිරේක කාලය:",
+                lblScore: "🎯 ලකුණු:",
+                thNo: "අංකය",
+                thQuestion: "ගැටලුව (Question)",
+                thAnswer: "ඔබේ පිළිතුර",
+                placeholder: "පිළිතුර",
+                checkBtn: "✅ පිළිතුරු පරීක්ෂා කරන්න",
+                recheckBtn: "🔄 නිවැරදි කළ පිළිතුරු නැවත පරීක්ෂා කරන්න",
+                completedBtn: "🏆 සම්පූර්ණයි!",
+                statLblScore: "ලබාගත් ලකුණු",
+                statLblInit: "මූලික පිරවීමේ කාලය",
+                statLblCorr: "වැරදි නිවැරදි කිරීමේ කාලය",
+                statLblTotal: "මුළු ගත වූ කාලය",
+                minUnit: "මි.",
+                secUnit: "තත්.",
+                alertEmpty: (n) => `කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු ${n}ක් ඇත)`,
+                perfectMsg: "🎉 විශිෂ්ටයි! සියලුම පිළිතුරු 20 නිවැරදියි!",
+                errorMsg: (n) => `⚠️ වැරදි පිළිතුරු ${n}ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)`
+            },
+            en: {
+                mainTitle: "🔢 Lesson 1: Number Patterns - Interactive Quizzes",
+                shuffleBtn: "🔄 Shuffle Questions",
+                backBtnTop: "🔙 Back to Menu",
+                backBtnBottom: "🔙 Back to Menu",
+                lblInitialTime: "⏱️ Initial Time:",
+                lblCorrectionTime: "🔄 Correction Time:",
+                lblScore: "🎯 Score:",
+                thNo: "No.",
+                thQuestion: "Question",
+                thAnswer: "Your Answer",
+                placeholder: "Answer",
+                checkBtn: "✅ Check Answers",
+                recheckBtn: "🔄 Re-check Corrected Answers",
+                completedBtn: "🏆 Completed!",
+                statLblScore: "Score Obtained",
+                statLblInit: "Initial Completion Time",
+                statLblCorr: "Error Correction Time",
+                statLblTotal: "Total Time Taken",
+                minUnit: "m",
+                secUnit: "s",
+                alertEmpty: (n) => `Please answer all 20 questions before checking. (${n} blank box(es) remaining)`,
+                perfectMsg: "🎉 Excellent! All 20 answers are correct!",
+                errorMsg: (n) => `⚠️ You have ${n} incorrect answer(s). Fix them and check again (correction timer is running...)`
+            }
+        };
+
+        // 8 ශ්‍රේණිය පෙළපොතේ 1 වන පාඩම (සංඛ්‍යා රටා) සඳහා සරල සිට සංකීර්ණ දක්වා Quiz 5
+        const QUIZ_BANK = {
+            1: {
+                tabSi: ["1 වන Quiz එක", "සංඛ්‍යා රටා හඳුනාගැනීම (ඉතා පහසු)"],
+                tabEn: ["Quiz 1", "Identifying Patterns (Very Easy)"],
+                hintSi: "💡 <strong>1 වන Quiz එක - සංඛ්‍යා රටා හා පද හඳුනාගැනීම (ප්‍රශ්න 20):</strong> 8 ශ්‍රේණිය පෙළපොතේ 1.1 කොටස ඇසුරෙන් සැකසූ මූලික පද හඳුනාගැනීමේ ගැටලු විසඳන්න.",
+                hintEn: "💡 <strong>Quiz 1 - Identifying Number Patterns & Terms (20 Questions):</strong> Find the specified term or missing value based on Grade 8 Textbook Section 1.1.",
+                items: [
+                    { si: "<span class='math-highlight'>3, 5, 7, 9, 11</span> යන සංඛ්‍යා රටාවේ මුළු පද ගණන කීයද?", en: "How many terms are there in the finite pattern <span class='math-highlight'>3, 5, 7, 9, 11</span>?", a: "5" },
+                    { si: "<span class='math-highlight'>1, 3, 5, 7, 9, ...</span> යන සංඛ්‍යා රටාවේ 4 වන පදය කීයද?", en: "What is the 4th term of the pattern <span class='math-highlight'>1, 3, 5, 7, 9, ...</span>?", a: "7" },
+                    { si: "<span class='math-highlight'>4, 8, 12, 16, 20, ...</span> යන සංඛ්‍යා රටාවේ 5 වන පදය කීයද?", en: "What is the 5th term of the pattern <span class='math-highlight'>4, 8, 12, 16, 20, ...</span>?", a: "20" },
+                    { si: "<span class='math-highlight'>2, 4, 6, 8, ...</span> යන ඉරට්ට සංඛ්‍යා රටාවේ 6 වන පදය කීයද?", en: "What is the 6th term of the even number pattern <span class='math-highlight'>2, 4, 6, 8, ...</span>?", a: "12" },
+                    { si: "1 ත් 17 ත් අතර ඇති ප්‍රථමක සංඛ්‍යා රටාවේ (<span class='math-highlight'>2, 3, 5, 7, 11, 13</span>) 5 වන පදය කීයද?", en: "What is the 5th term of prime numbers between 1 and 17 (<span class='math-highlight'>2, 3, 5, 7, 11, 13</span>)?", a: "11" },
+                    { si: "<span class='math-highlight'>2, 4, 8, 16, 32, ...</span> රටාවේ ඊළඟ (6 වන) පදය කීයද?", en: "What is the next (6th) term of the pattern <span class='math-highlight'>2, 4, 8, 16, 32, ...</span>?", a: "64" },
+                    { si: "6 සිට 36 තෙක් ඇති 6 හි ගුණාකාර ආරෝහණ පිළිවෙළට ලියූ විට ඇති මුළු පද ගණන කීයද?", en: "How many terms are in the ascending pattern of multiples of 6 from 6 to 36?", a: "6" },
+                    { si: "<span class='math-highlight'>3, 6, 9, 12, ...</span> රටාවේ 8 වන පදය කීයද?", en: "Find the 8th term of the pattern <span class='math-highlight'>3, 6, 9, 12, ...</span>", a: "24" },
+                    { si: "7 ට වැඩි ඉරට්ට සංඛ්‍යා ආරෝහණ පිළිවෙළට ලියූ රටාවේ පළමු වන පදය කීයද?", en: "What is the 1st term of the ascending pattern of even numbers greater than 7?", a: "8" },
+                    { si: "<span class='math-highlight'>5, 10, 15, 20, ...</span> රටාවේ 7 වන පදය කීයද?", en: "Find the 7th term of the pattern <span class='math-highlight'>5, 10, 15, 20, ...</span>", a: "35" },
+                    { si: "<span class='math-highlight'>12, 24, 36, 48, ...</span> රටාවේ 5 වන පදය කීයද?", en: "Find the 5th term of the pattern <span class='math-highlight'>12, 24, 36, 48, ...</span>", a: "60" },
+                    { si: "1 න් පටන් ගෙන සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 4, 9, 16, ...</span>) 5 වන පදය කීයද?", en: "Find the 5th term of the square number pattern (<span class='math-highlight'>1, 4, 9, 16, ...</span>).", a: "25" },
+                    { si: "1 න් පටන් ගෙන ත්‍රිකෝණ සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 3, 6, 10, ...</span>) 5 වන පදය කීයද?", en: "Find the 5th term of the triangular number pattern (<span class='math-highlight'>1, 3, 6, 10, ...</span>).", a: "15" },
+                    { si: "<span class='math-highlight'>8, 6, 4, 2</span> යන අවරෝහණ සංඛ්‍යා රටාවේ 3 වන පදය කීයද?", en: "What is the 3rd term of the descending pattern <span class='math-highlight'>8, 6, 4, 2</span>?", a: "4" },
+                    { si: "පළමු පදය 1 වූ ද ඊළඟ පද මාරුවෙන් මාරුවට 2 හා 1 වූ ද රටාවේ 10 වන පදය කීයද?", en: "In the alternating pattern <span class='math-highlight'>1, 2, 1, 2, 1, 2, ...</span>, what is the 10th term?", a: "2" },
+                    { si: "<span class='math-highlight'>7, 14, 21, 28, ...</span> රටාවේ 6 වන පදය කීයද?", en: "Find the 6th term of the pattern <span class='math-highlight'>7, 14, 21, 28, ...</span>", a: "42" },
+                    { si: "1 ත් 9 ත් අතර ඇති ඉරට්ට සංඛ්‍යා රටාවේ ඇති මුළු පද ගණන කීයද?", en: "How many terms are in the pattern of even numbers between 1 and 9?", a: "4" },
+                    { si: "<span class='math-highlight'>1, 2, 4, 8, ...</span> රටාවේ පෙර පදය 2 න් ගුණ වේ නම් 5 වන පදය කීයද?", en: "If each term is multiplied by 2 in <span class='math-highlight'>1, 2, 4, 8, ...</span>, what is the 5th term?", a: "16" },
+                    { si: "<span class='math-highlight'>10, 20, 30, 40, ...</span> රටාවේ 9 වන පදය කීයද?", en: "Find the 9th term of the pattern <span class='math-highlight'>10, 20, 30, 40, ...</span>", a: "90" },
+                    { si: "<span class='math-highlight'>2, 4, 8, 10, 20, 22, ...</span> (+2 සහ ×2 මාරුවෙන්) රටාවේ 7 වන පදය කීයද?", en: "In <span class='math-highlight'>2, 4, 8, 10, 20, 22, ...</span> (alternating +2 and ×2), what is the 7th term?", a: "44" }
+                ]
+            },
+            2: {
+                tabSi: ["2 වන Quiz එක", "ගුණාකාර හා ඔත්තේ රටා (පහසු)"],
+                tabEn: ["Quiz 2", "Multiples & Odd Patterns (Easy)"],
+                hintSi: "💡 <strong>2 වන Quiz එක - ගුණාකාර රටා සහ ඔත්තේ සංඛ්‍යා රටා (ප්‍රශ්න 20):</strong> සාධාරණ පදය ලිවීමේදී <strong>2n</strong> හෝ <strong>2n-1</strong> ආකාරයට හිස්තැන් නොතබා ලියන්න.",
+                hintEn: "💡 <strong>Quiz 2 - Multiples & Odd Number Patterns (20 Questions):</strong> Write general terms like <strong>2n</strong> or <strong>2n-1</strong> without spaces.",
+                items: [
+                    { si: "2 න් පටන් ගෙන ඉරට්ට සංඛ්‍යා රටාවේ (<span class='math-highlight'>2, 4, 6, 8, ...</span>) සාධාරණ පදය කුමක්ද?", en: "What is the general term of the even number pattern <span class='math-highlight'>2, 4, 6, 8, ...</span>?", a: "2n" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 3, 5, 7, ...</span>) සාධාරණ පදය කුමක්ද?", en: "What is the general term of the odd number pattern <span class='math-highlight'>1, 3, 5, 7, ...</span>?", a: "2n-1" },
+                    { si: "<span class='math-highlight'>5, 10, 15, 20, ...</span> රටාවේ සාධාරණ පදය කුමක්ද?", en: "What is the general term of the pattern <span class='math-highlight'>5, 10, 15, 20, ...</span>?", a: "5n" },
+                    { si: "<span class='math-highlight'>8, 16, 24, 32, ...</span> රටාවේ සාධාරණ පදය කුමක්ද?", en: "What is the general term of the pattern <span class='math-highlight'>8, 16, 24, 32, ...</span>?", a: "8n" },
+                    { si: "<span class='math-highlight'>1, 2, 3, 4, ...</span> ප්‍රකෘති සංඛ්‍යා රටාවේ සාධාරණ පදය කුමක්ද?", en: "What is the general term of the natural number pattern <span class='math-highlight'>1, 2, 3, 4, ...</span>?", a: "n" },
+                    { si: "<span class='math-highlight'>11, 22, 33, 44, ...</span> රටාවේ සාධාරණ පදය කුමක්ද?", en: "What is the general term of the pattern <span class='math-highlight'>11, 22, 33, 44, ...</span>?", a: "11n" },
+                    { si: "<span class='math-highlight'>9, 18, 27, 36, ...</span> රටාවේ 11 වන පදය කීයද?", en: "Find the 11th term of the pattern <span class='math-highlight'>9, 18, 27, 36, ...</span>", a: "99" },
+                    { si: "<span class='math-highlight'>11, 22, 33, 44, ...</span> රටාවේ 9 වන පදය කීයද?", en: "Find the 9th term of the pattern <span class='math-highlight'>11, 22, 33, 44, ...</span>", a: "99" },
+                    { si: "සාධාරණ පදය <span class='math-highlight'>100n</span> වූ සංඛ්‍යා රටාවේ 12 වන පදය කීයද?", en: "Find the 12th term of the pattern whose general term is <span class='math-highlight'>100n</span>.", a: "1200" },
+                    { si: "2 න් පටන් ගෙන 2 හි ගුණාකාර රටාවේ 11 වන පදය කීයද?", en: "Find the 11th term of the multiples of 2 starting from 2.", a: "22" },
+                    { si: "2 න් පටන් ගෙන 2 හි ගුණාකාර රටාවේ 103 වන පදය කීයද?", en: "Find the 103rd term of the multiples of 2 starting from 2.", a: "206" },
+                    { si: "3 න් පටන් ගෙන 3 හි ගුණාකාර රටාවේ 13 වන පදය කීයද?", en: "Find the 13th term of the multiples of 3 starting from 3.", a: "39" },
+                    { si: "සාධාරණ පදය <span class='math-highlight'>4n</span> වන රටාවේ 11 වන පදය කීයද?", en: "Find the 11th term of the pattern with general term <span class='math-highlight'>4n</span>.", a: "44" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ 10 වන පදය කීයද?", en: "Find the 10th term of the odd number pattern starting from 1.", a: "19" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ 12 වන පදය කීයද?", en: "Find the 12th term of the odd number pattern starting from 1.", a: "23" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ 15 වන පදය කීයද?", en: "Find the 15th term of the odd number pattern starting from 1.", a: "29" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ 72 වන පදය කීයද?", en: "Find the 72nd term of the odd number pattern starting from 1.", a: "143" },
+                    { si: "<span class='math-highlight'>7, 14, 21, 28, ...</span> රටාවේ 15 වන පදය කීයද?", en: "Find the 15th term of the pattern <span class='math-highlight'>7, 14, 21, 28, ...</span>", a: "105" },
+                    { si: "<span class='math-highlight'>12, 24, 36, 48, ...</span> රටාවේ 10 වන පදය කීයද?", en: "Find the 10th term of the pattern <span class='math-highlight'>12, 24, 36, 48, ...</span>", a: "120" },
+                    { si: "සාධාරණ පදය <span class='math-highlight'>6n</span> වන රටාවේ 25 වන පදය කීයද?", en: "Find the 25th term of the pattern whose general term is <span class='math-highlight'>6n</span>.", a: "150" }
+                ]
+            },
+            3: {
+                tabSi: ["3 වන Quiz එක", "සමචතුරස්‍ර හා ත්‍රිකෝණ රටා (මධ්‍යම)"],
+                tabEn: ["Quiz 3", "Square & Triangular Numbers (Medium)"],
+                hintSi: "💡 <strong>3 වන Quiz එක - සමචතුරස්‍ර (n²) සහ ත්‍රිකෝණ (n(n+1)/2) සංඛ්‍යා රටා (ප්‍රශ්න 20):</strong> 1.4 අභ්‍යාසය ඇසුරෙන් සැකසූ ගැටලු විසඳන්න.",
+                hintEn: "💡 <strong>Quiz 3 - Square (n²) & Triangular (n(n+1)/2) Number Patterns (20 Questions):</strong> Solve the questions based on Textbook Section 1.4.",
+                items: [
+                    { si: "1 න් පටන් ගෙන සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 4, 9, 16, ...</span>) සාධාරණ පදය කුමක්ද?", en: "What is the general term of the square number pattern (<span class='math-highlight'>1, 4, 9, 16, ...</span>)?", a: "n^2", alt: ["n2", "n²"] },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 10 වන පදය කීයද?", en: "What is the 10th term of the square number pattern?", a: "100" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 12 වන පදය කීයද?", en: "What is the 12th term of the square number pattern?", a: "144" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 15 වන පදය කීයද?", en: "What is the 15th term of the square number pattern?", a: "225" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 20 වන පදය කීයද?", en: "What is the 20th term of the square number pattern?", a: "400" },
+                    { si: "1 න් පටන් ගෙන ත්‍රිකෝණ සංඛ්‍යා රටාවේ (<span class='math-highlight'>1, 3, 6, 10, ...</span>) 6 වන පදය කීයද?", en: "What is the 6th term of the triangular number pattern (<span class='math-highlight'>1, 3, 6, 10, ...</span>)?", a: "21" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 7 වන පදය කීයද?", en: "What is the 7th term of the triangular number pattern?", a: "28" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 8 වන පදය කීයද?", en: "What is the 8th term of the triangular number pattern?", a: "36" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 9 වන පදය කීයද?", en: "What is the 9th term of the triangular number pattern?", a: "45" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 10 වන පදය කීයද?", en: "What is the 10th term of the triangular number pattern?", a: "55" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 12 වන පදය කීයද?", en: "What is the 12th term of the triangular number pattern?", a: "78" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 14 වන පදය කීයද?", en: "What is the 14th term of the triangular number pattern?", a: "105" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 15 වන පදය කීයද?", en: "What is the 15th term of the triangular number pattern?", a: "120" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 19 වන පදය කීයද?", en: "What is the 19th term of the triangular number pattern?", a: "190" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 20 වන පදය කීයද?", en: "What is the 20th term of the triangular number pattern?", a: "210" },
+                    { si: "1 ට වැඩි 50 ට අඩු, සමචතුරස්‍ර සංඛ්‍යාවක් මෙන්ම ත්‍රිකෝණ සංඛ්‍යාවක් ද වන සංඛ්‍යාව කුමක්ද?", en: "Which number between 1 and 50 is both a square number and a triangular number?", a: "36" },
+                    { si: "36 යනු කීවැනි සමචතුරස්‍ර සංඛ්‍යාවද?", en: "Which term in the square number pattern is 36?", a: "6" },
+                    { si: "36 යනු කීවැනි ත්‍රිකෝණ සංඛ්‍යාවද?", en: "Which term in the triangular number pattern is 36?", a: "8" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 14 වන පදයත් 15 වන පදයත් එකතු කළ විට ලැබෙන සමචතුරස්‍ර සංඛ්‍යාව කුමක්ද?", en: "What square number is obtained by adding the 14th and 15th triangular numbers?", a: "225" },
+                    { si: "ඉහත 225 යනු සමචතුරස්‍ර සංඛ්‍යා රටාවේ කීවැනි පදයද?", en: "Which term of the square number pattern is 225?", a: "15" }
+                ]
+            },
+            4: {
+                tabSi: ["4 වන Quiz එක", "පද ස්ථානය n සෙවීම (තරමක් අපහසු)"],
+                tabEn: ["Quiz 4", "Finding Term Position n (Challenging)"],
+                hintSi: "💡 <strong>4 වන Quiz එක - දී ඇති සංඛ්‍යාව රටාවේ කීවැනි පදයදැයි (n) සෙවීම (ප්‍රශ්න 20):</strong> සමීකරණ විසඳා n හි අගය සොයන්න.",
+                hintEn: "💡 <strong>Quiz 4 - Finding Term Position n (20 Questions):</strong> Find which term (value of n) the given number represents in the pattern.",
+                items: [
+                    { si: "2 න් පටන් ගෙන 2 හි ගුණාකාර රටාවේ (<span class='math-highlight'>2n</span>) <span class='math-highlight'>728</span> වන්නේ කීවැනි පදයද?", en: "In the multiples of 2 pattern (<span class='math-highlight'>2n</span>), which term is <span class='math-highlight'>728</span>?", a: "364" },
+                    { si: "3 න් පටන් ගෙන 3 හි ගුණාකාර රටාවේ (<span class='math-highlight'>3n</span>) <span class='math-highlight'>87</span> වන්නේ කීවැනි පදයද?", en: "In the multiples of 3 pattern (<span class='math-highlight'>3n</span>), which term is <span class='math-highlight'>87</span>?", a: "29" },
+                    { si: "4 න් පටන් ගෙන 4 හි ගුණාකාර රටාවේ (<span class='math-highlight'>4n</span>) <span class='math-highlight'>100</span> වන්නේ කීවැනි පදයද?", en: "In the multiples of 4 pattern (<span class='math-highlight'>4n</span>), which term is <span class='math-highlight'>100</span>?", a: "25" },
+                    { si: "<span class='math-highlight'>11, 22, 33, 44, ...</span> රටාවේ <span class='math-highlight'>121</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>11, 22, 33, 44, ...</span> is <span class='math-highlight'>121</span>?", a: "11" },
+                    { si: "<span class='math-highlight'>9, 18, 27, 36, ...</span> රටාවේ <span class='math-highlight'>270</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>9, 18, 27, 36, ...</span> is <span class='math-highlight'>270</span>?", a: "30" },
+                    { si: "සාධාරණ පදය <span class='math-highlight'>100n</span> වූ රටාවේ <span class='math-highlight'>500</span> වන්නේ කීවැනි පදයද?", en: "Which term of the pattern <span class='math-highlight'>100n</span> is <span class='math-highlight'>500</span>?", a: "5" },
+                    { si: "100 ට වැඩි 3 හි කුඩාම ගුණාකාරය <span class='math-highlight'>102</span> වේ. එය 3 හි ගුණාකාර රටාවේ කීවැනි පදයද?", en: "The smallest multiple of 3 greater than 100 is <span class='math-highlight'>102</span>. Which term of 3n is it?", a: "34" },
+                    { si: "1 ට වඩා විශාල 200 ට අඩු ඉරට්ට සංඛ්‍යා රටාවේ n ට ගත හැකි වැඩිම අගය කීයද?", en: "In the pattern of even numbers greater than 1 and less than 200, what is the maximum value of n?", a: "99" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ (<span class='math-highlight'>2n - 1</span>) <span class='math-highlight'>51</span> වන්නේ කීවැනි පදයද?", en: "In the odd number pattern (<span class='math-highlight'>2n - 1</span>), which term is <span class='math-highlight'>51</span>?", a: "26" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ (<span class='math-highlight'>2n - 1</span>) <span class='math-highlight'>89</span> වන්නේ කීවැනි පදයද?", en: "In the odd number pattern (<span class='math-highlight'>2n - 1</span>), which term is <span class='math-highlight'>89</span>?", a: "45" },
+                    { si: "100 ට අඩු විශාලම ඔත්තේ සංඛ්‍යාව (99) ඔත්තේ සංඛ්‍යා රටාවේ කීවැනි පදයද?", en: "Which term of the odd number pattern is the largest odd number less than 100 (99)?", a: "50" },
+                    { si: "2 න් පටන් ගෙන ඉරට්ට සංඛ්‍යා රටාවේ 34 වන පදයත්, 1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ 34 වන පදයත් එකතුව කීයද?", en: "Find the sum of the 34th even number (from 2) and the 34th odd number (from 1).", a: "135" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>n²</span>) <span class='math-highlight'>169</span> වන්නේ කීවැනි පදයද?", en: "In the square number pattern (<span class='math-highlight'>n²</span>), which term is <span class='math-highlight'>169</span>?", a: "13" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ (<span class='math-highlight'>n²</span>) <span class='math-highlight'>625</span> වන්නේ කීවැනි පදයද?", en: "In the square number pattern (<span class='math-highlight'>n²</span>), which term is <span class='math-highlight'>625</span>?", a: "25" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>55</span> වන්නේ කීවැනි පදයද?", en: "Which term of the triangular number pattern is <span class='math-highlight'>55</span>?", a: "10" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>171</span> වන්නේ කීවැනි පදයද? (ඉඟිය: 18 × 19 = 342)", en: "Which term of the triangular number pattern is <span class='math-highlight'>171</span>? (Hint: 18 × 19 = 342)", a: "18" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>66</span> වන්නේ කීවැනි පදයද?", en: "Which term of the triangular number pattern is <span class='math-highlight'>66</span>?", a: "11" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ <span class='math-highlight'>91</span> වන්නේ කීවැනි පදයද?", en: "Which term of the triangular number pattern is <span class='math-highlight'>91</span>?", a: "13" },
+                    { si: "<span class='math-highlight'>5, 10, 15, 20, ...</span> රටාවේ <span class='math-highlight'>245</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>5, 10, 15, 20, ...</span> is <span class='math-highlight'>245</span>?", a: "49" },
+                    { si: "<span class='math-highlight'>8, 16, 24, 32, ...</span> රටාවේ <span class='math-highlight'>192</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>8, 16, 24, 32, ...</span> is <span class='math-highlight'>192</span>?", a: "24" }
+                ]
+            },
+            5: {
+                tabSi: ["5 වන Quiz එක", "සංකීර්ණ හා වගන්ති ගැටලු (අපහසු)"],
+                tabEn: ["Quiz 5", "Complex & Word Problems (Hard)"],
+                hintSi: "💡 <strong>5 වන Quiz එක - සංකීර්ණ සහ වගන්තිමය ගැටලු (ප්‍රශ්න 20):</strong> 8 ශ්‍රේණිය පෙළපොතේ 1.2, 1.4 අභ්‍යාස, මිශ්‍ර අභ්‍යාස සහ පළමු වාර පුනරීක්ෂණ අභ්‍යාස ඇසුරෙන් සැකසූ සංකීර්ණ ගැටලු විසඳන්න.",
+                hintEn: "💡 <strong>Quiz 5 - Complex & Word Problems (20 Questions):</strong> Solve higher-order word problems and applications from Textbook Exercises 1.2, 1.4, Review & Term 1 Revision.",
+                items: [
+                    { si: "මිලියන 2 ක ජනගහනයක් ඇති රටක සෑම අවුරුදු 25 කදීම ජනගහනය මිලියන 2 බැගින් වැඩි වේ නම්, අවුරුදු 200 කදී ජනගහනය මිලියන කීයද?", en: "A country has a population of 2 million and increases by 2 million every 25 years. What will be the population (in millions) after 200 years?", a: "18" },
+                    { si: "ත්‍රිකෝණ රටාවක 1 වන රූපයේ ත්‍රිකෝණ 1ක් ද, 2 වන රූපයේ 3ක් ද, 3 වන රූපයේ 6ක් ද ඇත. 8 වන රූපයේ ඇති මුළු ත්‍රිකෝණ ගණන කීයද?", en: "In a pattern of triangles having 1, 3, 6 triangles in the 1st, 2nd, and 3rd figures, how many total triangles are in the 8th figure?", a: "36" },
+                    { si: "සයුනි කැටයකට 1 වන දින රු. 1ක් ද, 2 වන දින රු. 2ක් ද, 3 වන දින රු. 3ක් ද බැගින් දමයි නම් 10 වන දින අවසානයේ කැටයේ මුළු මුදල (රු.) කීයද?", en: "Sayuni puts Rs. 1 on Day 1, Rs. 2 on Day 2, Rs. 3 on Day 3 into a till. What is the total amount (in Rs.) at the end of Day 10?", a: "55" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ මුල් පදයේ සිට පිළිවෙළින් පද 15 ක් එකතු කළ විට (1 + 3 + 5 + ... + 29) ලැබෙන සංඛ්‍යාව කීයද?", en: "Find the sum of the first 15 odd numbers starting from 1 (1 + 3 + 5 + ... + 29).", a: "225" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ මුල් පද 25 ක ඓක්‍යය කීයද?", en: "Find the sum of the first 25 odd numbers starting from 1.", a: "625" },
+                    { si: "කිරි ටින් රාක්කයක පහළම තට්ටුවේ ටින් 10ක් ද, ඊට ඉහළින් 9ක් ද ආදී ලෙස ඉහළම තට්ටුවේ ටින් 1ක් වන සේ අසුරා ඇත. මුළු කිරි ටින් ගණන කීයද?", en: "Milk tins are stacked with 10 in the bottom row, decreasing by 1 each row up to 1 tin on top. Find the total number of tins.", a: "55" },
+                    { si: "ඉහත කිරි ටින් ඇසුරුමේ මුදුනේ සිට තට්ටු 4 ක ටින් සම්පූර්ණයෙන් විකිණී අවසන් නම් විකිණී ඇති ටින් ගණන කීයද?", en: "In the above stack, if the top 4 rows of tins are completely sold, how many tins were sold?", a: "10" },
+                    { si: "1 සිට 30 දක්වා ඇති පූර්ණ සංඛ්‍යාවල ඓක්‍යය (1 + 2 + 3 + ... + 30) කීයද?", en: "What is the sum of whole numbers from 1 to 30 (1 + 2 + 3 + ... + 30)?", a: "465" },
+                    { si: "1 සිට 20 දක්වා ඇති පූර්ණ සංඛ්‍යාවල ඓක්‍යය (1 + 2 + 3 + ... + 20) කීයද?", en: "What is the sum of whole numbers from 1 to 20 (1 + 2 + 3 + ... + 20)?", a: "210" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 19 වන පදයත් 20 වන පදයත් එකතු කළ විට ලැබෙන සමචතුරස්‍ර සංඛ්‍යාව කීයද?", en: "Find the sum of the 19th and 20th terms of the triangular number pattern.", a: "400" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ 9 වන පදයත් 10 වන පදයත් එකතු කළ විට ලැබෙන සංඛ්‍යාව කීයද?", en: "Find the sum of the 9th and 10th terms of the triangular number pattern.", a: "100" },
+                    { si: "10 වන සමචතුරස්‍ර සංඛ්‍යාවත් 10 වන ත්‍රිකෝණ සංඛ්‍යාවත් අතර වෙනස කීයද?", en: "What is the difference between the 10th square number and the 10th triangular number?", a: "45" },
+                    { si: "8 වන සමචතුරස්‍ර සංඛ්‍යාවත් 8 වන ත්‍රිකෝණ සංඛ්‍යාවත් අතර වෙනස කීයද?", en: "What is the difference between the 8th square number and the 8th triangular number?", a: "28" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ කීවැනි පදය දක්වා මුල් පද එකතු කළ විට ඓක්‍යය <span class='math-highlight'>169</span> ලැබේද?", en: "How many consecutive odd numbers starting from 1 must be added to get a sum of <span class='math-highlight'>169</span>?", a: "13" },
+                    { si: "1 න් පටන් ගෙන ඔත්තේ සංඛ්‍යා රටාවේ මුල් පද 12 ක ඓක්‍යය කීයද?", en: "What is the sum of the first 12 odd numbers starting from 1?", a: "144" },
+                    { si: "ත්‍රිකෝණ සංඛ්‍යා රටාවේ n වන පදය මෙන් දෙගුණයක් <span class='math-highlight'>132</span> නම් n හි අගය කීයද?", en: "If twice the nth term of the triangular number pattern is <span class='math-highlight'>132</span>, find n.", a: "11" },
+                    { si: "සාධාරණ පදය <span class='math-highlight'>n²</span> වන රටාවේ 11 වන පදයත් 9 වන පදයත් අතර වෙනස කීයද?", en: "Find the difference between the 11th term and 9th term of the pattern <span class='math-highlight'>n²</span>.", a: "40" },
+                    { si: "සමචතුරස්‍ර සංඛ්‍යා රටාවේ 6 වන පදයත් 8 වන පදයත් එකතු කළ විට ලැබෙන සමචතුරස්‍ර සංඛ්‍යාව කීයද?", en: "What square number is obtained by adding the 6th and 8th square numbers?", a: "100" },
+                    { si: "3 න් පටන් ගෙන 3 හි ගුණාකාර රටාවේ 20 වන පදයත් 2 න් පටන් ගෙන 2 හි ගුණාකාර රටාවේ 20 වන පදයත් අතර වෙනස කීයද?", en: "Find the difference between the 20th term of 3n and the 20th term of 2n.", a: "20" },
+                    { si: "පළමු පද 10 ක් ඇති ත්‍රිකෝණ සංඛ්‍යා රටාවේ 10 වන පදය සහ 1 වන පදය අතර වෙනස කීයද?", en: "Find the difference between the 10th term and 1st term of the triangular number pattern.", a: "54" }
+                ]
+            }
+        };
+
+        let currentLang = 'si';
+        let currentTable = 1;
+        let currentQuestions = [];
+        let timerInterval = null;
+        let initialSeconds = 0;
+        let correctionSeconds = 0;
+        let phase = 'idle';
+
+        function openNumPatterns(lang) {
+            currentLang = lang || 'si';
+            document.getElementById('menuView').style.display = 'none';
+            document.getElementById('numPatternsView').style.display = 'block';
+            document.getElementById('headerBackToMenuBtn').style.display = 'inline-block';
+            applyLanguageUI();
+            loadTableQuestions(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeNumPatterns() {
+            stopTimer();
+            document.getElementById('numPatternsView').style.display = 'none';
+            document.getElementById('headerBackToMenuBtn').style.display = 'none';
+            document.getElementById('menuView').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setLanguage(lang) {
+            if (currentLang === lang) return;
+            currentLang = lang;
+            applyLanguageUI();
+            const savedValues = [];
+            const savedStates = [];
+            for (let i = 0; i < currentQuestions.length; i++) {
+                const inp = document.getElementById(`input-${i}`);
+                if (inp) {
+                    savedValues.push(inp.value);
+                    savedStates.push({
+                        disabled: inp.disabled,
+                        isCorrect: inp.classList.contains('correct'),
+                        isWrong: inp.classList.contains('wrong')
+                    });
+                }
+            }
+            renderTable();
+            for (let i = 0; i < currentQuestions.length; i++) {
+                const inp = document.getElementById(`input-${i}`);
+                const icon = document.getElementById(`icon-${i}`);
+                if (inp && savedValues[i] !== undefined) {
+                    inp.value = savedValues[i];
+                    if (savedStates[i].isCorrect) {
+                        inp.classList.add('correct');
+                        inp.disabled = true;
+                        icon.textContent = '✅';
+                    } else if (savedStates[i].isWrong) {
+                        inp.classList.add('wrong');
+                        icon.textContent = '❌';
+                    }
+                }
+            }
+        }
+
+        function applyLanguageUI() {
+            const t = UI_TEXT[currentLang];
+            document.getElementById('langBtnSi').classList.toggle('active', currentLang === 'si');
+            document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
+
+            document.getElementById('quizMainTitle').textContent = t.mainTitle;
+            document.getElementById('shuffleBtn').textContent = t.shuffleBtn;
+            document.getElementById('backBtnTop').textContent = t.backBtnTop;
+            document.getElementById('backBtnBottom').textContent = t.backBtnBottom;
+            document.getElementById('lblInitialTime').textContent = t.lblInitialTime;
+            document.getElementById('lblCorrectionTime').textContent = t.lblCorrectionTime;
+            document.getElementById('lblScore').textContent = t.lblScore;
+            document.getElementById('thNo').textContent = t.thNo;
+            document.getElementById('thQuestion').textContent = t.thQuestion;
+            document.getElementById('thAnswer').textContent = t.thAnswer;
+
+            document.getElementById('statLblScore').textContent = t.statLblScore;
+            document.getElementById('statLblInit').textContent = t.statLblInit;
+            document.getElementById('statLblCorr').textContent = t.statLblCorr;
+            document.getElementById('statLblTotal').textContent = t.statLblTotal;
+
+            const tabsHTML = [1, 2, 3, 4, 5].map(num => {
+                const tabInfo = currentLang === 'si' ? QUIZ_BANK[num].tabSi : QUIZ_BANK[num].tabEn;
+                const activeCls = num === currentTable ? 'active' : '';
+                return `<button class="np-tab-btn ${activeCls}" onclick="switchTable(${num})">${tabInfo[0]}<span class="np-tab-sub">${tabInfo[1]}</span></button>`;
+            }).join('');
+            document.getElementById('quizTabsContainer').innerHTML = tabsHTML;
+
+            document.getElementById('tableSubtitleHint').innerHTML =
+                currentLang === 'si' ? QUIZ_BANK[currentTable].hintSi : QUIZ_BANK[currentTable].hintEn;
+
+            const checkBtn = document.getElementById('checkBtn');
+            const summaryMsg = document.getElementById('summaryMessage');
+            let correctCount = 0;
+            for (let i = 0; i < 20; i++) {
+                const el = document.getElementById(`input-${i}`);
+                if (el && el.classList.contains('correct')) correctCount++;
+            }
+
+            if (phase === 'completed') {
+                checkBtn.textContent = t.completedBtn;
+                summaryMsg.textContent = t.perfectMsg;
+            } else if (phase === 'correction') {
+                checkBtn.textContent = t.recheckBtn;
+                summaryMsg.textContent = t.errorMsg(20 - correctCount);
+            } else {
+                checkBtn.textContent = t.checkBtn;
+            }
+
+            updateTimerUI();
+        }
+
+        function formatTime(totalSec) {
+            const t = UI_TEXT[currentLang];
+            const mins = Math.floor(totalSec / 60);
+            const secs = totalSec % 60;
+            return `${String(mins).padStart(2, '0')} ${t.minUnit} ${String(secs).padStart(2, '0')} ${t.secUnit}`;
+        }
+
+        function updateTimerUI() {
+            document.getElementById('initialTimeDisplay').textContent = formatTime(initialSeconds);
+            document.getElementById('correctionTimeDisplay').textContent = formatTime(correctionSeconds);
+            document.getElementById('statInitialTime').textContent = formatTime(initialSeconds);
+            document.getElementById('statCorrectionTime').textContent = formatTime(correctionSeconds);
+            document.getElementById('statTotalTime').textContent = formatTime(initialSeconds + correctionSeconds);
+        }
+
+        function startTimerIfNeeded() {
+            if (phase === 'idle') phase = 'initial';
+            if (!timerInterval && (phase === 'initial' || phase === 'correction')) {
+                timerInterval = setInterval(() => {
+                    if (phase === 'initial') initialSeconds++;
+                    else if (phase === 'correction') correctionSeconds++;
+                    updateTimerUI();
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function switchTable(tableNum) {
+            currentTable = tableNum;
+            applyLanguageUI();
+            loadTableQuestions(false);
+        }
+
+        function generateNewSet() {
+            loadTableQuestions(true);
+        }
+
+        function loadTableQuestions(shuffle) {
+            stopTimer();
+            initialSeconds = 0;
+            correctionSeconds = 0;
+            phase = 'idle';
+            updateTimerUI();
+
+            const t = UI_TEXT[currentLang];
+            document.getElementById('correctionPill').style.display = 'none';
+            document.getElementById('summaryBox').style.display = 'none';
+            document.getElementById('scoreDisplay').textContent = '0 / 20';
+
+            const checkBtn = document.getElementById('checkBtn');
+            checkBtn.textContent = t.checkBtn;
+            checkBtn.className = 'np-btn np-btn-check';
+
+            let list = [...QUIZ_BANK[currentTable].items];
+            if (shuffle) {
+                for (let i = list.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [list[i], list[j]] = [list[j], list[i]];
+                }
+            }
+            currentQuestions = list;
+            renderTable();
+        }
+
+        function renderTable() {
+            const t = UI_TEXT[currentLang];
+            const tbody = document.getElementById('quizTableBody');
+            tbody.innerHTML = currentQuestions.map((item, idx) => `
+                <tr>
+                    <td><span class="q-no">${idx + 1}</span></td>
+                    <td>${currentLang === 'si' ? item.si : item.en}</td>
+                    <td>
+                        <input type="text" class="ans-input" id="input-${idx}"
+                            oninput="handleInput(${idx}, this)" onkeydown="handleKeyNav(event, ${idx})"
+                            placeholder="${t.placeholder}" autocomplete="off" />
+                        <span class="status-icon" id="icon-${idx}"></span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handleInput(idx, el) {
+            if (el.value.trim().length > 0) {
+                startTimerIfNeeded();
+                if (el.classList.contains('wrong')) {
+                    el.classList.remove('wrong');
+                    document.getElementById(`icon-${idx}`).textContent = '';
+                }
+            }
+        }
+
+        function handleKeyNav(e, idx) {
+            if (e.key === 'ArrowDown' && idx < 19) {
+                e.preventDefault();
+                document.getElementById(`input-${idx + 1}`).focus();
+            } else if (e.key === 'ArrowUp' && idx > 0) {
+                e.preventDefault();
+                document.getElementById(`input-${idx - 1}`).focus();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (idx < 19) document.getElementById(`input-${idx + 1}`).focus();
+                else checkAnswers();
+            }
+        }
+
+        function normalizeAns(str) {
+            return str.replace(/\s+/g, '').replace(/−/g, '-').replace(/²/g, '^2').toLowerCase();
+        }
+
+        function checkAnswers() {
+            const t = UI_TEXT[currentLang];
+            let emptyCount = 0;
+            for (let i = 0; i < 20; i++) {
+                if (!document.getElementById(`input-${i}`).value.trim()) emptyCount++;
+            }
+            if (emptyCount > 0) {
+                alert(t.alertEmpty(emptyCount));
+                for (let i = 0; i < 20; i++) {
+                    if (!document.getElementById(`input-${i}`).value.trim()) {
+                        document.getElementById(`input-${i}`).focus();
+                        break;
+                    }
+                }
+                return;
+            }
+
+            let correctCount = 0;
+            for (let i = 0; i < 20; i++) {
+                const inputEl = document.getElementById(`input-${i}`);
+                const iconEl = document.getElementById(`icon-${i}`);
+                const userAns = normalizeAns(inputEl.value);
+                const item = currentQuestions[i];
+
+                const validAnswers = [normalizeAns(item.a)];
+                if (item.alt) {
+                    item.alt.forEach(a => validAnswers.push(normalizeAns(a)));
+                }
+
+                if (validAnswers.includes(userAns)) {
+                    correctCount++;
+                    inputEl.classList.remove('wrong');
+                    inputEl.classList.add('correct');
+                    inputEl.disabled = true;
+                    iconEl.textContent = '✅';
+                } else {
+                    inputEl.classList.remove('correct');
+                    inputEl.classList.add('wrong');
+                    iconEl.textContent = '❌';
+                }
+            }
+
+            document.getElementById('scoreDisplay').textContent = `${correctCount} / 20`;
+
+            const summaryBox = document.getElementById('summaryBox');
+            const summaryMsg = document.getElementById('summaryMessage');
+            const checkBtn = document.getElementById('checkBtn');
+
+            if (correctCount === 20) {
+                stopTimer();
+                phase = 'completed';
+                summaryBox.style.display = 'block';
+                summaryBox.classList.remove('has-errors');
+                summaryMsg.textContent = t.perfectMsg;
+                checkBtn.textContent = t.completedBtn;
+                checkBtn.className = 'np-btn np-btn-check';
+            } else {
+                if (phase === 'initial' || phase === 'idle') {
+                    phase = 'correction';
+                    document.getElementById('correctionPill').style.display = 'flex';
+                    startTimerIfNeeded();
+                }
+                summaryBox.style.display = 'block';
+                summaryBox.classList.add('has-errors');
+                summaryMsg.textContent = t.errorMsg(20 - correctCount);
+                checkBtn.textContent = t.recheckBtn;
+                checkBtn.className = 'np-btn np-btn-recheck';
+
+                for (let i = 0; i < 20; i++) {
+                    const el = document.getElementById(`input-${i}`);
+                    if (el.classList.contains('wrong')) {
+                        el.focus();
+                        el.select();
+                        break;
+                    }
+                }
+            }
+
+            document.getElementById('statScore').textContent = `${correctCount} / 20`;
+            updateTimerUI();
+        }
+    </script>
 </body>
 </html>
