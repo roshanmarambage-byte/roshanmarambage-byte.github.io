@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9 ශ්‍රේණිය - Interactive Quizzes & Google Forms | ගණිත ගෙදර</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>9 ශ්‍රේණිය - Interactive Quizzes & Google Forms | ගණිතගෙදර</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+Sinhala:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
-        body { background:var(--light); color:#1e293b; }
+        body { background:var(--light); color:#1e293b; line-height:1.6; }
+        
+        /* Header Styles */
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2.2rem 1rem; border-bottom:4px solid var(--accent); }
-        header h1 { font-size:1.65rem; }
+        header h1 { font-size:1.75rem; font-weight:800; }
+        header .sub-meta { color:#fcd34d; font-size:0.98rem; font-weight:700; margin-top:0.35rem; }
         .nav-links { margin-top:1rem; display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; }
-        .nav-links a { color:#fcd34d; text-decoration:none; font-size:0.9rem; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; }
-        .nav-links a:hover { background:var(--accent); color:var(--dark); }
-        .container { max-width:900px; margin:2rem auto; padding:0 1.25rem; }
-        .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); }
-        .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; }
+        .nav-links a, .nav-links button { background:transparent; color:#fcd34d; text-decoration:none; font-size:0.9rem; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; cursor:pointer; }
+        .nav-links a:hover, .nav-links button:hover { background:var(--accent); color:var(--dark); }
+
+        .container { max-width:960px; margin:2rem auto; padding:0 1.25rem; }
+
+        /* Menu View Cards */
+        .cat-box { background:white; border-radius:12px; padding:1.5rem; margin-bottom:1.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #e2e8f0; }
+        .cat-title { font-size:1.25rem; font-weight:700; color:var(--dark); margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:2px solid #e2e8f0; display:flex; align-items:center; gap:0.5rem; line-height:1.45; }
         .quiz-row { background:#f8fafc; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; transition:transform 0.15s; }
         .quiz-row:last-child { margin-bottom:0; }
         .quiz-row:hover { transform:translateX(4px); background:#f1f5f9; }
@@ -24,43 +32,711 @@
         .b-purple { border-left:4px solid #6d28d9; }
         .quiz-name { font-weight:700; font-size:1rem; color:var(--dark); }
         .quiz-info { font-size:0.82rem; color:#64748b; margin-top:0.15rem; }
-        .btn { color:white; text-decoration:none; padding:0.5rem 1.1rem; border-radius:6px; font-weight:600; font-size:0.88rem; white-space:nowrap; transition:opacity 0.2s; }
+        .btn-group { display:flex; gap:0.5rem; flex-wrap:wrap; }
+        .btn { border:none; color:white; text-decoration:none; padding:0.55rem 1.05rem; border-radius:6px; font-weight:700; font-size:0.86rem; white-space:nowrap; transition:opacity 0.2s; display:inline-block; cursor:pointer; }
         .btn:hover { opacity:0.9; }
         .btn-gold { background:#d97706; }
+        .btn-blue { background:#1d4ed8; }
         .btn-purple { background:#6d28d9; }
+
+        /* Number Patterns Interactive Section */
+        #numPatternsView { display:none; }
+        .np-card { background:white; border-radius:14px; padding:1.5rem; box-shadow:0 4px 20px rgba(0,0,0,0.06); border:1px solid #e2e8f0; }
+        .np-header-bar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:2px solid #e2e8f0; }
+        .np-heading { font-size:1.22rem; font-weight:800; color:var(--primary); }
+        
+        /* Language Switcher Inside Quiz */
+        .lang-switch { display:inline-flex; background:#f1f5f9; padding:3px; border-radius:8px; border:1px solid #cbd5e1; }
+        .lang-btn { border:none; background:transparent; padding:0.35rem 0.85rem; border-radius:6px; font-size:0.84rem; font-weight:700; color:#475569; cursor:pointer; transition:0.2s; }
+        .lang-btn.active { background:var(--dark); color:white; }
+
+        .np-status-bar { position:sticky; top:10px; z-index:40; background:white; border:2px solid #cbd5e1; border-left:5px solid var(--primary); border-radius:10px; padding:0.8rem 1rem; margin-bottom:1.25rem; box-shadow:0 6px 18px rgba(15,23,42,0.08); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; }
+        .np-timers { display:flex; flex-wrap:wrap; gap:0.6rem; }
+        .np-pill { background:#f1f5f9; padding:0.4rem 0.8rem; border-radius:8px; font-size:0.88rem; font-weight:700; color:var(--dark); display:flex; align-items:center; gap:0.35rem; }
+        .np-pill.corr { background:#fef3c7; border:1px solid #f59e0b; color:#92400e; }
+        .np-val { font-family:'Fredoka', sans-serif; font-size:1.05rem; color:var(--primary); }
+        .np-pill.corr .np-val { color:#b45309; }
+
+        .np-tabs { display:grid; grid-template-columns:repeat(auto-fit, minmax(155px, 1fr)); gap:0.55rem; margin-bottom:1.25rem; }
+        .np-tab-btn { background:white; border:2px solid #cbd5e1; border-radius:8px; padding:0.6rem 0.5rem; font-weight:700; font-size:0.88rem; color:#334155; cursor:pointer; transition:0.2s; text-align:center; }
+        .np-tab-btn:hover { border-color:var(--primary); background:#fef2f2; }
+        .np-tab-btn.active { background:var(--primary); border-color:var(--primary); color:white; }
+        .np-tab-sub { display:block; font-size:0.73rem; font-weight:600; opacity:0.9; margin-top:2px; }
+
+        .np-hint { background:#eff6ff; border-left:4px solid #2563eb; padding:0.75rem 1rem; border-radius:6px; font-size:0.88rem; color:#1e3a8a; margin-bottom:1.25rem; font-weight:600; }
+
+        .np-table { width:100%; border-collapse:collapse; background:white; margin-bottom:1.25rem; }
+        .np-table th { background:var(--dark); color:white; padding:0.8rem 0.6rem; font-size:0.95rem; text-align:center; border:1px solid #334155; }
+        .np-table th:nth-child(1) { width:65px; }
+        .np-table th:nth-child(2) { width:62%; text-align:left; padding-left:1rem; }
+        .np-table th:nth-child(3) { width:30%; }
+        .np-table td { padding:0.75rem 0.6rem; border:1px solid #cbd5e1; text-align:center; vertical-align:middle; }
+        .np-table td:nth-child(2) { text-align:left; padding-left:1rem; font-size:0.98rem; font-weight:600; color:#0f172a; }
+        .np-table tr:nth-child(even) { background:#f8fafc; }
+
+        .q-no { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:#e2e8f0; color:var(--dark); font-family:'Fredoka', sans-serif; font-weight:700; font-size:0.9rem; }
+        .math-highlight { font-family:'Fredoka', sans-serif; color:#1d4ed8; font-weight:600; background:#eff6ff; padding:2px 6px; border-radius:4px; }
+        
+        .ans-input { width:115px; height:40px; text-align:center; font-family:'Fredoka', sans-serif; font-size:1.1rem; font-weight:700; border:2px solid #94a3b8; border-radius:8px; outline:none; transition:0.2s; background:white; }
+        .ans-input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
+        .ans-input.correct { border-color:#16a34a; background:#dcfce7; color:#14532d; }
+        .ans-input.wrong { border-color:#dc2626; background:#fee2e2; color:#7f1d1d; }
+        .status-icon { display:inline-block; margin-left:6px; font-size:1.1rem; vertical-align:middle; }
+
+        .np-actions { display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:center; }
+        .np-btn { border:none; padding:0.7rem 1.35rem; border-radius:8px; font-size:0.95rem; font-weight:700; cursor:pointer; color:white; display:inline-flex; align-items:center; gap:0.4rem; transition:0.2s; }
+        .np-btn:hover { opacity:0.92; }
+        .np-btn-check { background:#16a34a; }
+        .np-btn-recheck { background:#d97706; }
+        .np-btn-new { background:#2563eb; font-size:0.85rem; padding:0.45rem 0.9rem; }
+        .np-btn-back { background:#475569; font-size:0.85rem; padding:0.45rem 0.9rem; }
+
+        .np-summary { display:none; margin-top:1.25rem; background:#f0fdf4; border:2px solid #16a34a; border-radius:10px; padding:1.15rem; text-align:center; }
+        .np-summary.has-errors { background:#fffbeb; border-color:#f59e0b; }
+        .np-summary-title { font-size:1.1rem; font-weight:800; color:var(--dark); margin-bottom:0.75rem; }
+        .np-summary-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:0.65rem; }
+        .np-stat { background:white; padding:0.65rem; border-radius:8px; border:1px solid #cbd5e1; }
+        .np-stat-lbl { font-size:0.78rem; color:#64748b; font-weight:700; }
+        .np-stat-val { font-size:1.1rem; font-weight:800; color:var(--primary); margin-top:0.2rem; }
+
+        footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:1.75rem 1rem; font-size:0.9rem; margin-top:2rem; }
+        footer strong { color:white; }
+
+        @media (max-width:600px) {
+            .ans-input { width:92px; height:36px; font-size:1rem; }
+            .np-table td:nth-child(2) { font-size:0.9rem; }
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>📝 9 ශ්‍රේණිය - Interactive Quizzes & Google Forms</h1>
+        <div class="sub-meta">සැකසුම - රොෂාන් මාරඹගේ | වල්ගම - ගණිතගෙදර</div>
         <div class="nav-links">
             <a href="quizzes.html">← ශ්‍රේණි ලැයිස්තුවට</a>
             <a href="index.html">🏠 මුල් පිටුවට</a>
+            <button id="headerBackToMenuBtn" onclick="closeNumPatterns()" style="display:none;">📋 පැවරුම් ලැයිස්තුවට</button>
         </div>
     </header>
+
     <div class="container">
-        <div class="cat-box">
-            <div class="cat-title">🎮 Interactive HTML Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</div>
-            <div class="quiz-row b-gold">
-                <div>
-                    <div class="quiz-name">ප්‍රස්තාර සහ ශ්‍රිත - Interactive Quiz</div>
-                    <div class="quiz-info">පිළිතුරු සහ ලකුණු එසැණින් ලැබේ</div>
+
+        <!-- 1. පැවරුම් ලැයිස්තුව -->
+        <div id="menuView">
+            <div class="cat-box">
+                <div class="cat-title">🎮 Interactive HTML Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</div>
+
+                <!-- 1 වන පාඩම: සංඛ්‍යා රටා (සිංහල සහ English බොත්තම් සමඟ) -->
+                <div class="quiz-row b-gold">
+                    <div>
+                        <div class="quiz-name">1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes</div>
+                        <div class="quiz-info">වගු 5 (ප්‍රශ්න 100) | සිංහල & English මාධ්‍ය | කාලය මැනීම සහ වැරදි නිවැරදි කිරීමේ කාලය සමඟ | ගණිතගෙදර</div>
+                    </div>
+                    <div class="btn-group">
+                        <button onclick="openNumPatterns('si')" class="btn btn-gold">🚀 සිංහල මාධ්‍ය</button>
+                        <button onclick="openNumPatterns('en')" class="btn btn-blue">🌐 English Medium</button>
+                    </div>
                 </div>
-                <a href="INTERACTIVE_LINK_HERE" target="_blank" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</a>
+
+                <!-- ප්‍රස්තාර සහ ශ්‍රිත -->
+                <div class="quiz-row b-gold">
+                    <div>
+                        <div class="quiz-name">ප්‍රස්තාර සහ ශ්‍රිත - Interactive Quiz</div>
+                        <div class="quiz-info">පිළිතුරු සහ ලකුණු එසැණින් ලැබේ | ගණිතගෙදර</div>
+                    </div>
+                    <a href="g9-graphs.html" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</a>
+                </div>
+            </div>
+
+            <div class="cat-box">
+                <div class="cat-title">📋 Google Forms (මාර්ගගත ඇගයීම්)</div>
+                <div class="quiz-row b-purple">
+                    <div>
+                        <div class="quiz-name">පයිතගරස් සම්බන්ධය සහ සමීකරණ ඇගයීම</div>
+                        <div class="quiz-info">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
+                    </div>
+                    <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-purple">✍️ Form එකට පිවිසෙන්න</a>
+                </div>
             </div>
         </div>
 
-        <div class="cat-box">
-            <div class="cat-title">📋 Google Forms (මාර්ගගත ඇගයීම්)</div>
-            <div class="quiz-row b-purple">
-                <div>
-                    <div class="quiz-name">පයිතගරස් සම්බන්ධය සහ සමීකරණ ඇගයීම</div>
-                    <div class="quiz-info">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
+        <!-- 2. සංඛ්‍යා රටා Interactive Quiz වගු 5 -->
+        <div id="numPatternsView">
+            <div class="np-card">
+                <div class="np-header-bar">
+                    <div class="np-heading" id="quizMainTitle">🔢 1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes</div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                        <div class="lang-switch">
+                            <button class="lang-btn active" id="langBtnSi" onclick="setLanguage('si')">සිංහල</button>
+                            <button class="lang-btn" id="langBtnEn" onclick="setLanguage('en')">English</button>
+                        </div>
+                        <button class="np-btn np-btn-new" id="shuffleBtn" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
+                        <button class="np-btn np-btn-back" id="backBtnTop" onclick="closeNumPatterns()">🔙 පැවරුම් ලැයිස්තුවට</button>
+                    </div>
                 </div>
-                <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-purple">✍️ Form එකට පිවිසෙන්න</a>
+
+                <div class="np-status-bar">
+                    <div class="np-timers">
+                        <div class="np-pill">
+                            <span id="lblInitialTime">⏱️ මූලික කාලය:</span>
+                            <span id="initialTimeDisplay" class="np-val">00 මි. 00 තත්.</span>
+                        </div>
+                        <div class="np-pill corr" id="correctionPill" style="display:none;">
+                            <span id="lblCorrectionTime">🔄 නිවැරදි කිරීමේ අතිරේක කාලය:</span>
+                            <span id="correctionTimeDisplay" class="np-val">00 මි. 00 තත්.</span>
+                        </div>
+                    </div>
+                    <div class="np-pill" style="background:#fef2f2; border:1px solid #fecaca;">
+                        <span id="lblScore">🎯 ලකුණු:</span>
+                        <span id="scoreDisplay" class="np-val">0 / 20</span>
+                    </div>
+                </div>
+
+                <div class="np-tabs" id="quizTabsContainer"></div>
+
+                <div class="np-hint" id="tableSubtitleHint"></div>
+
+                <table class="np-table">
+                    <thead>
+                        <tr>
+                            <th id="thNo">අංකය</th>
+                            <th id="thQuestion">ගැටලුව (Question)</th>
+                            <th id="thAnswer">ඔබේ පිළිතුර</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quizTableBody"></tbody>
+                </table>
+
+                <div class="np-actions">
+                    <button id="checkBtn" class="np-btn np-btn-check" onclick="checkAnswers()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
+                    <button id="backBtnBottom" class="np-btn np-btn-back" onclick="closeNumPatterns()">🔙 ආපසු ලැයිස්තුවට</button>
+                </div>
+
+                <div id="summaryBox" class="np-summary">
+                    <div class="np-summary-title" id="summaryMessage">ප්‍රතිඵල වාර්තාව</div>
+                    <div class="np-summary-grid">
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblScore">ලබාගත් ලකුණු</div>
+                            <div class="np-stat-val" id="statScore">0 / 20</div>
+                        </div>
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblInit">මූලික පිරවීමේ කාලය</div>
+                            <div class="np-stat-val" id="statInitialTime">00 මි. 00 තත්.</div>
+                        </div>
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblCorr">වැරදි නිවැරදි කිරීමේ කාලය</div>
+                            <div class="np-stat-val" id="statCorrectionTime">00 මි. 00 තත්.</div>
+                        </div>
+                        <div class="np-stat">
+                            <div class="np-stat-lbl" id="statLblTotal">මුළු ගත වූ කාලය</div>
+                            <div class="np-stat-val" id="statTotalTime">00 මි. 00 තත්.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
-    <script src="news.js"></script>
+
+    <footer>
+        <p>&copy; 2026 <strong>වල්ගම - ගණිතගෙදර</strong> | සැකසුම: <strong>රොෂාන් මාරඹගේ</strong>. සියලුම හිමිකම් ඇවිරිණි.</p>
+    </footer>
+
+    <script>
+        const UI_TEXT = {
+            si: {
+                mainTitle: "🔢 1. සංඛ්‍යා රටා (Number Patterns) - Interactive Quizzes",
+                shuffleBtn: "🔄 නව ප්‍රශ්න",
+                backBtnTop: "🔙 පැවරුම් ලැයිස්තුවට",
+                backBtnBottom: "🔙 ආපසු ලැයිස්තුවට",
+                lblInitialTime: "⏱️ මූලික කාලය:",
+                lblCorrectionTime: "🔄 නිවැරදි කිරීමේ අතිරේක කාලය:",
+                lblScore: "🎯 ලකුණු:",
+                thNo: "අංකය",
+                thQuestion: "ගැටලුව (Question)",
+                thAnswer: "ඔබේ පිළිතුර",
+                placeholder: "පිළිතුර",
+                checkBtn: "✅ පිළිතුරු පරීක්ෂා කරන්න",
+                recheckBtn: "🔄 නිවැරදි කළ පිළිතුරු නැවත පරීක්ෂා කරන්න",
+                completedBtn: "🏆 සම්පූර්ණයි!",
+                statLblScore: "ලබාගත් ලකුණු",
+                statLblInit: "මූලික පිරවීමේ කාලය",
+                statLblCorr: "වැරදි නිවැරදි කිරීමේ කාලය",
+                statLblTotal: "මුළු ගත වූ කාලය",
+                minUnit: "මි.",
+                secUnit: "තත්.",
+                alertEmpty: (n) => `කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු ${n}ක් ඇත)`,
+                perfectMsg: "🎉 විශිෂ්ටයි! සියලුම පිළිතුරු 20 නිවැරදියි!",
+                errorMsg: (n) => `⚠️ වැරදි පිළිතුරු ${n}ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)`
+            },
+            en: {
+                mainTitle: "🔢 Lesson 1: Number Patterns - Interactive Quizzes",
+                shuffleBtn: "🔄 Shuffle Questions",
+                backBtnTop: "🔙 Back to Menu",
+                backBtnBottom: "🔙 Back to Menu",
+                lblInitialTime: "⏱️ Initial Time:",
+                lblCorrectionTime: "🔄 Correction Time:",
+                lblScore: "🎯 Score:",
+                thNo: "No.",
+                thQuestion: "Question",
+                thAnswer: "Your Answer",
+                placeholder: "Answer",
+                checkBtn: "✅ Check Answers",
+                recheckBtn: "🔄 Re-check Corrected Answers",
+                completedBtn: "🏆 Completed!",
+                statLblScore: "Score Obtained",
+                statLblInit: "Initial Completion Time",
+                statLblCorr: "Error Correction Time",
+                statLblTotal: "Total Time Taken",
+                minUnit: "m",
+                secUnit: "s",
+                alertEmpty: (n) => `Please answer all 20 questions before checking. (${n} blank box(es) remaining)`,
+                perfectMsg: "🎉 Excellent! All 20 answers are correct!",
+                errorMsg: (n) => `⚠️ You have ${n} incorrect answer(s). Fix them and check again (correction timer is running...)`
+            }
+        };
+
+        const QUIZ_BANK = {
+            1: {
+                tabSi: ["1 වන Quiz එක", "පොදු අන්තරය (ඉතා පහසු)"],
+                tabEn: ["Quiz 1", "Common Difference (Very Easy)"],
+                hintSi: "💡 <strong>1 වන Quiz එක - පොදු අන්තරය හා මූලික පද (ප්‍රශ්න 20):</strong> පොදු අන්තරය (දෙවන පදය − පළමු පදය) හෝ ඊළඟ පදය සොයන්න. ඍණ අගයන් සඳහා - ලකුණ යොදන්න.",
+                hintEn: "💡 <strong>Quiz 1 - Common Difference & Basic Terms (20 Questions):</strong> Find the common difference (2nd term − 1st term) or the specified term. Use the minus sign (-) for negative numbers.",
+                items: [
+                    { si: "<span class='math-highlight'>2, 4, 6, 8, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of the pattern <span class='math-highlight'>2, 4, 6, 8, ...</span>?", a: "2" },
+                    { si: "<span class='math-highlight'>5, 8, 11, 14, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>5, 8, 11, 14, ...</span>?", a: "3" },
+                    { si: "<span class='math-highlight'>10, 17, 24, 31, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>10, 17, 24, 31, ...</span>?", a: "7" },
+                    { si: "<span class='math-highlight'>4, 9, 14, 19, ...</span> රටාවේ පස්වන (5 වන) පදය කීයද?", en: "Find the 5th term of the pattern <span class='math-highlight'>4, 9, 14, 19, ...</span>", a: "24" },
+                    { si: "<span class='math-highlight'>3, 3, 3, 3, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>3, 3, 3, 3, ...</span>?", a: "0" },
+                    { si: "<span class='math-highlight'>15, 19, 23, 27, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>15, 19, 23, 27, ...</span>?", a: "4" },
+                    { si: "<span class='math-highlight'>20, 17, 14, 11, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>20, 17, 14, 11, ...</span>?", a: "-3" },
+                    { si: "<span class='math-highlight'>50, 45, 40, 35, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>50, 45, 40, 35, ...</span>?", a: "-5" },
+                    { si: "<span class='math-highlight'>17, 12, 7, 2, ...</span> රටාවේ පස්වන (5 වන) පදය කීයද?", en: "Find the 5th term of the pattern <span class='math-highlight'>17, 12, 7, 2, ...</span>", a: "-3" },
+                    { si: "පළමු පදය <span class='math-highlight'>4</span> ද පොදු අන්තරය <span class='math-highlight'>3</span> ද වන රටාවේ 3 වන පදය කීයද?", en: "Find the 3rd term if the first term is <span class='math-highlight'>4</span> and common difference is <span class='math-highlight'>3</span>.", a: "10" },
+                    { si: "පළමු පදය <span class='math-highlight'>7</span> ද පොදු අන්තරය <span class='math-highlight'>-4</span> ද වන රටාවේ 3 වන පදය කීයද?", en: "Find the 3rd term if the first term is <span class='math-highlight'>7</span> and common difference is <span class='math-highlight'>-4</span>.", a: "-1" },
+                    { si: "<span class='math-highlight'>1, 7, 13, 19, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>1, 7, 13, 19, ...</span>?", a: "6" },
+                    { si: "<span class='math-highlight'>9, 17, 25, 33, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>9, 17, 25, 33, ...</span>?", a: "8" },
+                    { si: "<span class='math-highlight'>22, 20, 18, 16, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>22, 20, 18, 16, ...</span>?", a: "-2" },
+                    { si: "<span class='math-highlight'>0.5, 0.8, 1.1, 1.4, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>0.5, 0.8, 1.1, 1.4, ...</span>?", a: "0.3" },
+                    { si: "<span class='math-highlight'>-8, -5, -2, 1, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>-8, -5, -2, 1, ...</span>?", a: "3" },
+                    { si: "<span class='math-highlight'>-2, -6, -10, -14, ...</span> රටාවේ පොදු අන්තරය කීයද?", en: "What is the common difference of <span class='math-highlight'>-2, -6, -10, -14, ...</span>?", a: "-4" },
+                    { si: "පළමු පදය <span class='math-highlight'>12</span> ද පොදු අන්තරය <span class='math-highlight'>-5</span> ද වන රටාවේ 4 වන පදය කීයද?", en: "Find the 4th term if the first term is <span class='math-highlight'>12</span> and common difference is <span class='math-highlight'>-5</span>.", a: "-3" },
+                    { si: "<span class='math-highlight'>6, 3, 0, -3, ...</span> රටාවේ 5 වන පදය කීයද?", en: "Find the 5th term of the pattern <span class='math-highlight'>6, 3, 0, -3, ...</span>", a: "-6" },
+                    { si: "පොදු අන්තරය <span class='math-highlight'>6</span> වන රටාවක 4 වන පදය <span class='math-highlight'>23</span> නම් 3 වන පදය කීයද?", en: "If the common difference is <span class='math-highlight'>6</span> and the 4th term is <span class='math-highlight'>23</span>, find the 3rd term.", a: "17" }
+                ]
+            },
+            2: {
+                tabSi: ["2 වන Quiz එක", "Tₙ මගින් පද සෙවීම (පහසු)"],
+                tabEn: ["Quiz 2", "Finding Terms via Tₙ (Easy)"],
+                hintSi: "💡 <strong>2 වන Quiz එක - සාධාරණ පදය (Tₙ) මගින් පද සෙවීම (ප්‍රශ්න 20):</strong> දී ඇති Tₙ සූත්‍රයට අදාළ n අගය ආදේශ කර පදයේ අගය සොයන්න.",
+                hintEn: "💡 <strong>Quiz 2 - Finding Terms Using the General Term Tₙ (20 Questions):</strong> Substitute the given value of n into the Tₙ formula to find the term.",
+                items: [
+                    { si: "<span class='math-highlight'>Tₙ = 2n + 3</span> රටාවේ පළමු පදය (T₁) කීයද?", en: "Find the 1st term (T₁) of the pattern <span class='math-highlight'>Tₙ = 2n + 3</span>.", a: "5" },
+                    { si: "<span class='math-highlight'>Tₙ = 3n + 2</span> රටාවේ 3 වන පදය (T₃) කීයද?", en: "Find the 3rd term (T₃) of <span class='math-highlight'>Tₙ = 3n + 2</span>.", a: "11" },
+                    { si: "<span class='math-highlight'>Tₙ = 5n − 1</span> රටාවේ 4 වන පදය (T₄) කීයද?", en: "Find the 4th term (T₄) of <span class='math-highlight'>Tₙ = 5n − 1</span>.", a: "19" },
+                    { si: "<span class='math-highlight'>Tₙ = 2n + 5</span> රටාවේ 10 වන පදය (T₁₀) කීයද?", en: "Find the 10th term (T₁₀) of <span class='math-highlight'>Tₙ = 2n + 5</span>.", a: "25" },
+                    { si: "<span class='math-highlight'>Tₙ = 4n − 3</span> රටාවේ 12 වන පදය (T₁₂) කීයද?", en: "Find the 12th term (T₁₂) of <span class='math-highlight'>Tₙ = 4n − 3</span>.", a: "45" },
+                    { si: "<span class='math-highlight'>Tₙ = 7n + 1</span> රටාවේ 5 වන පදය (T₅) කීයද?", en: "Find the 5th term (T₅) of <span class='math-highlight'>Tₙ = 7n + 1</span>.", a: "36" },
+                    { si: "<span class='math-highlight'>Tₙ = 2n + 3</span> රටාවේ 20 වන පදය (T₂₀) කීයද?", en: "Find the 20th term (T₂₀) of <span class='math-highlight'>Tₙ = 2n + 3</span>.", a: "43" },
+                    { si: "<span class='math-highlight'>Tₙ = 6n − 1</span> රටාවේ 24 වන පදය (T₂₄) කීයද?", en: "Find the 24th term (T₂₄) of <span class='math-highlight'>Tₙ = 6n − 1</span>.", a: "143" },
+                    { si: "<span class='math-highlight'>Tₙ = 4n + 11</span> රටාවේ 15 වන පදය (T₁₅) කීයද?", en: "Find the 15th term (T₁₅) of <span class='math-highlight'>Tₙ = 4n + 11</span>.", a: "71" },
+                    { si: "<span class='math-highlight'>Tₙ = 20 − 2n</span> රටාවේ 3 වන පදය (T₃) කීයද?", en: "Find the 3rd term (T₃) of <span class='math-highlight'>Tₙ = 20 − 2n</span>.", a: "14" },
+                    { si: "<span class='math-highlight'>Tₙ = 56 − 4n</span> රටාවේ 12 වන පදය (T₁₂) කීයද?", en: "Find the 12th term (T₁₂) of <span class='math-highlight'>Tₙ = 56 − 4n</span>.", a: "8" },
+                    { si: "<span class='math-highlight'>Tₙ = 50 − 4n</span> රටාවේ 10 වන පදය (T₁₀) කීයද?", en: "Find the 10th term (T₁₀) of <span class='math-highlight'>Tₙ = 50 − 4n</span>.", a: "10" },
+                    { si: "<span class='math-highlight'>Tₙ = 35 − n</span> රටාවේ 20 වන පදය (T₂₀) කීයද?", en: "Find the 20th term (T₂₀) of <span class='math-highlight'>Tₙ = 35 − n</span>.", a: "15" },
+                    { si: "<span class='math-highlight'>Tₙ = 50 − 7n</span> රටාවේ 7 වන පදය (T₇) කීයද?", en: "Find the 7th term (T₇) of <span class='math-highlight'>Tₙ = 50 − 7n</span>.", a: "1" },
+                    { si: "<span class='math-highlight'>Tₙ = 50 − 7n</span> රටාවේ 10 වන පදය (T₁₀) කීයද?", en: "Find the 10th term (T₁₀) of <span class='math-highlight'>Tₙ = 50 − 7n</span>.", a: "-20" },
+                    { si: "<span class='math-highlight'>Tₙ = 13 − 3n</span> රටාවේ 30 වන පදය (T₃₀) කීයද?", en: "Find the 30th term (T₃₀) of <span class='math-highlight'>Tₙ = 13 − 3n</span>.", a: "-77" },
+                    { si: "<span class='math-highlight'>Tₙ = 3n − 5</span> රටාවේ පළමු පදය (T₁) කීයද?", en: "Find the 1st term (T₁) of <span class='math-highlight'>Tₙ = 3n − 5</span>.", a: "-2" },
+                    { si: "<span class='math-highlight'>Tₙ = 6n + 5</span> රටාවේ 20 වන පදය (T₂₀) කීයද?", en: "Find the 20th term (T₂₀) of <span class='math-highlight'>Tₙ = 6n + 5</span>.", a: "125" },
+                    { si: "<span class='math-highlight'>Tₙ = 6n − 5</span> රටාවේ 20 වන පදය (T₂₀) කීයද?", en: "Find the 20th term (T₂₀) of <span class='math-highlight'>Tₙ = 6n − 5</span>.", a: "115" },
+                    { si: "<span class='math-highlight'>Tₙ = 6(8 − n)</span> රටාවේ 5 වන පදය (T₅) කීයද?", en: "Find the 5th term (T₅) of <span class='math-highlight'>Tₙ = 6(8 − n)</span>.", a: "18" }
+                ]
+            },
+            3: {
+                tabSi: ["3 වන Quiz එක", "සාධාරණ පදය Tₙ සෙවීම (මධ්‍යම)"],
+                tabEn: ["Quiz 3", "Finding General Term Tₙ (Medium)"],
+                hintSi: "💡 <strong>3 වන Quiz එක - සාධාරණ පදය (Tₙ) ගොඩනැගීම (ප්‍රශ්න 20):</strong> සංඛ්‍යා රටාවේ සාධාරණ පදය <strong>2n+3</strong> හෝ <strong>13-3n</strong> ආකාරයට හිස්තැන් නොතබා ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Quiz 3 - Finding the General Term Tₙ (20 Questions):</strong> Enter the expression for the general term Tₙ in terms of n (e.g., <strong>2n+3</strong> or <strong>13-3n</strong>).",
+                items: [
+                    { si: "<span class='math-highlight'>2, 4, 6, 8, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>2, 4, 6, 8, ...</span>", a: "2n" },
+                    { si: "<span class='math-highlight'>5, 10, 15, 20, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>5, 10, 15, 20, ...</span>", a: "5n" },
+                    { si: "<span class='math-highlight'>5, 7, 9, 11, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>5, 7, 9, 11, ...</span>", a: "2n+3" },
+                    { si: "<span class='math-highlight'>5, 8, 11, 14, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>5, 8, 11, 14, ...</span>", a: "3n+2" },
+                    { si: "<span class='math-highlight'>1, 4, 7, 10, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>1, 4, 7, 10, ...</span>", a: "3n-2" },
+                    { si: "<span class='math-highlight'>5, 11, 17, 23, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>5, 11, 17, 23, ...</span>", a: "6n-1" },
+                    { si: "<span class='math-highlight'>1, 7, 13, 19, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>1, 7, 13, 19, ...</span>", a: "6n-5" },
+                    { si: "<span class='math-highlight'>4, 10, 16, 22, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>4, 10, 16, 22, ...</span>", a: "6n-2" },
+                    { si: "<span class='math-highlight'>10, 17, 24, 31, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>10, 17, 24, 31, ...</span>", a: "7n+3" },
+                    { si: "<span class='math-highlight'>9, 17, 25, 33, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>9, 17, 25, 33, ...</span>", a: "8n+1" },
+                    { si: "<span class='math-highlight'>15, 19, 23, 27, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>15, 19, 23, 27, ...</span>", a: "4n+11" },
+                    { si: "<span class='math-highlight'>0, 4, 8, 12, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>0, 4, 8, 12, ...</span>", a: "4n-4" },
+                    { si: "<span class='math-highlight'>-3, 1, 5, 9, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>-3, 1, 5, 9, ...</span>", a: "4n-7" },
+                    { si: "<span class='math-highlight'>4, 9, 14, 19, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>4, 9, 14, 19, ...</span>", a: "5n-1" },
+                    { si: "<span class='math-highlight'>10, 7, 4, 1, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>10, 7, 4, 1, ...</span>", a: "13-3n", alt: ["-3n+13"] },
+                    { si: "<span class='math-highlight'>22, 19, 16, 13, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>22, 19, 16, 13, ...</span>", a: "25-3n", alt: ["-3n+25"] },
+                    { si: "<span class='math-highlight'>22, 20, 18, 16, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>22, 20, 18, 16, ...</span>", a: "24-2n", alt: ["-2n+24"] },
+                    { si: "<span class='math-highlight'>17, 12, 7, 2, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>17, 12, 7, 2, ...</span>", a: "22-5n", alt: ["-5n+22"] },
+                    { si: "<span class='math-highlight'>6, 3, 0, -3, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>6, 3, 0, -3, ...</span>", a: "9-3n", alt: ["-3n+9"] },
+                    { si: "<span class='math-highlight'>42, 36, 30, 24, ...</span> රටාවේ සාධාරණ පදය (Tₙ) ලියන්න.", en: "Write the general term (Tₙ) of <span class='math-highlight'>42, 36, 30, 24, ...</span>", a: "48-6n", alt: ["-6n+48", "6(8-n)"] }
+                ]
+            },
+            4: {
+                tabSi: ["4 වන Quiz එක", "පද ස්ථානය n සෙවීම (තරමක් අපහසු)"],
+                tabEn: ["Quiz 4", "Finding Term Position n (Challenging)"],
+                hintSi: "💡 <strong>4 වන Quiz එක - පද ස්ථානය (n) සහ (n+1) පදය සෙවීම (ප්‍රශ්න 20):</strong> දී ඇති සංඛ්‍යාව රටාවේ කීවැනි පදයදැයි (n හි අගය) සොයන්න.",
+                hintEn: "💡 <strong>Quiz 4 - Finding Term Position (n) & (n+1)th Term (20 Questions):</strong> Find which term (value of n) the given number is, or express the (n±1)th term in terms of n.",
+                items: [
+                    { si: "<span class='math-highlight'>Tₙ = 2n + 3</span> රටාවේ <span class='math-highlight'>123</span> වන්නේ කීවැනි පදයද?", en: "Which term of the pattern <span class='math-highlight'>Tₙ = 2n + 3</span> is <span class='math-highlight'>123</span>?", a: "60" },
+                    { si: "<span class='math-highlight'>Tₙ = 4n − 3</span> රටාවේ <span class='math-highlight'>97</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 4n − 3</span> is <span class='math-highlight'>97</span>?", a: "25" },
+                    { si: "<span class='math-highlight'>Tₙ = 7n + 1</span> රටාවේ <span class='math-highlight'>36</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 7n + 1</span> is <span class='math-highlight'>36</span>?", a: "5" },
+                    { si: "<span class='math-highlight'>Tₙ = 56 − 4n</span> රටාවේ <span class='math-highlight'>0</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 56 − 4n</span> is <span class='math-highlight'>0</span>?", a: "14" },
+                    { si: "<span class='math-highlight'>Tₙ = 3n + 2</span> රටාවේ <span class='math-highlight'>47</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 3n + 2</span> is <span class='math-highlight'>47</span>?", a: "15" },
+                    { si: "<span class='math-highlight'>Tₙ = 5n − 1</span> රටාවේ <span class='math-highlight'>99</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 5n − 1</span> is <span class='math-highlight'>99</span>?", a: "20" },
+                    { si: "<span class='math-highlight'>Tₙ = 6n − 1</span> රටාවේ <span class='math-highlight'>479</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 6n − 1</span> is <span class='math-highlight'>479</span>?", a: "80" },
+                    { si: "<span class='math-highlight'>5, 8, 11, 14, ...</span> රටාවේ <span class='math-highlight'>62</span> වන්නේ කීවැනි පදයද?", en: "Which term of the pattern <span class='math-highlight'>5, 8, 11, 14, ...</span> is <span class='math-highlight'>62</span>?", a: "20" },
+                    { si: "<span class='math-highlight'>1, 4, 7, 10, ...</span> රටාවේ <span class='math-highlight'>88</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>1, 4, 7, 10, ...</span> is <span class='math-highlight'>88</span>?", a: "30" },
+                    { si: "<span class='math-highlight'>10, 17, 24, 31, ...</span> රටාවේ <span class='math-highlight'>80</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>10, 17, 24, 31, ...</span> is <span class='math-highlight'>80</span>?", a: "11" },
+                    { si: "<span class='math-highlight'>50, 45, 40, 35, ...</span> රටාවේ <span class='math-highlight'>0</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>50, 45, 40, 35, ...</span> is <span class='math-highlight'>0</span>?", a: "11" },
+                    { si: "<span class='math-highlight'>15, 19, 23, 27, ...</span> රටාවේ <span class='math-highlight'>91</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>15, 19, 23, 27, ...</span> is <span class='math-highlight'>91</span>?", a: "20" },
+                    { si: "<span class='math-highlight'>Tₙ = 35 − n</span> රටාවේ <span class='math-highlight'>12</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>Tₙ = 35 − n</span> is <span class='math-highlight'>12</span>?", a: "23" },
+                    { si: "<span class='math-highlight'>Tₙ = 50 − 7n</span> රටාවේ පළමු ඍණ පදය ලැබෙන්නේ කීවැනි පදයටද?", en: "Which term is the first negative term of <span class='math-highlight'>Tₙ = 50 − 7n</span>?", a: "8" },
+                    { si: "<span class='math-highlight'>42, 36, 30, 24, ...</span> රටාවේ <span class='math-highlight'>0</span> වන්නේ කීවැනි පදයද?", en: "Which term of <span class='math-highlight'>42, 36, 30, 24, ...</span> is <span class='math-highlight'>0</span>?", a: "8" },
+                    { si: "<span class='math-highlight'>Tₙ = 2n + 3</span> නම් <span class='math-highlight'>(n + 1)</span> වන පදය n ඇසුරෙන් ලියන්න.", en: "If <span class='math-highlight'>Tₙ = 2n + 3</span>, express the <span class='math-highlight'>(n + 1)</span>th term in terms of n.", a: "2n+5" },
+                    { si: "<span class='math-highlight'>Tₙ = 7n + 1</span> නම් <span class='math-highlight'>(n + 1)</span> වන පදය n ඇසුරෙන් ලියන්න.", en: "If <span class='math-highlight'>Tₙ = 7n + 1</span>, express the <span class='math-highlight'>(n + 1)</span>th term in terms of n.", a: "7n+8" },
+                    { si: "<span class='math-highlight'>Tₙ = 50 − 7n</span> නම් <span class='math-highlight'>(n + 1)</span> වන පදය n ඇසුරෙන් ලියන්න.", en: "If <span class='math-highlight'>Tₙ = 50 − 7n</span>, express the <span class='math-highlight'>(n + 1)</span>th term in terms of n.", a: "43-7n", alt: ["-7n+43"] },
+                    { si: "<span class='math-highlight'>Tₙ = 3n − 5</span> නම් <span class='math-highlight'>(n − 1)</span> වන පදය n ඇසුරෙන් ලියන්න.", en: "If <span class='math-highlight'>Tₙ = 3n − 5</span>, express the <span class='math-highlight'>(n − 1)</span>th term in terms of n.", a: "3n-8" },
+                    { si: "<span class='math-highlight'>Tₙ = 6n + 5</span> නම් <span class='math-highlight'>(n − 1)</span> වන පදය n ඇසුරෙන් ලියන්න.", en: "If <span class='math-highlight'>Tₙ = 6n + 5</span>, express the <span class='math-highlight'>(n − 1)</span>th term in terms of n.", a: "6n-1" }
+                ]
+            },
+            5: {
+                tabSi: ["5 වන Quiz එක", "මිශ්‍ර ගැටලු සහ රූප රටා (අපහසු)"],
+                tabEn: ["Quiz 5", "Word Problems & Applications (Hard)"],
+                hintSi: "💡 <strong>5 වන Quiz එක - වගන්තිමය ගැටලු සහ රූප රටා (ප්‍රශ්න 20):</strong> පෙළපොතේ 1.3 අභ්‍යාසය හා මිශ්‍ර අභ්‍යාස ඇසුරෙන් සැකසූ ගැටලු විසඳා පිළිතුරු සංඛ්‍යාව පමණක් (ඒකක නොමැතිව) ඇතුළත් කරන්න.",
+                hintEn: "💡 <strong>Quiz 5 - Word Problems & Pattern Applications (20 Questions):</strong> Solve the problems based on Textbook Exercise 1.3 & Review Exercise. Enter numerical values only (without units).",
+                items: [
+                    { si: "පළමු දිනයේ 500m දුවන ක්‍රීඩකයෙක් දිනපතා පෙර දිනට වඩා 100m වැඩිපුර දුවයි. 20 වන දිනයේ දුවන දුර මීටර කීයද?", en: "An athlete runs 500m on Day 1 and increases the distance by 100m each day. How many meters does he run on Day 20?", a: "2400" },
+                    { si: "ඉහත ක්‍රීඩකයා කිලෝමීටර 3 ක (3000m) දුරක් දුවන්නේ කීවැනි දිනයේද?", en: "On which day will the above athlete run a distance of 3 km (3000m)?", a: "26" },
+                    { si: "ගිනිකූරු රටාවක 1 වන රූපයට කූරු 5ක් ද, 2 වන රූපයට 9ක් ද, 3 වන රූපයට 13ක් ද අවශ්‍ය වේ. 20 වන රූපයට කූරු කීයක් අවශ්‍යද?", en: "A matchstick pattern uses 5, 9, 13 sticks for the 1st, 2nd, and 3rd figures. How many sticks are needed for the 20th figure?", a: "81" },
+                    { si: "ගිනිකූරු රටාවක සාධාරණ පදය <span class='math-highlight'>Tₙ = 4n + 3</span> නම් කූරු 219 ක් අවශ්‍ය වන්නේ කීවැනි රූපයටද?", en: "If the general term of a matchstick pattern is <span class='math-highlight'>Tₙ = 4n + 3</span>, which figure requires 219 sticks?", a: "54" },
+                    { si: "ගිනිකූරු 75 කින් <span class='math-highlight'>Tₙ = 4n + 1</span> රටාවේ සෑදිය හැකි උපරිම රූප අංකය කීයද?", en: "What is the maximum figure number of the pattern <span class='math-highlight'>Tₙ = 4n + 1</span> that can be made with 75 matchsticks?", a: "18" },
+                    { si: "කම්බි කැබලි කැපීමේදී කුඩාම කැබැල්ල 15cm ද, අනුයාත කැබලි අතර වෙනස 10cm ද වේ. 20 වන කැබැල්ලේ දිග (cm) කීයද?", en: "Wire pieces are cut starting from 15cm with a common difference of 10cm. Find the length (in cm) of the 20th piece.", a: "205" },
+                    { si: "ඉහත කම්බි රටාවේ 50 වන කැබැල්ලේ දිග සෙන්ටිමීටර (cm) කීයද?", en: "Find the length (in cm) of the 50th wire piece in the above pattern.", a: "505" },
+                    { si: "යෙස්මි මුලින් රු. 100 ක් දමා සතිපතා රු. 10 බැගින් කැටයට දමයි. 5 වන සතියේ ඇගේ කැටයේ ඇති මුදල (රු.) කීයද?", en: "Yesmi starts with Rs. 100 in her till and adds Rs. 10 each week. How much (in Rs.) is in her till in the 5th week?", a: "140" },
+                    { si: "ඉඳුනි මුලින් රු. 100 ක් දමා සතිපතා රු. 5 බැගින් කැටයට දමයි. 10 වන සතියේ ඇගේ කැටයේ ඇති මුදල (රු.) කීයද?", en: "Induni starts with Rs. 100 in her till and adds Rs. 5 each week. How much (in Rs.) is in her till in the 10th week?", a: "145" },
+                    { si: "සති 50 කට පසු යෙස්මි (Tₙ=10n+90) ඉතිරි කළ මුදල ඉඳුනි (Tₙ=5n+95) ඉතිරි කළ මුදලට වඩා රුපියල් කීයකින් වැඩිද?", en: "After 50 weeks, how much more (in Rs.) has Yesmi (Tₙ=10n+90) saved than Induni (Tₙ=5n+95)?", a: "245" },
+                    { si: "නාට්‍ය පිටියක 1 වන පේළියේ ආසන 9ක් ද, 2 වන පේළියේ 12ක් ද, 3 වන පේළියේ 15ක් ද ඇත. මුල් පේළි 5 හි මුළු ආසන ගණන කීයද?", en: "An open-air theatre has 9 seats in Row 1, 12 in Row 2, and 15 in Row 3. Find the total seats in the first 5 rows.", a: "75" },
+                    { si: "ඉහත ආසන රටාවේ 15 වන පේළියේ ඇති ආසන ගණන කීයද?", en: "How many seats are there in the 15th row of the above theatre?", a: "51" },
+                    { si: "ඉහත ආසන රටාවේ මුල් පේළියේ ආසන මෙන් 4 ගුණයක ආසන (36ක්) ඇත්තේ කීවැනි පේළියේද?", en: "Which row has 4 times the number of seats in the first row (36 seats)?", a: "10" },
+                    { si: "උදිතගේ ආරම්භක මාසික වැටුප රු. 25,000 කි. වාර්ෂිකව රු. 2,400 ක වැටුප් වැඩිවීමක් ලැබේ නම් 5 වන වසරේ මාසික වැටුප කීයද?", en: "Uditha's initial monthly salary is Rs. 25,000 with an annual increment of Rs. 2,400. What is his monthly salary in the 5th year?", a: "34600" },
+                    { si: "නිල් බල්බ 3, 5, 7, ... සහ රතු බල්බ 2, 4, 6, ... ලෙස සැරසිල්ලක 10 වන අවස්ථාවේ ඇති මුළු බල්බ ගණන කීයද?", en: "A decoration has blue bulbs 3, 5, 7, ... and red bulbs 2, 4, 6, ... Find the total bulbs in the 10th stage.", a: "41" },
+                    { si: "ඉහත සැරසිල්ලේ මුළු බල්බ 61 ක් (4n + 1 = 61) ඇත්තේ කීවැනි අවස්ථාවේද?", en: "Which stage of the above decoration uses a total of 61 bulbs (4n + 1 = 61)?", a: "15" },
+                    { si: "ඉහත 15 වන අවස්ථාවේ ඇති නිල් බල්බ (2n + 1) ගණන කීයද?", en: "How many blue bulbs (2n + 1) are used in the 15th stage above?", a: "31" },
+                    { si: "<span class='math-highlight'>Tₙ = 100 − 6n</span> සංඛ්‍යා රටාවේ කුඩාම ධන පදය කීයද?", en: "What is the smallest positive term of the sequence <span class='math-highlight'>Tₙ = 100 − 6n</span>?", a: "4" },
+                    { si: "පොදු අන්තරය 4 වන රටාවක 5 වන පදය 23 නම් 1 වන පදය කීයද?", en: "If the common difference is 4 and the 5th term is 23, find the 1st term.", a: "7" },
+                    { si: "පොදු අන්තරය -3 වන රටාවක 10 වන පදය 5 නම් 1 වන පදය කීයද?", en: "If the common difference is -3 and the 10th term is 5, find the 1st term.", a: "32" }
+                ]
+            }
+        };
+
+        let currentLang = 'si';
+        let currentTable = 1;
+        let currentQuestions = [];
+        let timerInterval = null;
+        let initialSeconds = 0;
+        let correctionSeconds = 0;
+        let phase = 'idle';
+
+        function openNumPatterns(lang) {
+            currentLang = lang || 'si';
+            document.getElementById('menuView').style.display = 'none';
+            document.getElementById('numPatternsView').style.display = 'block';
+            document.getElementById('headerBackToMenuBtn').style.display = 'inline-block';
+            applyLanguageUI();
+            loadTableQuestions(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeNumPatterns() {
+            stopTimer();
+            document.getElementById('numPatternsView').style.display = 'none';
+            document.getElementById('headerBackToMenuBtn').style.display = 'none';
+            document.getElementById('menuView').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setLanguage(lang) {
+            if (currentLang === lang) return;
+            currentLang = lang;
+            applyLanguageUI();
+            // වත්මන් පිළිතුරු සහ තත්ත්වයන් ආරක්ෂා කරමින් ප්‍රශ්න පෙළ පමණක් භාෂාවට අනුව යාවත්කාලීන කිරීම
+            const savedValues = [];
+            const savedStates = [];
+            for (let i = 0; i < currentQuestions.length; i++) {
+                const inp = document.getElementById(`input-${i}`);
+                if (inp) {
+                    savedValues.push(inp.value);
+                    savedStates.push({
+                        disabled: inp.disabled,
+                        isCorrect: inp.classList.contains('correct'),
+                        isWrong: inp.classList.contains('wrong')
+                    });
+                }
+            }
+            renderTable();
+            for (let i = 0; i < currentQuestions.length; i++) {
+                const inp = document.getElementById(`input-${i}`);
+                const icon = document.getElementById(`icon-${i}`);
+                if (inp && savedValues[i] !== undefined) {
+                    inp.value = savedValues[i];
+                    if (savedStates[i].isCorrect) {
+                        inp.classList.add('correct');
+                        inp.disabled = true;
+                        icon.textContent = '✅';
+                    } else if (savedStates[i].isWrong) {
+                        inp.classList.add('wrong');
+                        icon.textContent = '❌';
+                    }
+                }
+            }
+        }
+
+        function applyLanguageUI() {
+            const t = UI_TEXT[currentLang];
+            document.getElementById('langBtnSi').classList.toggle('active', currentLang === 'si');
+            document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
+
+            document.getElementById('quizMainTitle').textContent = t.mainTitle;
+            document.getElementById('shuffleBtn').textContent = t.shuffleBtn;
+            document.getElementById('backBtnTop').textContent = t.backBtnTop;
+            document.getElementById('backBtnBottom').textContent = t.backBtnBottom;
+            document.getElementById('lblInitialTime').textContent = t.lblInitialTime;
+            document.getElementById('lblCorrectionTime').textContent = t.lblCorrectionTime;
+            document.getElementById('lblScore').textContent = t.lblScore;
+            document.getElementById('thNo').textContent = t.thNo;
+            document.getElementById('thQuestion').textContent = t.thQuestion;
+            document.getElementById('thAnswer').textContent = t.thAnswer;
+
+            document.getElementById('statLblScore').textContent = t.statLblScore;
+            document.getElementById('statLblInit').textContent = t.statLblInit;
+            document.getElementById('statLblCorr').textContent = t.statLblCorr;
+            document.getElementById('statLblTotal').textContent = t.statLblTotal;
+
+            // Tabs යාවත්කාලීන කිරීම
+            const tabsHTML = [1, 2, 3, 4, 5].map(num => {
+                const tabInfo = currentLang === 'si' ? QUIZ_BANK[num].tabSi : QUIZ_BANK[num].tabEn;
+                const activeCls = num === currentTable ? 'active' : '';
+                return `<button class="np-tab-btn ${activeCls}" onclick="switchTable(${num})">${tabInfo[0]}<span class="np-tab-sub">${tabInfo[1]}</span></button>`;
+            }).join('');
+            document.getElementById('quizTabsContainer').innerHTML = tabsHTML;
+
+            document.getElementById('tableSubtitleHint').innerHTML =
+                currentLang === 'si' ? QUIZ_BANK[currentTable].hintSi : QUIZ_BANK[currentTable].hintEn;
+
+            const checkBtn = document.getElementById('checkBtn');
+            if (phase === 'completed') checkBtn.textContent = t.completedBtn;
+            else if (phase === 'correction') checkBtn.textContent = t.recheckBtn;
+            else checkBtn.textContent = t.checkBtn;
+
+            updateTimerUI();
+        }
+
+        function formatTime(totalSec) {
+            const t = UI_TEXT[currentLang];
+            const mins = Math.floor(totalSec / 60);
+            const secs = totalSec % 60;
+            return `${String(mins).padStart(2, '0')} ${t.minUnit} ${String(secs).padStart(2, '0')} ${t.secUnit}`;
+        }
+
+        function updateTimerUI() {
+            document.getElementById('initialTimeDisplay').textContent = formatTime(initialSeconds);
+            document.getElementById('correctionTimeDisplay').textContent = formatTime(correctionSeconds);
+            document.getElementById('statInitialTime').textContent = formatTime(initialSeconds);
+            document.getElementById('statCorrectionTime').textContent = formatTime(correctionSeconds);
+            document.getElementById('statTotalTime').textContent = formatTime(initialSeconds + correctionSeconds);
+        }
+
+        function startTimerIfNeeded() {
+            if (phase === 'idle') phase = 'initial';
+            if (!timerInterval && (phase === 'initial' || phase === 'correction')) {
+                timerInterval = setInterval(() => {
+                    if (phase === 'initial') initialSeconds++;
+                    else if (phase === 'correction') correctionSeconds++;
+                    updateTimerUI();
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function switchTable(tableNum) {
+            currentTable = tableNum;
+            applyLanguageUI();
+            loadTableQuestions(false);
+        }
+
+        function generateNewSet() {
+            loadTableQuestions(true);
+        }
+
+        function loadTableQuestions(shuffle) {
+            stopTimer();
+            initialSeconds = 0;
+            correctionSeconds = 0;
+            phase = 'idle';
+            updateTimerUI();
+
+            const t = UI_TEXT[currentLang];
+            document.getElementById('correctionPill').style.display = 'none';
+            document.getElementById('summaryBox').style.display = 'none';
+            document.getElementById('scoreDisplay').textContent = '0 / 20';
+
+            const checkBtn = document.getElementById('checkBtn');
+            checkBtn.textContent = t.checkBtn;
+            checkBtn.className = 'np-btn np-btn-check';
+
+            let list = [...QUIZ_BANK[currentTable].items];
+            if (shuffle) {
+                for (let i = list.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [list[i], list[j]] = [list[j], list[i]];
+                }
+            }
+            currentQuestions = list;
+            renderTable();
+        }
+
+        function renderTable() {
+            const t = UI_TEXT[currentLang];
+            const tbody = document.getElementById('quizTableBody');
+            tbody.innerHTML = currentQuestions.map((item, idx) => `
+                <tr>
+                    <td><span class="q-no">${idx + 1}</span></td>
+                    <td>${currentLang === 'si' ? item.si : item.en}</td>
+                    <td>
+                        <input type="text" class="ans-input" id="input-${idx}"
+                            oninput="handleInput(${idx}, this)" onkeydown="handleKeyNav(event, ${idx})"
+                            placeholder="${t.placeholder}" autocomplete="off" />
+                        <span class="status-icon" id="icon-${idx}"></span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handleInput(idx, el) {
+            if (el.value.trim().length > 0) {
+                startTimerIfNeeded();
+                if (el.classList.contains('wrong')) {
+                    el.classList.remove('wrong');
+                    document.getElementById(`icon-${idx}`).textContent = '';
+                }
+            }
+        }
+
+        function handleKeyNav(e, idx) {
+            if (e.key === 'ArrowDown' && idx < 19) {
+                e.preventDefault();
+                document.getElementById(`input-${idx + 1}`).focus();
+            } else if (e.key === 'ArrowUp' && idx > 0) {
+                e.preventDefault();
+                document.getElementById(`input-${idx - 1}`).focus();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (idx < 19) document.getElementById(`input-${idx + 1}`).focus();
+                else checkAnswers();
+            }
+        }
+
+        function normalizeAns(str) {
+            return str.replace(/\s+/g, '').replace(/−/g, '-').toLowerCase();
+        }
+
+        function checkAnswers() {
+            const t = UI_TEXT[currentLang];
+            let emptyCount = 0;
+            for (let i = 0; i < 20; i++) {
+                if (!document.getElementById(`input-${i}`).value.trim()) emptyCount++;
+            }
+            if (emptyCount > 0) {
+                alert(t.alertEmpty(emptyCount));
+                for (let i = 0; i < 20; i++) {
+                    if (!document.getElementById(`input-${i}`).value.trim()) {
+                        document.getElementById(`input-${i}`).focus();
+                        break;
+                    }
+                }
+                return;
+            }
+
+            let correctCount = 0;
+            for (let i = 0; i < 20; i++) {
+                const inputEl = document.getElementById(`input-${i}`);
+                const iconEl = document.getElementById(`icon-${i}`);
+                const userAns = normalizeAns(inputEl.value);
+                const item = currentQuestions[i];
+
+                const validAnswers = [normalizeAns(item.a)];
+                if (item.alt) {
+                    item.alt.forEach(a => validAnswers.push(normalizeAns(a)));
+                }
+
+                if (validAnswers.includes(userAns)) {
+                    correctCount++;
+                    inputEl.classList.remove('wrong');
+                    inputEl.classList.add('correct');
+                    inputEl.disabled = true;
+                    iconEl.textContent = '✅';
+                } else {
+                    inputEl.classList.remove('correct');
+                    inputEl.classList.add('wrong');
+                    iconEl.textContent = '❌';
+                }
+            }
+
+            document.getElementById('scoreDisplay').textContent = `${correctCount} / 20`;
+
+            const summaryBox = document.getElementById('summaryBox');
+            const summaryMsg = document.getElementById('summaryMessage');
+            const checkBtn = document.getElementById('checkBtn');
+
+            if (correctCount === 20) {
+                stopTimer();
+                phase = 'completed';
+                summaryBox.style.display = 'block';
+                summaryBox.classList.remove('has-errors');
+                summaryMsg.textContent = t.perfectMsg;
+                checkBtn.textContent = t.completedBtn;
+                checkBtn.className = 'np-btn np-btn-check';
+            } else {
+                if (phase === 'initial' || phase === 'idle') {
+                    phase = 'correction';
+                    document.getElementById('correctionPill').style.display = 'flex';
+                    startTimerIfNeeded();
+                }
+                summaryBox.style.display = 'block';
+                summaryBox.classList.add('has-errors');
+                summaryMsg.textContent = t.errorMsg(20 - correctCount);
+                checkBtn.textContent = t.recheckBtn;
+                checkBtn.className = 'np-btn np-btn-recheck';
+
+                for (let i = 0; i < 20; i++) {
+                    const el = document.getElementById(`input-${i}`);
+                    if (el.classList.contains('wrong')) {
+                        el.focus();
+                        el.select();
+                        break;
+                    }
+                }
+            }
+
+            document.getElementById('statScore').textContent = `${correctCount} / 20`;
+            updateTimerUI();
+        }
+    </script>
 </body>
 </html>
