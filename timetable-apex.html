@@ -5,18 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2027 කාලසටහන - APEX ආයතනය (මාතර)</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- html2canvas Library එක -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary:#7f1d1d; --dark:#0f172a; --accent:#f59e0b; --light:#f8fafc; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala',sans-serif; }
         body { background:var(--light); color:#1e293b; }
         header { background:linear-gradient(135deg,var(--primary),var(--dark)); color:white; text-align:center; padding:2rem 1rem; border-bottom:4px solid var(--accent); }
-        .back-btn { display:inline-block; margin-top:1rem; color:#fcd34d; text-decoration:none; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; }
+        .back-btn { display:inline-block; margin-top:1rem; color:#fcd34d; text-decoration:none; font-weight:600; border:1px solid var(--accent); padding:0.4rem 1rem; border-radius:6px; transition:0.2s; }
+        .back-btn:hover { background:var(--accent); color:var(--dark); }
         .container { max-width:850px; margin:2rem auto; padding:0 1rem; }
-        table { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.06); }
-        th { background:var(--dark); color:#fcd34d; padding:1rem; text-align:left; }
-        td { padding:0.95rem 1rem; border-bottom:1px solid #e2e8f0; }
+        
+        /* Screenshot එකට හසුවන කාලසටහන් කොටස */
+        #capture-area {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--primary);
+        }
+        .capture-header {
+            text-align: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .capture-header h2 { color: var(--primary); font-size: 1.35rem; margin-bottom: 0.25rem; }
+        .capture-header p { color: #475569; font-size: 0.95rem; font-weight: 600; }
+        
+        table { width:100%; border-collapse:collapse; background:white; border-radius:8px; overflow:hidden; }
+        th { background:var(--dark); color:#fcd34d; padding:0.9rem 1rem; text-align:left; }
+        td { padding:0.85rem 1rem; border-bottom:1px solid #e2e8f0; }
+        tr:last-child td { border-bottom: none; }
         tr:hover { background:#f8fafc; }
-        .contact-note { margin-top:1.5rem; text-align:center; font-weight:600; color:var(--primary); }
+        .contact-note { margin-top:1.25rem; text-align:center; font-weight:700; color:var(--primary); background:#fef3c7; padding:0.6rem; border-radius:8px; }
+        
+        /* Download බොත්තමේ Style එක */
+        .download-wrapper { text-align: center; margin-top: 1.5rem; }
+        .download-btn {
+            background: linear-gradient(135deg, var(--primary), #991b1b);
+            color: #fcd34d;
+            border: 2px solid var(--accent);
+            padding: 0.8rem 1.6rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(127, 29, 29, 0.25);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .download-btn:hover { transform: translateY(-2px); background: var(--dark); }
     </style>
 </head>
 <body>
@@ -25,28 +63,60 @@
         <p>මෙහෙයවීම: රොෂාන් මාරඹගේ (B.Sc)</p>
         <a href="index.html" class="back-btn">← මුල් පිටුවට (Home)</a>
     </header>
+
     <div class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ශ්‍රේණිය (Grade)</th>
-                    <th>මාධ්‍යය (Medium)</th>
-                    <th>දිනය (Day)</th>
-                    <th>වේලාව (Time)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>6 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>සඳුදා</td><td>ප.ව.2.30 – 4.30</td></tr>
-                <tr><td>7 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>බ්‍රහස්පතින්දා</td><td>ප.ව. 4.30 – 6.30</td></tr>
-                <tr><td>8 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>සිකුරාදා</td><td>ප.ව.2.30 – 4.30</td></tr>
-                <tr><td>9 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>බදාදා</td><td>ප.ව. 2.30 – 4.30</td></tr>
-                <tr><td>10 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>බ්‍රහස්පතින්දා</td><td>ප.ව.2.30 – 4.30</td></tr>
-                <tr><td>11 ශ්‍රේණිය (O/L)</td><td>සිංහල මාධ්‍යය</td><td>සඳුදා</td><td>ප.ව. 4.30 – 6.30</td></tr>
-                <tr><td>11 ශ්‍රේණිය (Paper Class)</td><td>සිංහල මාධ්‍යය</td><td>සිකුරාදා</td><td>ප.ව. 4.45 – 7.00</td></tr>
-            </tbody>
-        </table>
-        <p class="contact-note">වැඩි විස්තර සහ ලියාපදිංචිය සඳහා: 077 33 89 479</p>
+        <!-- Screenshot එකට ලබාගන්නා කොටස ආරම්භය -->
+        <div id="capture-area">
+            <div class="capture-header">
+                <h2>📅 2027 පන්ති කාලසටහන - APEX ආයතනය (මාතර)</h2>
+                <p>මෙහෙයවීම: රොෂාන් මාරඹගේ (B.Sc)</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ශ්‍රේණිය (Grade)</th>
+                        <th>මාධ්‍යය (Medium)</th>
+                        <th>දිනය (Day)</th>
+                        <th>වේලාව (Time)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>6 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>සඳුදා</td><td>ප.ව. 2.30 – 4.30</td></tr>
+                    <tr><td>7 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>බ්‍රහස්පතින්දා</td><td>ප.ව. 4.30 – 6.30</td></tr>
+                    <tr><td>8 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>සිකුරාදා</td><td>ප.ව. 2.30 – 4.30</td></tr>
+                    <tr><td>9 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>බදාදා</td><td>ප.ව. 2.30 – 4.30</td></tr>
+                    <tr><td>10 ශ්‍රේණිය</td><td>සිංහල මාධ්‍යය</td><td>බ්‍රහස්පතින්දා</td><td>ප.ව. 2.30 – 4.30</td></tr>
+                    <tr><td>11 ශ්‍රේණිය (O/L)</td><td>සිංහල මාධ්‍යය</td><td>සඳුදා</td><td>ප.ව. 4.30 – 6.30</td></tr>
+                    <tr><td>11 ශ්‍රේණිය (Paper Class)</td><td>සිංහල මාධ්‍යය</td><td>සිකුරාදා</td><td>ප.ව. 4.45 – 7.00</td></tr>
+                </tbody>
+            </table>
+            <p class="contact-note">වැඩි විස්තර සහ ලියාපදිංචිය සඳහා: 077 33 89 479</p>
+        </div>
+        <!-- Screenshot එකට ලබාගන්නා කොටස අවසානය -->
+
+        <!-- Download බොත්තම -->
+        <div class="download-wrapper">
+            <button class="download-btn" onclick="downloadTimetable('APEX-Matara-2027-Timetable.png')">
+                📥 කාලසටහන Image එකක් ලෙස Download කරගන්න
+            </button>
+        </div>
     </div>
+
+    <script>
+        function downloadTimetable(fileName) {
+            const captureElement = document.getElementById("capture-area");
+            
+            html2canvas(captureElement, {
+                scale: 2, // ඉහළ පැහැදිලි බවක් ලබා ගැනීමට
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = fileName;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+    </script>
     <script src="news.js"></script>
 </body>
 </html>
