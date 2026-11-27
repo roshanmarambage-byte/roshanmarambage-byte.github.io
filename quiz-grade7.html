@@ -53,3 +53,439 @@
         .dr-tabs { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:0.55rem; margin-bottom:1.25rem; }
         .dr-tab-btn { background:white; border:2px solid #cbd5e1; border-radius:8px; padding:0.6rem 0.5rem; font-weight:700; font-size:0.88rem; color:#334155; cursor:pointer; transition:0.2s; text-align:center; }
         .dr-tab-btn:hover { border-color:var(--primary); background:#fef2f2; }
+        .dr-tab-btn.active { background:var(--primary); border-color:var(--primary); color:white; }
+        .dr-tab-sub { display:block; font-size:0.73rem; font-weight:600; opacity:0.9; }
+
+        .dr-hint { background:#eff6ff; border-left:4px solid #2563eb; padding:0.7rem 1rem; border-radius:6px; font-size:0.86rem; color:#1e3a8a; margin-bottom:1.25rem; font-weight:600; }
+
+        .dr-table { width:100%; border-collapse:collapse; background:white; margin-bottom:1.25rem; }
+        .dr-table th { background:var(--dark); color:white; padding:0.8rem 0.5rem; font-size:0.95rem; text-align:center; border:1px solid #334155; }
+        .dr-table th:nth-child(1) { width:70px; }
+        .dr-table th:nth-child(2) { width:55%; }
+        .dr-table th:nth-child(3) { width:35%; }
+        .dr-table td { padding:0.6rem 0.5rem; border:1px solid #cbd5e1; text-align:center; vertical-align:middle; }
+        .dr-table tr:nth-child(even) { background:#f8fafc; }
+
+        .q-no { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:#e2e8f0; color:var(--dark); font-family:'Fredoka', sans-serif; font-weight:700; font-size:0.9rem; }
+        .num-display { font-family:'Fredoka', sans-serif; font-size:1.3rem; font-weight:700; color:#0f172a; letter-spacing:2px; }
+        .ans-input { width:70px; height:40px; text-align:center; font-family:'Fredoka', sans-serif; font-size:1.25rem; font-weight:700; border:2px solid #94a3b8; border-radius:8px; outline:none; transition:0.2s; background:white; }
+        .ans-input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
+        .ans-input.correct { border-color:#16a34a; background:#dcfce7; color:#14532d; }
+        .ans-input.wrong { border-color:#dc2626; background:#fee2e2; color:#7f1d1d; }
+        .status-icon { display:inline-block; margin-left:6px; font-size:1.1rem; vertical-align:middle; }
+
+        .dr-actions { display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:center; }
+        .dr-btn { border:none; padding:0.7rem 1.35rem; border-radius:8px; font-size:0.95rem; font-weight:700; cursor:pointer; color:white; display:inline-flex; align-items:center; gap:0.4rem; transition:0.2s; }
+        .dr-btn:hover { opacity:0.92; }
+        .dr-btn-check { background:#16a34a; }
+        .dr-btn-recheck { background:#d97706; }
+        .dr-btn-new { background:#2563eb; font-size:0.85rem; padding:0.5rem 1rem; }
+        .dr-btn-back { background:#475569; font-size:0.85rem; padding:0.5rem 1rem; }
+
+        .dr-summary { display:none; margin-top:1.25rem; background:#f0fdf4; border:2px solid #16a34a; border-radius:10px; padding:1.15rem; text-align:center; }
+        .dr-summary.has-errors { background:#fffbeb; border-color:#f59e0b; }
+        .dr-summary-title { font-size:1.1rem; font-weight:800; color:var(--dark); margin-bottom:0.75rem; }
+        .dr-summary-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:0.65rem; }
+        .dr-stat { background:white; padding:0.65rem; border-radius:8px; border:1px solid #cbd5e1; }
+        .dr-stat-lbl { font-size:0.78rem; color:#64748b; font-weight:700; }
+        .dr-stat-val { font-size:1.1rem; font-weight:800; color:var(--primary); margin-top:0.2rem; }
+
+        footer { background-color:var(--dark); color:#94a3b8; text-align:center; padding:1.75rem 1rem; font-size:0.9rem; margin-top:2rem; }
+        footer strong { color:white; }
+
+        @media (max-width:600px) {
+            .num-display { font-size:1.1rem; letter-spacing:1px; }
+            .ans-input { width:58px; height:36px; font-size:1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>7 ශ්‍රේණිය - ගණිතය</h1>
+        <div class="sub-meta">සැකසුම - රොෂාන් මාරඹගේ | වල්ගම - ගණිතගෙදර</div>
+        <div class="nav-links">
+            <a href="quizzes.html">← ශ්‍රේණි ලැයිස්තුවට</a>
+            <a href="index.html">🏠 මුල් පිටුවට</a>
+            <button id="headerBackToMenuBtn" onclick="closeDigitalRoot()" style="display:none;">📋 පැවරුම් ලැයිස්තුවට</button>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. පැවරුම් ලැයිස්තුව -->
+        <div id="menuView">
+            <div class="cat-box">
+                <div class="cat-title">🎮 Interactive HTML Quizzes (අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි)</div>
+
+                <div class="quiz-row b-gold">
+                    <div>
+                        <div class="quiz-name">ඉලක්කම් දර්ශකය සොයමු (Let's find Digital Root)</div>
+                        <div class="quiz-info">වගු 5 (ප්‍රශ්න 100) | කාලය මැනීම සහ වැරදි නිවැරදි කිරීමේ කාලය සමඟ | ගණිතගෙදර</div>
+                    </div>
+                    <button onclick="openDigitalRoot()" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</button>
+                </div>
+
+                <div class="quiz-row b-gold">
+                    <div>
+                        <div class="quiz-name">වීජීය ප්‍රකාශන - Interactive Quiz</div>
+                        <div class="quiz-info">පිළිතුරු සහ ලකුණු එසැණින් ලැබේ | ගණිතගෙදර</div>
+                    </div>
+                    <a href="g7-algebra.html" class="btn btn-gold">🚀 Quiz එක ආරම්භ කරන්න</a>
+                </div>
+            </div>
+
+            <div class="cat-box">
+                <div class="cat-title">📋 Google Forms (මාර්ගගත ඇගයීම්)</div>
+                <div class="quiz-row b-purple">
+                    <div>
+                        <div class="quiz-name">සදිශ සංඛ්‍යා පාඩම් ඇගයීම</div>
+                        <div class="quiz-info">Google Form | ලකුණු එසැණින් බලාගත හැක</div>
+                    </div>
+                    <a href="GOOGLE_FORM_LINK_HERE" target="_blank" class="btn btn-purple">✍️ Form එකට පිවිසෙන්න</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. ඉලක්කම් දර්ශකය වගු මාලාව -->
+        <div id="digitalRootView">
+            <div class="dr-card">
+                <div class="dr-header-bar">
+                    <div class="dr-heading">🔢 ඉලක්කම් දර්ශකය සොයමු (Let's find Digital Root)</div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <button class="dr-btn dr-btn-new" onclick="generateNewSet()">🔄 නව ප්‍රශ්න</button>
+                        <button class="dr-btn dr-btn-back" onclick="closeDigitalRoot()">🔙 පැවරුම් ලැයිස්තුවට</button>
+                    </div>
+                </div>
+
+                <div class="dr-status-bar">
+                    <div class="dr-timers">
+                        <div class="dr-pill">
+                            <span>⏱️ මූලික කාලය:</span>
+                            <span id="initialTimeDisplay" class="dr-val">00 මි. 00 තත්.</span>
+                        </div>
+                        <div class="dr-pill corr" id="correctionPill" style="display:none;">
+                            <span>🔄 නිවැරදි කිරීමේ අතිරේක කාලය:</span>
+                            <span id="correctionTimeDisplay" class="dr-val">00 මි. 00 තත්.</span>
+                        </div>
+                    </div>
+                    <div class="dr-pill" style="background:#fef2f2; border:1px solid #fecaca;">
+                        <span>🎯 ලකුණු:</span>
+                        <span id="scoreDisplay" class="dr-val">0 / 20</span>
+                    </div>
+                </div>
+
+                <div class="dr-tabs">
+                    <button class="dr-tab-btn active" onclick="switchTable(1)">1 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 2 සංඛ්‍යා</span></button>
+                    <button class="dr-tab-btn" onclick="switchTable(2)">2 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 3, 4 සංඛ්‍යා</span></button>
+                    <button class="dr-tab-btn" onclick="switchTable(3)">3 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 5 සංඛ්‍යා</span></button>
+                    <button class="dr-tab-btn" onclick="switchTable(4)">4 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 6, 7 සංඛ්‍යා</span></button>
+                    <button class="dr-tab-btn" onclick="switchTable(5)">5 වන වගුව<span class="dr-tab-sub">ඉලක්කම් 8, 9 සංඛ්‍යා</span></button>
+                </div>
+
+                <div class="dr-hint" id="tableSubtitleHint">
+                    💡 <strong>1 වන වගුව - ඉලක්කම් 2 සංඛ්‍යා (ප්‍රශ්න 20):</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.
+                </div>
+
+                <table class="dr-table">
+                    <thead>
+                        <tr>
+                            <th>අංකය</th>
+                            <th>සංඛ්‍යාව (Number)</th>
+                            <th>ඉලක්කම් දර්ශකය (Digital Root)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quizTableBody"></tbody>
+                </table>
+
+                <div class="dr-actions">
+                    <button id="checkBtn" class="dr-btn dr-btn-check" onclick="checkAnswers()">✅ පිළිතුරු පරීක්ෂා කරන්න</button>
+                    <button class="dr-btn dr-btn-back" onclick="closeDigitalRoot()">🔙 ආපසු ලැයිස්තුවට</button>
+                </div>
+
+                <div id="summaryBox" class="dr-summary">
+                    <div class="dr-summary-title" id="summaryMessage">ප්‍රතිඵල වාර්තාව</div>
+                    <div class="dr-summary-grid">
+                        <div class="dr-stat">
+                            <div class="dr-stat-lbl">ලබාගත් ලකුණු</div>
+                            <div class="dr-stat-val" id="statScore">0 / 20</div>
+                        </div>
+                        <div class="dr-stat">
+                            <div class="dr-stat-lbl">මූලික පිරවීමේ කාලය</div>
+                            <div class="dr-stat-val" id="statInitialTime">00 මි. 00 තත්.</div>
+                        </div>
+                        <div class="dr-stat">
+                            <div class="dr-stat-lbl">වැරදි නිවැරදි කිරීමේ කාලය</div>
+                            <div class="dr-stat-val" id="statCorrectionTime">00 මි. 00 තත්.</div>
+                        </div>
+                        <div class="dr-stat">
+                            <div class="dr-stat-lbl">මුළු ගත වූ කාලය</div>
+                            <div class="dr-stat-val" id="statTotalTime">00 මි. 00 තත්.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>වල්ගම - ගණිතගෙදර</strong> | සැකසුම: <strong>රොෂාන් මාරඹගේ</strong>. සියලුම හිමිකම් ඇවිරිණි.</p>
+    </footer>
+
+    <script src="news.js"></script>
+
+    <script>
+        const TABLE_CONFIG = {
+            1: { title: "1 වන වගුව - ඉලක්කම් 2 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [2] },
+            2: { title: "2 වන වගුව - ඉලක්කම් 3 සහ 4 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [3, 4] },
+            3: { title: "3 වන වගුව - ඉලක්කම් 5 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [5] },
+            4: { title: "4 වන වගුව - ඉලක්කම් 6 සහ 7 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [6, 7] },
+            5: { title: "5 වන වගුව - ඉලක්කම් 8 සහ 9 සංඛ්‍යා (ප්‍රශ්න 20)", digits: [8, 9] }
+        };
+
+        let currentTable = 1;
+        let questions = [];
+        let timerInterval = null;
+        let initialSeconds = 0;
+        let correctionSeconds = 0;
+        let phase = 'idle';
+
+        function openDigitalRoot() {
+            document.getElementById('menuView').style.display = 'none';
+            document.getElementById('digitalRootView').style.display = 'block';
+            document.getElementById('headerBackToMenuBtn').style.display = 'inline-block';
+            generateNewSet();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeDigitalRoot() {
+            stopTimer();
+            document.getElementById('digitalRootView').style.display = 'none';
+            document.getElementById('headerBackToMenuBtn').style.display = 'none';
+            document.getElementById('menuView').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function formatTime(totalSec) {
+            const mins = Math.floor(totalSec / 60);
+            const secs = totalSec % 60;
+            return `${String(mins).padStart(2, '0')} මි. ${String(secs).padStart(2, '0')} තත්.`;
+        }
+
+        function updateTimerUI() {
+            document.getElementById('initialTimeDisplay').textContent = formatTime(initialSeconds);
+            document.getElementById('correctionTimeDisplay').textContent = formatTime(correctionSeconds);
+        }
+
+        function startTimerIfNeeded() {
+            if (phase === 'idle') phase = 'initial';
+            if (!timerInterval && (phase === 'initial' || phase === 'correction')) {
+                timerInterval = setInterval(() => {
+                    if (phase === 'initial') initialSeconds++;
+                    else if (phase === 'correction') correctionSeconds++;
+                    updateTimerUI();
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function calcDigitalRoot(numStr) {
+            let sum = 0;
+            for (let ch of numStr) sum += parseInt(ch, 10);
+            while (sum > 9) {
+                let temp = 0;
+                for (let ch of String(sum)) temp += parseInt(ch, 10);
+                sum = temp;
+            }
+            return sum;
+        }
+
+        function formatNumberWithSpaces(numStr) {
+            return numStr.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function generateRandomNumberStr(digitCount) {
+            let str = String(Math.floor(Math.random() * 9) + 1);
+            for (let i = 1; i < digitCount; i++) {
+                str += String(Math.floor(Math.random() * 10));
+            }
+            return str;
+        }
+
+        function switchTable(tableNum) {
+            currentTable = tableNum;
+            document.querySelectorAll('.dr-tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx + 1 === tableNum);
+            });
+            document.getElementById('tableSubtitleHint').innerHTML =
+                `💡 <strong>${TABLE_CONFIG[tableNum].title}:</strong> සංඛ්‍යාවේ ඉලක්කම් තනි ඉලක්කමක් (1 සිට 9 දක්වා) ලැබෙන තෙක් එකතු කර ඉලක්කම් දර්ශකය ඇතුළත් කරන්න.`;
+            generateNewSet();
+        }
+
+        function generateNewSet() {
+            stopTimer();
+            initialSeconds = 0;
+            correctionSeconds = 0;
+            phase = 'idle';
+            updateTimerUI();
+
+            document.getElementById('correctionPill').style.display = 'none';
+            document.getElementById('summaryBox').style.display = 'none';
+            document.getElementById('scoreDisplay').textContent = '0 / 20';
+
+            const checkBtn = document.getElementById('checkBtn');
+            checkBtn.textContent = '✅ පිළිතුරු පරීක්ෂා කරන්න';
+            checkBtn.className = 'dr-btn dr-btn-check';
+
+            const cfg = TABLE_CONFIG[currentTable];
+            questions = [];
+            const used = new Set();
+
+            while (questions.length < 20) {
+                const dCount = cfg.digits[Math.floor(Math.random() * cfg.digits.length)];
+                const rawNum = generateRandomNumberStr(dCount);
+                if (!used.has(rawNum)) {
+                    used.add(rawNum);
+                    questions.push({
+                        raw: rawNum,
+                        formatted: formatNumberWithSpaces(rawNum),
+                        root: calcDigitalRoot(rawNum)
+                    });
+                }
+            }
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('quizTableBody');
+            tbody.innerHTML = questions.map((q, idx) => `
+                <tr>
+                    <td><span class="q-no">${idx + 1}</span></td>
+                    <td><span class="num-display">${q.formatted}</span></td>
+                    <td>
+                        <input type="text" inputmode="numeric" maxlength="1" class="ans-input" id="input-${idx}"
+                            oninput="handleInput(${idx}, this)" onkeydown="handleKeyNav(event, ${idx})"
+                            placeholder="?" autocomplete="off" />
+                        <span class="status-icon" id="icon-${idx}"></span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handleInput(idx, el) {
+            el.value = el.value.replace(/[^1-9]/g, '');
+            if (el.value.length === 1) {
+                startTimerIfNeeded();
+                if (el.classList.contains('wrong')) {
+                    el.classList.remove('wrong');
+                    document.getElementById(`icon-${idx}`).textContent = '';
+                }
+                for (let next = idx + 1; next < 20; next++) {
+                    const nextEl = document.getElementById(`input-${next}`);
+                    if (nextEl && !nextEl.disabled && (nextEl.value === '' || nextEl.classList.contains('wrong'))) {
+                        nextEl.focus();
+                        break;
+                    }
+                }
+            }
+        }
+
+        function handleKeyNav(e, idx) {
+            if (e.key === 'ArrowDown' && idx < 19) {
+                e.preventDefault();
+                document.getElementById(`input-${idx + 1}`).focus();
+            } else if (e.key === 'ArrowUp' && idx > 0) {
+                e.preventDefault();
+                document.getElementById(`input-${idx - 1}`).focus();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (idx < 19) document.getElementById(`input-${idx + 1}`).focus();
+                else checkAnswers();
+            }
+        }
+
+        function checkAnswers() {
+            let emptyCount = 0;
+            for (let i = 0; i < 20; i++) {
+                if (!document.getElementById(`input-${i}`).value.trim()) emptyCount++;
+            }
+            if (emptyCount > 0) {
+                alert(`කරුණාකර සියලුම ප්‍රශ්න 20 සඳහා පිළිතුරු ඇතුළත් කරන්න. (තවත් හිස් කොටු ${emptyCount}ක් ඇත)`);
+                for (let i = 0; i < 20; i++) {
+                    if (!document.getElementById(`input-${i}`).value.trim()) {
+                        document.getElementById(`input-${i}`).focus();
+                        break;
+                    }
+                }
+                return;
+            }
+
+            let correctCount = 0;
+            for (let i = 0; i < 20; i++) {
+                const inputEl = document.getElementById(`input-${i}`);
+                const iconEl = document.getElementById(`icon-${i}`);
+                const userAns = parseInt(inputEl.value, 10);
+
+                if (userAns === questions[i].root) {
+                    correctCount++;
+                    inputEl.classList.remove('wrong');
+                    inputEl.classList.add('correct');
+                    inputEl.disabled = true;
+                    iconEl.textContent = '✅';
+                } else {
+                    inputEl.classList.remove('correct');
+                    inputEl.classList.add('wrong');
+                    iconEl.textContent = '❌';
+                }
+            }
+
+            document.getElementById('scoreDisplay').textContent = `${correctCount} / 20`;
+
+            const summaryBox = document.getElementById('summaryBox');
+            const summaryMsg = document.getElementById('summaryMessage');
+            const checkBtn = document.getElementById('checkBtn');
+
+            if (correctCount === 20) {
+                stopTimer();
+                phase = 'completed';
+                summaryBox.style.display = 'block';
+                summaryBox.classList.remove('has-errors');
+                summaryMsg.textContent = '🎉 විශිෂ්ටයි! සියලුම පිළිතුරු 20 නිවැරදියි!';
+                checkBtn.textContent = '🏆 සම්පූර්ණයි!';
+                checkBtn.className = 'dr-btn dr-btn-check';
+            } else {
+                if (phase === 'initial' || phase === 'idle') {
+                    phase = 'correction';
+                    document.getElementById('correctionPill').style.display = 'flex';
+                    startTimerIfNeeded();
+                }
+                summaryBox.style.display = 'block';
+                summaryBox.classList.add('has-errors');
+                summaryMsg.textContent = `⚠️ වැරදි පිළිතුරු ${20 - correctCount}ක් ඇත. ඒවා නිවැරදි කර නැවත පරීක්ෂා කරන්න (අතිරේක කාලය ගණනය වෙමින් පවතී...)`;
+                checkBtn.textContent = '🔄 නිවැරදි කළ පිළිතුරු නැවත පරීක්ෂා කරන්න';
+                checkBtn.className = 'dr-btn dr-btn-recheck';
+
+                for (let i = 0; i < 20; i++) {
+                    const el = document.getElementById(`input-${i}`);
+                    if (el.classList.contains('wrong')) {
+                        el.focus();
+                        el.select();
+                        break;
+                    }
+                }
+            }
+
+            document.getElementById('statScore').textContent = `${correctCount} / 20`;
+            document.getElementById('statInitialTime').textContent = formatTime(initialSeconds);
+            document.getElementById('statCorrectionTime').textContent = formatTime(correctionSeconds);
+            document.getElementById('statTotalTime').textContent = formatTime(initialSeconds + correctionSeconds);
+        }
+    </script>
+</body>
+</html>
