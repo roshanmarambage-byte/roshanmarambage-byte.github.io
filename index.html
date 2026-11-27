@@ -6,11 +6,36 @@
     <title>ගණිත ගෙදර | Ganitha Gedara - Roshan Marambage</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary:#7f1d1d; --secondary:#991b1b; --dark:#0f172a; --accent:#f59e0b; --accent-hover:#d97706; --light:#f8fafc; --text-dark:#1e293b; --text-muted:#64748b; }
+        :root { 
+            --primary:#7f1d1d; 
+            --secondary:#991b1b; 
+            --dark:#0f172a; 
+            --accent:#f59e0b; 
+            --accent-hover:#d97706; 
+            --light:#f8fafc; 
+            --text-dark:#1e293b; 
+            --text-muted:#64748b; 
+        }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans Sinhala','Poppins',sans-serif; }
         body { background-color:var(--light); color:var(--text-dark); line-height:1.6; }
-        .cover-wrapper { width:100%; background-color:#450a0a; display:flex; justify-content:center; border-bottom:4px solid var(--accent); }
-        .cover-img { width:100%; max-width:1600px; height:auto; display:block; object-fit:cover; }
+        
+        /* නව නිල් පැහැති Animated Cover Wrapper */
+        .cover-wrapper { 
+            width:100%; 
+            background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); 
+            display:flex; 
+            justify-content:center; 
+            border-bottom:4px solid var(--accent); 
+            overflow:hidden;
+        }
+        .cover-video { 
+            width:100%; 
+            max-width:1600px; 
+            height:auto; 
+            display:block; 
+            object-fit:cover; 
+        }
+
         .sub-header { background:linear-gradient(135deg,var(--primary) 0%,var(--dark) 100%); color:white; text-align:center; padding:1.75rem 1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
         .badge { display:inline-block; background-color:rgba(245,158,11,0.2); color:#fcd34d; border:1px solid var(--accent); padding:0.3rem 1rem; border-radius:50px; font-size:0.9rem; font-weight:600; margin-bottom:0.75rem; }
         .sub-header p { max-width:740px; margin:0 auto 1.25rem; color:#e2e8f0; font-size:1rem; }
@@ -54,9 +79,15 @@
     </style>
 </head>
 <body>
+    <!-- Animated Video Cover Section -->
     <div class="cover-wrapper">
-        <img src="cover.jpg.jpg" alt="ගණිත ගෙදර - රොෂාන් මාරඹගේ" class="cover-img">
+        <video class="cover-video" autoplay loop muted playsinline preload="metadata" poster="cover-blue.jpg">
+            <source src="cover-video.mp4" type="video/mp4">
+            <!-- බ්‍රව්සරය වීඩියෝවට සහය නොදක්වන්නේ නම් පින්තූරය පෙන්වයි -->
+            <img src="cover-blue.jpg" alt="ගණිත ගෙදර - රොෂාන් මාරඹගේ" class="cover-video">
+        </video>
     </div>
+
     <div class="sub-header">
         <div class="badge">3 සිට 11 ශ්‍රේණිය දක්වා | සිංහල සහ ඉංග්‍රීසි මාධ්‍ය</div>
         <p>පාසල් සිසුන්ගේ ගණිත දැනුම ඉහළ නැංවීම සඳහා සකස් කළ අන්තර්ක්‍රියාකාරී ප්‍රශ්නාවලි, පෙළපොත්, ආදර්ශ ප්‍රශ්න පත්‍ර සහ වීඩියෝ පාඩම් එකම තැනකින්.</p>
@@ -147,7 +178,6 @@
 
     <!-- O/L Exam Countdown Script -->
     <script>
-        // විභාගය පැවැත්වෙන දිනය සහ වේලාව පහත පරිදි වෙනස් කරගත හැක
         const examDate = new Date("December 08, 2026 08:30:00").getTime();
 
         const timerInterval = setInterval(function() {
